@@ -3,7 +3,6 @@ package io.micronaut.guides.core.asciidoc;
 import io.micronaut.guides.core.*;
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
 import jakarta.inject.Inject;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
@@ -28,30 +27,25 @@ class AsciidocConverterTest {
     @Inject
     FilesTransferUtility filesTransferUtility;
 
-    @Disabled
     @Test
     void testConvert() throws IOException {
-        File outputDirectory = Files.createTempDirectory("micronaut-guides").toFile();
-
+        String outputPath = "build/tmp/adding-commit-info";
+        File outputDirectory = new File(outputPath);
+        outputDirectory.mkdir();
         String path = "src/test/resources/other-guides/adding-commit-info";
         File file = new File(path);
         Guide guide = guideParser.parseGuideMetadata(file, "metadata.json").orElseThrow();
-
         guideProjectGenerator.generate(outputDirectory, guide);
-
         filesTransferUtility.transferFiles(file, outputDirectory, guide);
 
         File sourceFile = new File("src/test/resources/adding-commit-info-gradle-java.adoc");
-
-        Path tempDirectory = Files.createTempDirectory("micronaut-guides");
-        File destinationFile = new File(tempDirectory.toFile(), "adding-commit-info-gradle-java.html");
+        File destinationFile = new File("build/tmp/adding-commit-info-gradle-java.html");
         asciidocConverter.convert(sourceFile, destinationFile);
         String expected = TestUtils.readFile(new File("src/test/resources/adding-commit-info-gradle-java-expected.html"));
         String result = TestUtils.readFile(destinationFile);
         assertEquals(expected, result);
     }
 
-    @Disabled
     @Test
     void testConvertIncludeAdoc() throws IOException {
         Path tempDirectory = Files.createTempDirectory("micronaut-guides");
@@ -64,7 +58,6 @@ class AsciidocConverterTest {
         assertEquals(expected, result);
     }
 
-    @Disabled
     @Test
     void testConvertRawHtml() {
         File sourceFile = new File("src/test/resources/other-guides/adding-commit-info/adding-commit-info.adoc");
