@@ -11,11 +11,15 @@ plugins {
 
 rootProject.name = 'project-template-parent'
 
-include 'project-template'
-include 'project-template-bom'
+include 'guides'
+include 'guides-bom'
 
 enableFeaturePreview 'TYPESAFE_PROJECT_ACCESSORS'
 
 micronautBuild {
     importMicronautCatalog()
+    importMicronautCatalog("micronaut-validation")
+    importMicronautCatalog("micronaut-serde")
+    importMicronautCatalog("micronaut-rss")
+    importMicronautCatalog("micronaut-json-schema")
 }
