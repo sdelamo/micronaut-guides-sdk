@@ -16,10 +16,12 @@
 package io.micronaut.guides.core.asciidoc;
 
 import io.micronaut.context.annotation.ConfigurationProperties;
+import io.micronaut.core.annotation.Internal;
 import org.asciidoctor.Placement;
 
 import java.io.File;
 
+@Internal
 @ConfigurationProperties(AsciidocConfigurationProperties.PREFIX)
 public class AsciidocConfigurationProperties implements AsciidocConfiguration {
     public static final String PREFIX = "asciidoc";
