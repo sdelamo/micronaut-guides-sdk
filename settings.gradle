@@ -9,7 +9,7 @@ plugins {
     id 'io.micronaut.build.shared.settings' version '7.2.3'
 }
 
-rootProject.name = 'project-template-parent'
+rootProject.name = 'micronaut-guides-sdk'
 
 include 'guides'
 include 'guides-bom'
