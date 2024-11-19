@@ -21,10 +21,10 @@ public class GuidescliCommand implements Runnable {
     @Option(names = {"-v", "--verbose"}, description = "...")
     boolean verbose;
 
-    @Option(names = {"-i", "--input"}, description = "folder contain the tutorials", defaultValue = "/Users/sdelamo/github/micronaut-projects/micronaut-guides-sdk/examples")
+    @Option(names = {"-i", "--input"}, description = "folder contain the tutorials")
     File input;
 
-    @Option(names = {"-o", "--output"}, description = "folder where the website should be generated into", defaultValue = "/Users/sdelamo/github/micronaut-projects/micronaut-guides-sdk/build")
+    @Option(names = {"-o", "--output"}, description = "folder where the website should be generated into")
     File output;
 
     @Inject
