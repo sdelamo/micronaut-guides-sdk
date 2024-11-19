@@ -6,7 +6,7 @@
 name: Release
 on:
   release:
-    types: [published]
+    types: [ published ]
 jobs:
   release:
     outputs:
@@ -21,7 +21,7 @@ jobs:
       - name: Set up JDK
         uses: actions/setup-java@v4
         with:
-          distribution: 'temurin'
+          distribution: 'oracle'
           java-version: '21'
       - name: Set the current release version
         id: release_version
@@ -109,7 +109,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
 
   provenance-subject:
-    needs: [release]
+    needs: [ release ]
     runs-on: ubuntu-latest
     outputs:
       artifacts-sha256: ${{ steps.set-hash.outputs.artifacts-sha256 }}
@@ -129,7 +129,7 @@ jobs:
         run: echo "artifacts-sha256=$(cat artifacts-sha256)" >> "$GITHUB_OUTPUT"
 
   provenance:
-    needs: [release, provenance-subject]
+    needs: [ release, provenance-subject ]
     permissions:
       actions: read # To read the workflow path.
       id-token: write # To sign the provenance.
@@ -141,7 +141,7 @@ jobs:
       compile-generator: true # Build the generator from source.
 
   github_release:
-    needs: [release, provenance]
+    needs: [ release, provenance ]
     runs-on: ubuntu-latest
     if: startsWith(github.ref, 'refs/tags/')
     steps:

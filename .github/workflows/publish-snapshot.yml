@@ -4,7 +4,7 @@
 #
 # and edit them there. Note that it will be sync'ed to all the Micronaut repos
 name: Publish snapshot release
-on: [workflow_dispatch]
+on: [ workflow_dispatch ]
 jobs:
   build:
     if: github.repository != 'micronaut-projects/micronaut-project-template'
@@ -20,7 +20,7 @@ jobs:
       - name: Set up JDK
         uses: actions/setup-java@v4
         with:
-          distribution: 'temurin'
+          distribution: 'oracle'
           java-version: '21'
       - name: Publish to Sonatype Snapshots
         if: success()
