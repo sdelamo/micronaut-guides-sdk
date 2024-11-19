@@ -22,31 +22,74 @@ import jakarta.inject.Singleton;
 
 import static io.micronaut.starter.api.TestFramework.SPOCK;
 
+/**
+ * TestMacroSubstitution is a singleton class that extends SourceBlockMacroSubstitution.
+ * It provides methods to handle macro substitutions for test code blocks in Asciidoc files.
+ */
 @Singleton
 public class TestMacroSubstitution extends SourceBlockMacroSubstitution {
+    /**
+     * Suffix used for Spock specification files.
+     */
     public static final String SUFFIX_SPEC = "Spec";
+
+    /**
+     * Macro name for test blocks.
+     */
     private static final String MACRO_TEST = "test";
+
+    /**
+     * Suffix used for test files.
+     */
     private static final String SUFFIX_TEST = "Test";
 
+    /**
+     * Constructs a new TestMacroSubstitution with the specified guides configuration and license loader.
+     *
+     * @param guidesConfiguration the guides configuration
+     * @param licenseLoader       the license loader
+     */
     public TestMacroSubstitution(GuidesConfiguration guidesConfiguration, LicenseLoader licenseLoader) {
         super(licenseLoader, guidesConfiguration);
     }
 
+    /**
+     * Returns the name of the macro.
+     *
+     * @return the macro name
+     */
     @Override
     public String getMacroName() {
         return MACRO_TEST;
     }
 
+    /**
+     * Returns the classpath for the macro.
+     *
+     * @return the classpath
+     */
     @Override
     public Classpath getClasspath() {
         return Classpath.TEST;
     }
 
+    /**
+     * Returns the file type for the macro.
+     *
+     * @return the file type
+     */
     @Override
     public FileType getFileType() {
         return FileType.CODE;
     }
 
+    /**
+     * Condenses the target of the Asciidoc macro based on the specified options.
+     *
+     * @param asciidocMacro the Asciidoc macro
+     * @param option        the guides option
+     * @return the condensed target
+     */
     @Override
     public String condensedTarget(@NonNull AsciidocMacro asciidocMacro, GuidesOption option) {
         String target = asciidocMacro.target();

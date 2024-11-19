@@ -17,18 +17,38 @@ package io.micronaut.guides.core;
 
 import jakarta.inject.Singleton;
 
+/**
+ * CalloutMacroSubstitution is a singleton class that extends LineMacroSubstitution.
+ * It provides methods to translate the custom "callout" syntax into Asciidoc.
+ */
 @Singleton
 public class CalloutMacroSubstitution extends LineMacroSubstitution {
+
+    /**
+     * Returns the name of the macro.
+     *
+     * @return the macro name
+     */
     @Override
     protected String getMacroName() {
         return "callout";
     }
 
+    /**
+     * Returns the base directory for the macro substitution.
+     *
+     * @return the base directory
+     */
     @Override
     protected String getBaseDirectory() {
         return "{calloutsDir}";
     }
 
+    /**
+     * Returns the prefix for the macro substitution.
+     *
+     * @return the prefix
+     */
     @Override
     protected String getPrefix() {
         return "callout-";

@@ -21,10 +21,25 @@ import jakarta.validation.constraints.NotNull;
 
 import java.io.File;
 
+/**
+ * AsciidocConverter is an interface that defines methods for converting Asciidoc files.
+ */
 public interface AsciidocConverter {
 
+    /**
+     * Converts the source Asciidoc file to the specified destination file.
+     *
+     * @param source      the source Asciidoc file, must not be null
+     * @param destination the destination file, must not be null
+     */
     void convert(@NotNull @NonNull File source, @NotNull @NonNull File destination);
 
+    /**
+     * Converts the source Asciidoc file to a string.
+     *
+     * @param source the source Asciidoc file, must not be null
+     * @return the converted content as a string, or null if the conversion fails
+     */
     @Nullable
     String convert(@NotNull @NonNull File source);
 }

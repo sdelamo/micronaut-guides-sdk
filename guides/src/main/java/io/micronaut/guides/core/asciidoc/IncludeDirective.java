@@ -43,13 +43,13 @@ public class IncludeDirective {
     private final String target;
 
     /**
-     * @see <a href="https://docs.asciidoctor.org/asciidoc/latest/directives/include-with-leveloffset/">Level Offset</a>
+     * @see <a href="https://docs.asciidoctor.org/asciidoc/latest/directives/include-with-leveloffset/">Level Offset</a>.
      */
     @Nullable
     private final String levelOffset;
 
     /**
-     * <a href="https://docs.asciidoctor.org/asciidoc/latest/directives/include-lines/">Include Content by Line Ranges</a>
+     * <a href="https://docs.asciidoctor.org/asciidoc/latest/directives/include-lines/">Include Content by Line Ranges</a>.
      * ranges of line numbers.
      */
     @Nullable
@@ -59,13 +59,13 @@ public class IncludeDirective {
     private final String encoding;
 
     /**
-     * <a href="https://docs.asciidoctor.org/asciidoc/latest/directives/include-tagged-regions/">Included Tagged Regions</a>
+     * <a href="https://docs.asciidoctor.org/asciidoc/latest/directives/include-tagged-regions/">Included Tagged Regions</a>.
      */
     @Nullable
     private final List<String> tags;
 
     /**
-     * <a href="https://docs.asciidoctor.org/asciidoc/latest/directives/include-with-indent/">Include with Ident</a>
+     * <a href="https://docs.asciidoctor.org/asciidoc/latest/directives/include-with-indent/">Include with Ident</a>.
      */
     @Nullable
     private final Integer indent;
@@ -73,13 +73,7 @@ public class IncludeDirective {
     @Nullable
     private final String opts;
 
-    IncludeDirective(@NonNull String target,
-                     @Nullable String levelOffset,
-                     @Nullable Range lines,
-                     @Nullable String encoding,
-                     @Nullable List<String> tags,
-                     @Nullable Integer indent,
-                     @Nullable String opts) {
+    IncludeDirective(@NonNull String target, @Nullable String levelOffset, @Nullable Range lines, @Nullable String encoding, @Nullable List<String> tags, @Nullable Integer indent, @Nullable String opts) {
         this.target = target;
         this.levelOffset = levelOffset;
         this.lines = lines;
@@ -102,6 +96,7 @@ public class IncludeDirective {
     }
 
     /**
+     * @return the level offset.
      * @see <a href="https://docs.asciidoctor.org/asciidoc/latest/directives/include-with-leveloffset/">Level Offset</a>
      */
     public @Nullable String getLevelOffset() {
@@ -116,21 +111,41 @@ public class IncludeDirective {
         return lines;
     }
 
+    /**
+     * Gets the encoding.
+     *
+     * @return the encoding, or null if not set
+     */
     @Nullable
     public String getEncoding() {
         return encoding;
     }
 
+    /**
+     * Gets the tags.
+     *
+     * @return the list of tags, or null if not set
+     */
     @Nullable
     public List<String> getTags() {
         return tags;
     }
 
+    /**
+     * Gets the indent.
+     *
+     * @return the indent value, or null if not set
+     */
     @Nullable
     public Integer getIndent() {
         return indent;
     }
 
+    /**
+     * Gets the options.
+     *
+     * @return the options, or null if not set
+     */
     @Nullable
     public String getOpts() {
         return opts;
@@ -138,10 +153,7 @@ public class IncludeDirective {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder()
-                .append("include::")
-                .append(getTarget())
-                .append('[');
+        StringBuilder sb = new StringBuilder().append("include::").append(getTarget()).append('[');
         List<String> attributes = attributes();
         if (CollectionUtils.isNotEmpty(attributes)) {
             sb.append(String.join(",", attributes));
@@ -177,6 +189,9 @@ public class IncludeDirective {
         return attributes;
     }
 
+    /**
+     * Builder class for constructing IncludeDirective instances.
+     */
     public static class Builder {
         @NonNull
         private String target;
@@ -199,45 +214,99 @@ public class IncludeDirective {
         @Nullable
         private String opts;
 
+        /**
+         * Sets the target.
+         *
+         * @param target the target to set
+         * @return the builder instance
+         */
         public Builder target(@NonNull String target) {
             this.target = target;
             return this;
         }
 
+        /**
+         * Sets the level offset.
+         *
+         * @param levelOffset the level offset to set
+         * @return the builder instance
+         */
         public Builder levelOffset(@Nullable String levelOffset) {
             this.levelOffset = levelOffset;
             return this;
         }
 
+        /**
+         * Sets the line ranges.
+         *
+         * @param lines the line ranges to set
+         * @return the builder instance
+         */
         public Builder lines(@Nullable Range lines) {
             this.lines = lines;
             return this;
         }
 
+        /**
+         * Sets the encoding.
+         *
+         * @param encoding the encoding to set
+         * @return the builder instance
+         */
         public Builder encoding(@Nullable String encoding) {
             this.encoding = encoding;
             return this;
         }
 
+        /**
+         * Sets the tags.
+         *
+         * @param tags the tags to set
+         * @return the builder instance
+         */
         public Builder tags(@Nullable List<String> tags) {
             this.tags = tags;
             return this;
         }
 
+        /**
+         * Sets the indent.
+         *
+         * @param indent the indent to set
+         * @return the builder instance
+         */
         public Builder indent(@Nullable Integer indent) {
             this.indent = indent;
             return this;
         }
 
+        /**
+         * Sets the options.
+         *
+         * @param opts the options to set
+         * @return the builder instance
+         */
         public Builder opts(@Nullable String opts) {
             this.opts = opts;
             return this;
         }
 
+        /**
+         * Sets the level offset.
+         *
+         * @param levelOffset the level offset to set
+         * @return the builder instance
+         */
         public Builder levelOffset(int levelOffset) {
             return levelOffset("+" + levelOffset);
         }
 
+        /**
+         * Adds a tag.
+         *
+         * @param tag the tag to add
+         * @return the builder instance
+         */
         public Builder tag(String tag) {
             if (tags == null) {
                 tags = new ArrayList<>();
@@ -246,10 +315,21 @@ public class IncludeDirective {
             return this;
         }
 
+        /**
+         * Builds the IncludeDirective instance.
+         *
+         * @return the built IncludeDirective instance
+         */
         public IncludeDirective build() {
             return new IncludeDirective(Objects.requireNonNull(target), levelOffset, lines, encoding, tags, indent, opts);
         }
 
+        /**
+         * Sets the attributes.
+         *
+         * @param attributes the attributes to set
+         * @return the builder instance
+         */
         public Builder attributes(List<Attribute> attributes) {
             for (Attribute attribute : attributes) {
                 switch (attribute.key()) {
@@ -285,6 +365,8 @@ public class IncludeDirective {
                         for (String value : attribute.values()) {
                             opts(value);
                         }
+                        break;
+                    default:
                         break;
                 }
             }

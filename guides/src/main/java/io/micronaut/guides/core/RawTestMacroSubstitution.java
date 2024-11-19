@@ -17,27 +17,53 @@ package io.micronaut.guides.core;
 
 import jakarta.inject.Singleton;
 
+/**
+ * RawTestMacroSubstitution is a singleton class that extends TestMacroSubstitution.
+ * It provides methods to substitute the "rawTest" macro in Asciidoc files.
+ */
 @Singleton
 public class RawTestMacroSubstitution extends TestMacroSubstitution {
     private static final String MACRO_RAW_TEST = "rawTest";
 
+    /**
+     * Constructs a new RawTestMacroSubstitution with the specified GuidesConfiguration and LicenseLoader.
+     *
+     * @param guidesConfiguration the guides configuration
+     * @param licenseLoader       the license loader
+     */
     public RawTestMacroSubstitution(GuidesConfiguration guidesConfiguration, LicenseLoader licenseLoader) {
         super(guidesConfiguration, licenseLoader);
     }
 
+    /**
+     * Returns the name of the macro.
+     *
+     * @return the macro name
+     */
     @Override
     public String getMacroName() {
         return MACRO_RAW_TEST;
     }
 
+    /**
+     * Returns the language for the macro substitution based on the provided GuidesOption.
+     *
+     * @param option the guides option
+     * @return the language as a string
+     */
     @Override
     protected String getLanguage(GuidesOption option) {
         return option.getTestFramework().toTestFramework().getDefaultLanguage().toString();
     }
 
+    /**
+     * Returns the file extension for the macro substitution based on the provided GuidesOption.
+     *
+     * @param option the guides option
+     * @return the file extension as a string
+     */
     @Override
     protected String getExtension(GuidesOption option) {
         return option.getTestFramework().toTestFramework().getDefaultLanguage().getExtension();
     }
-
 }

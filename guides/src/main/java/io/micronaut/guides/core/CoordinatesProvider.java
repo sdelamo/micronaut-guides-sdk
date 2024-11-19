@@ -19,6 +19,15 @@ import io.micronaut.starter.build.dependencies.Coordinate;
 
 import java.util.Map;
 
+/**
+ * CoordinatesProvider is an interface that defines a method to retrieve a map of coordinates.
+ */
 public interface CoordinatesProvider {
+
+    /**
+     * Returns a map of coordinates.
+     *
+     * @return a map where the key is a string and the value is a Coordinate object
+     */
     Map<String, Coordinate> getCoordinates();
 }

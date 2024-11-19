@@ -30,6 +30,9 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * DefaultLicenseLoader is a singleton class that loads and manages license headers.
+ */
 @Singleton
 public class DefaultLicenseLoader implements LicenseLoader {
     private static final Logger LOG = LoggerFactory.getLogger(DefaultLicenseLoader.class);
@@ -37,15 +40,24 @@ public class DefaultLicenseLoader implements LicenseLoader {
     private final String licenseHeaderText;
     private final Map<Integer, String> headerByYear = new ConcurrentHashMap<>();
 
-    public DefaultLicenseLoader(GuidesConfiguration guidesConfiguration,
-                                ResourceLoader resourceLoader) {
+    /**
+     * Constructs a new DefaultLicenseLoader.
+     *
+     * @param guidesConfiguration the configuration for guides
+     * @param resourceLoader      the resource loader to load the license file
+     */
+    public DefaultLicenseLoader(GuidesConfiguration guidesConfiguration, ResourceLoader resourceLoader) {
         Optional<InputStream> resourceAsStreamOptional = resourceLoader.getResourceAsStream(guidesConfiguration.getLicensePath());
         this.licenseHeaderText = resourceAsStreamOptional.map(this::readLicenseHeader).orElse("");
-        this.numberOfLines = StringUtils.isEmpty(licenseHeaderText)
-                ? 0 :
-                (int) licenseHeaderText.lines().count() + 1;
+        this.numberOfLines = StringUtils.isEmpty(licenseHeaderText) ? 0 : (int) licenseHeaderText.lines().count() + 1;
     }
 
+    /**
+     * Reads the license header from the input stream.
+     *
+     * @param inputStream the input stream to read from
+     * @return the license header text
+     */
     private String readLicenseHeader(InputStream inputStream) {
         return headerByYear.computeIfAbsent(LocalDate.now().getYear(), year -> {
             StringBuilder sb = new StringBuilder();
@@ -58,11 +70,21 @@ public class DefaultLicenseLoader implements LicenseLoader {
         });
     }
 
+    /**
+     * Gets the number of lines in the license header.
+     *
+     * @return the number of lines
+     */
     @Override
     public int getNumberOfLines() {
         return this.numberOfLines;
     }
 
+    /**
+     * Gets the license header text.
+     *
+     * @return the license header text
+     */
     @Override
     public String getLicenseHeaderText() {
         return this.licenseHeaderText;

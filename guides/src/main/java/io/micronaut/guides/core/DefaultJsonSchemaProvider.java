@@ -19,12 +19,22 @@ import com.networknt.schema.*;
 import io.micronaut.core.annotation.NonNull;
 import jakarta.inject.Singleton;
 
+/**
+ * DefaultJsonSchemaProvider is a singleton class that implements the JsonSchemaProvider interface.
+ * It provides methods to retrieve JSON schemas.
+ */
 @Singleton
 public class DefaultJsonSchemaProvider implements JsonSchemaProvider {
-    JsonSchemaFactory jsonSchemaFactory = JsonSchemaFactory.getInstance(SpecVersion.VersionFlag.V202012, builder ->
-            builder.schemaMappers(schemaMappers -> schemaMappers.mapPrefix("https://guides.micronaut.io/schemas", "classpath:"))
-    );
+    /**
+     * The JsonSchemaFactory instance used to create JSON schemas.
+     */
+    JsonSchemaFactory jsonSchemaFactory = JsonSchemaFactory.getInstance(SpecVersion.VersionFlag.V202012, builder -> builder.schemaMappers(schemaMappers -> schemaMappers.mapPrefix("https://guides.micronaut.io/schemas", "classpath:")));
 
+    /**
+     * Returns the JSON schema for the guide metadata.
+     *
+     * @return the JSON schema
+     */
     @Override
     @NonNull
     public JsonSchema getSchema() {

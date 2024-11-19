@@ -18,11 +18,16 @@ package io.micronaut.guides.core;
 import com.networknt.schema.JsonSchema;
 import io.micronaut.core.annotation.NonNull;
 
+/**
+ * Functional interface for providing a JSON Schema used to validate guides.
+ */
 @FunctionalInterface
 public interface JsonSchemaProvider {
 
     /**
-     * @return Provides a JSON Schema used to validate guides.
+     * Provides a JSON Schema used to validate guides.
+     *
+     * @return the JSON Schema
      */
     @NonNull
     JsonSchema getSchema();

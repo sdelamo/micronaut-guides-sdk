@@ -33,6 +33,9 @@ import java.util.List;
 
 import static io.micronaut.core.util.StringUtils.EMPTY_STRING;
 
+/**
+ * Class that provides utility methods for transferring files.
+ */
 @Singleton
 public class DefaultFilesTransferUtility implements FilesTransferUtility {
     private static final Logger LOG = LoggerFactory.getLogger(DefaultFilesTransferUtility.class);
@@ -43,12 +46,24 @@ public class DefaultFilesTransferUtility implements FilesTransferUtility {
     private final LicenseLoader licenseLoader;
     private final GuidesConfiguration guidesConfiguration;
 
-    DefaultFilesTransferUtility(LicenseLoader licenseLoader,
-                                GuidesConfiguration guidesConfiguration) {
+    /**
+     * Constructs a new DefaultFilesTransferUtility.
+     *
+     * @param licenseLoader       the license loader
+     * @param guidesConfiguration the guides configuration
+     */
+    DefaultFilesTransferUtility(LicenseLoader licenseLoader, GuidesConfiguration guidesConfiguration) {
         this.licenseLoader = licenseLoader;
         this.guidesConfiguration = guidesConfiguration;
     }
 
+    /**
+     * Checks if a file contains the specified text.
+     *
+     * @param file the file to check
+     * @param text the text to look for
+     * @return true if the file contains the text, false otherwise
+     */
     private static boolean fileContainsText(File file, String text) {
         try {
             return new String(Files.readAllBytes(file.toPath())).contains(text);
@@ -58,9 +73,17 @@ public class DefaultFilesTransferUtility implements FilesTransferUtility {
         }
     }
 
-    private static void copyGuideSourceFiles(File inputDir, Path destinationPath,
-                                             String appName, String language,
-                                             boolean ignoreMissingDirectories) throws IOException {
+    /**
+     * Copies guide source files from the input directory to the destination path.
+     *
+     * @param inputDir                 the input directory
+     * @param destinationPath          the destination path
+     * @param appName                  the application name
+     * @param language                 the programming language
+     * @param ignoreMissingDirectories whether to ignore missing directories
+     * @throws IOException if an I/O error occurs during file copy
+     */
+    private static void copyGuideSourceFiles(File inputDir, Path destinationPath, String appName, String language, boolean ignoreMissingDirectories) throws IOException {
 
         // look for a common 'src' directory shared by multiple languages and copy those files first
         final String srcFolder = "src";
@@ -81,10 +104,25 @@ public class DefaultFilesTransferUtility implements FilesTransferUtility {
         }
     }
 
+    /**
+     * Returns a file to be deleted based on the destination and path.
+     *
+     * @param destination the destination directory
+     * @param path        the path of the file to delete
+     * @return the file to delete
+     */
     private static File fileToDelete(File destination, String path) {
         return Paths.get(destination.getAbsolutePath(), path).toFile();
     }
 
+    /**
+     * Copies a file from the input directory to the destination root.
+     *
+     * @param inputDir        the input directory
+     * @param destinationRoot the destination root
+     * @param filePath        the file path
+     * @throws IOException if an I/O error occurs during file copy
+     */
     private static void copyFile(File inputDir, File destinationRoot, String filePath) throws IOException {
         File sourceFile = new File(inputDir, filePath);
         File destinationFile = new File(destinationRoot, filePath);
@@ -97,6 +135,14 @@ public class DefaultFilesTransferUtility implements FilesTransferUtility {
         Files.copy(sourceFile.toPath(), destinationFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
     }
 
+    /**
+     * Transfers files from the input directory to the output directory for the provided guide.
+     *
+     * @param inputDirectory  the directory containing the input files
+     * @param outputDirectory the directory where the files will be transferred
+     * @param guide           the guide metadata
+     * @throws IOException if an I/O error occurs during file transfer
+     */
     @Override
     public void transferFiles(@NotNull @NonNull File inputDirectory, @NotNull @NonNull File outputDirectory, @NotNull @NonNull Guide guide) throws IOException {
         List<GuidesOption> guidesOptionList = GuideGenerationUtils.guidesOptions(guide, LOG);
@@ -151,11 +197,15 @@ public class DefaultFilesTransferUtility implements FilesTransferUtility {
         }
     }
 
+    /**
+     * Adds license headers to the files in the specified folder.
+     *
+     * @param folder the folder containing the files to which license headers will be added
+     */
     void addLicenses(File folder) {
         String licenseHeader = licenseLoader.getLicenseHeaderText();
         Arrays.stream(folder.listFiles()).forEach(file -> {
-            if ((file.getPath().endsWith(EXTENSION_JAVA) || file.getPath().endsWith(EXTENSION_GROOVY) || file.getPath().endsWith(EXTENSION_KT))
-                    && !fileContainsText(file, "Licensed under")) {
+            if ((file.getPath().endsWith(EXTENSION_JAVA) || file.getPath().endsWith(EXTENSION_GROOVY) || file.getPath().endsWith(EXTENSION_KT)) && !fileContainsText(file, "Licensed under")) {
                 try {
                     String content = new String(Files.readAllBytes(file.toPath()));
                     Files.write(file.toPath(), (licenseHeader + content).getBytes());

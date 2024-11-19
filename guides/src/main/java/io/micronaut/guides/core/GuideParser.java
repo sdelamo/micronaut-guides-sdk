@@ -23,12 +23,31 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * GuideParser is an interface that defines methods for parsing metadata of guides.
+ * It provides methods to parse metadata for all guides in a specified directory
+ * or for a single guide.
+ */
 public interface GuideParser {
-    @NonNull
-    List<Guide> parseGuidesMetadata(@NonNull @NotNull File guidesDir,
-                                    @NonNull @NotNull String metadataConfigName);
 
+    /**
+     * Parses the metadata for all guides in the specified directory.
+     *
+     * @param guidesDir          the directory containing the guides
+     * @param metadataConfigName the name of the metadata configuration file
+     * @return a list of parsed guide metadata
+     */
     @NonNull
-    Optional<Guide> parseGuideMetadata(@NonNull @NotNull File guidesDir,
-                                       @NonNull @NotNull String metadataConfigName) throws IOException;
+    List<Guide> parseGuidesMetadata(@NonNull @NotNull File guidesDir, @NonNull @NotNull String metadataConfigName);
+
+    /**
+     * Parses the metadata for a single guide in the specified directory.
+     *
+     * @param guidesDir          the directory containing the guides
+     * @param metadataConfigName the name of the metadata configuration file
+     * @return an optional containing the parsed guide metadata, or empty if not found
+     * @throws IOException if an I/O error occurs during parsing
+     */
+    @NonNull
+    Optional<Guide> parseGuideMetadata(@NonNull @NotNull File guidesDir, @NonNull @NotNull String metadataConfigName) throws IOException;
 }

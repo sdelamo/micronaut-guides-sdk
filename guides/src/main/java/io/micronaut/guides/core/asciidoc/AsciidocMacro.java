@@ -18,6 +18,13 @@ package io.micronaut.guides.core.asciidoc;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * AsciidocMacro is a record that represents an Asciidoc macro.
+ *
+ * @param name       the name of the macro
+ * @param target     the target of the macro
+ * @param attributes the list of attributes associated with the macro
+ */
 public record AsciidocMacro(String name, String target, List<Attribute> attributes) {
     public static final String MACRO_NAME_SEPARATOR = ":";
     public static final String ATTRIBUTE_SEPARATOR = ",";

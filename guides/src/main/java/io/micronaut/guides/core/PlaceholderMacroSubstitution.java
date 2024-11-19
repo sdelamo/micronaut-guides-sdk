@@ -24,6 +24,9 @@ import java.util.Map;
 
 import static io.micronaut.starter.api.TestFramework.SPOCK;
 
+/**
+ * Class that provides macro substitution functionality for placeholders in guide templates.
+ */
 @Singleton
 public class PlaceholderMacroSubstitution implements MacroSubstitution {
 
@@ -31,12 +34,27 @@ public class PlaceholderMacroSubstitution implements MacroSubstitution {
     private final VersionLoader versionLoader;
     private final CoordinatesProvider coordinatesProvider;
 
+    /**
+     * Constructs a new PlaceholderMacroSubstitution.
+     *
+     * @param guidesConfiguration the guides configuration
+     * @param versionLoader       the version loader
+     * @param coordinatesProvider the coordinates provider
+     */
     public PlaceholderMacroSubstitution(GuidesConfiguration guidesConfiguration, VersionLoader versionLoader, CoordinatesProvider coordinatesProvider) {
         this.guidesConfiguration = guidesConfiguration;
         this.versionLoader = versionLoader;
         this.coordinatesProvider = coordinatesProvider;
     }
 
+    /**
+     * Substitutes placeholders in the given string with values from the guide and option.
+     *
+     * @param str    the string containing placeholders
+     * @param guide  the guide metadata
+     * @param option the guide option
+     * @return the string with placeholders substituted
+     */
     @Override
     public String substitute(String str, Guide guide, GuidesOption option) {
 

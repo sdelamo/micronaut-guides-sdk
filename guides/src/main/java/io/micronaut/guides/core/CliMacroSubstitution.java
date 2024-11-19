@@ -17,8 +17,12 @@ package io.micronaut.guides.core;
 
 import io.micronaut.context.exceptions.ConfigurationException;
 import jakarta.inject.Singleton;
+
 import java.util.stream.Collectors;
 
+/**
+ * Class that provides CLI macro substitution for different cli applications.
+ */
 @Singleton
 public class CliMacroSubstitution extends PlaceholderWithTargetMacroSubstitution {
     private static final String CLI_MESSAGING = "create-messaging-app";
@@ -27,6 +31,12 @@ public class CliMacroSubstitution extends PlaceholderWithTargetMacroSubstitution
     private static final String CLI_FUNCTION = "create-function-app";
     private static final String CLI_CLI = "create-cli-app";
 
+    /**
+     * Returns the CLI command for the given application type.
+     *
+     * @param app the application
+     * @return the CLI command
+     */
     private static String cliCommandForApp(App app) {
         return switch (app.applicationType()) {
             case CLI -> CLI_CLI;
@@ -38,17 +48,28 @@ public class CliMacroSubstitution extends PlaceholderWithTargetMacroSubstitution
         };
     }
 
+    /**
+     * Returns the name of the macro.
+     *
+     * @return the macro name
+     */
     @Override
     protected String getMacroName() {
         return "cli-command";
     }
 
+    /**
+     * Returns the substitution for the given guide, option, and application name.
+     *
+     * @param guide   the guide
+     * @param option  the option
+     * @param appName the application name
+     * @return the substitution string
+     * @throws ConfigurationException if no CLI command is found for the application
+     */
     @Override
     protected String getSubstitution(Guide guide, GuidesOption option, String appName) {
-        App app = guide.apps().stream()
-                .filter(a -> a.name().equals(appName))
-                .findFirst()
-                .orElse(null);
+        App app = guide.apps().stream().filter(a -> a.name().equals(appName)).findFirst().orElse(null);
         if (app != null) {
             return cliCommandForApp(app);
         } else {

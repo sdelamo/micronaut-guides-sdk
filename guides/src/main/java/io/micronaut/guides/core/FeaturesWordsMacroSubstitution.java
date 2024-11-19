@@ -20,20 +20,33 @@ import jakarta.inject.Singleton;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Class that provides macro substitution functionality for features words in guide templates.
+ */
 @Singleton
 public class FeaturesWordsMacroSubstitution extends PlaceholderWithTargetMacroSubstitution {
 
+    /**
+     * Returns the name of the macro.
+     *
+     * @return the macro name
+     */
     @Override
     protected String getMacroName() {
         return "features-words";
     }
 
+    /**
+     * Substitutes placeholders with features words in the given guide and option.
+     *
+     * @param guide   the guide metadata
+     * @param option  the guide option
+     * @param appName the application name
+     * @return the string with features words substituted
+     */
     @Override
     protected String getSubstitution(Guide guide, GuidesOption option, String appName) {
-        List<String> features = GuideUtils.getAppVisibleFeatures(app(guide, appName), option.getLanguage())
-                .stream()
-                .map(feature -> "`" + feature + "`")
-                .collect(Collectors.toList());
+        List<String> features = GuideUtils.getAppVisibleFeatures(app(guide, appName), option.getLanguage()).stream().map(feature -> "`" + feature + "`").collect(Collectors.toList());
 
         if (features.size() > 1) {
             return String.join(", ", features.subList(0, features.size() - 1)) + ", and " + features.get(features.size() - 1);

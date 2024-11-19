@@ -15,8 +15,22 @@
  */
 package io.micronaut.guides.core;
 
+/**
+ * LicenseLoader is an interface that defines methods to load license header.
+ */
 public interface LicenseLoader {
+
+    /**
+     * Returns the number of lines in the license.
+     *
+     * @return the number of lines in the license
+     */
     int getNumberOfLines();
 
+    /**
+     * Returns the license header text.
+     *
+     * @return the license header text
+     */
     String getLicenseHeaderText();
 }

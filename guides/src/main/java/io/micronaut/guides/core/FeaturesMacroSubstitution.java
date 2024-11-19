@@ -18,14 +18,30 @@ package io.micronaut.guides.core;
 import io.micronaut.guides.core.asciidoc.AsciidocMacro;
 import jakarta.inject.Singleton;
 
+/**
+ * Class that provides macro substitution functionality for feature placeholders in guide templates.
+ */
 @Singleton
 public class FeaturesMacroSubstitution extends PlaceholderWithTargetMacroSubstitution {
 
+    /**
+     * Returns the name of the macro.
+     *
+     * @return the macro name
+     */
     @Override
     protected String getMacroName() {
         return "features";
     }
 
+    /**
+     * Returns the substitution string for the given guide, option, and application name.
+     *
+     * @param guide   the guide metadata
+     * @param option  the guide option
+     * @param appName the application name
+     * @return the substitution string
+     */
     @Override
     protected String getSubstitution(Guide guide, GuidesOption option, String appName) {
         return String.join(AsciidocMacro.ATTRIBUTE_SEPARATOR, GuideUtils.getAppVisibleFeatures(app(guide, appName), option.getLanguage()));

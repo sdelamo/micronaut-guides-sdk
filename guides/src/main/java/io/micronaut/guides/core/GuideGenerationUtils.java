@@ -34,8 +34,12 @@ import static io.micronaut.starter.api.TestFramework.JUNIT;
 import static io.micronaut.starter.api.TestFramework.SPOCK;
 import static io.micronaut.starter.options.Language.GROOVY;
 
-public class GuideGenerationUtils {
-
+/**
+ * Utility class for generating paths and options for guides.
+ * This class provides methods to generate paths for main and test files,
+ * resolve JDK versions, and process guide metadata.
+ */
+public final class GuideGenerationUtils {
 
     private GuideGenerationUtils() {
     }
@@ -72,11 +76,11 @@ public class GuideGenerationUtils {
                                @NonNull GuidesConfiguration configuration) {
         String module = StringUtils.isNotEmpty(appName) ? appName + "/" : "";
         Path path = Path.of(module,
-                "src",
-                folder,
-                option.getLanguage().getName(),
-                configuration.getPackageName().replace(".", "/"),
-                fileName + "." + option.getLanguage().getExtension());
+            "src",
+            folder,
+            option.getLanguage().getName(),
+            configuration.getPackageName().replace(".", "/"),
+            fileName + "." + option.getLanguage().getExtension());
         return path.toString();
     }
 
@@ -151,7 +155,7 @@ public class GuideGenerationUtils {
     static boolean skipBecauseOfJavaVersion(Guide metadata, GuidesConfiguration guidesConfiguration) {
         int jdkVersion = resolveJdkVersion(guidesConfiguration).majorVersion();
         return (metadata.minimumJavaVersion() != null && jdkVersion < metadata.minimumJavaVersion()) ||
-                (metadata.maximumJavaVersion() != null && jdkVersion > metadata.maximumJavaVersion());
+            (metadata.maximumJavaVersion() != null && jdkVersion > metadata.maximumJavaVersion());
     }
 
     public static String singleGuide(GuidesConfiguration guidesConfiguration) {
@@ -171,7 +175,7 @@ public class GuideGenerationUtils {
 
         if (checkJdk && skipBecauseOfJavaVersion(metadata, guidesConfiguration)) {
             System.out.println("Not processing " + metadata.slug() + ", JDK not between " +
-                    metadata.minimumJavaVersion() + " and " + metadata.maximumJavaVersion());
+                metadata.minimumJavaVersion() + " and " + metadata.maximumJavaVersion());
             return false;
         }
 

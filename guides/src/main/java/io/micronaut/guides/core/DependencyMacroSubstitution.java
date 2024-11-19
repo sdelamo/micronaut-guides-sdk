@@ -22,8 +22,20 @@ import java.util.List;
 import static io.micronaut.guides.core.MacroUtils.findMacroGroups;
 import static io.micronaut.guides.core.MacroUtils.findMacroLines;
 
+/**
+ * Class that provides macro substitution functionality for dependency placeholders in guide templates.
+ */
 @Singleton
 public class DependencyMacroSubstitution implements MacroSubstitution {
+
+    /**
+     * Substitutes dependency placeholders in the given string with Asciidoc formatted dependency lines.
+     *
+     * @param str    the string containing dependency placeholders
+     * @param guide  the guide metadata
+     * @param option the guide option
+     * @return the string with dependency placeholders substituted
+     */
     @Override
     public String substitute(String str, Guide guide, GuidesOption option) {
         for (String block : findMacroGroups(str, "dependencies")) {

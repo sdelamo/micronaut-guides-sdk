@@ -33,7 +33,10 @@ import java.util.stream.Collectors;
 import static io.micronaut.starter.options.BuildTool.GRADLE;
 import static io.micronaut.starter.options.BuildTool.MAVEN;
 
-
+/**
+ * DefaultTestScriptGenerator is a singleton class that implements the TestScriptGenerator interface.
+ * It provides methods to generate test scripts for guides.
+ */
 @Singleton
 public class DefaultTestScriptGenerator implements TestScriptGenerator {
     private static final Logger LOG = LoggerFactory.getLogger(DefaultTestScriptGenerator.class);
@@ -47,14 +50,10 @@ public class DefaultTestScriptGenerator implements TestScriptGenerator {
     }
 
     private static List<String> guidesChanged(List<String> changedFiles) {
-        return changedFiles.stream()
-                .filter(path -> path.startsWith("guides"))
-                .map(path -> {
-                    String guideFolder = path.substring("guides/".length());
-                    return guideFolder.substring(0, guideFolder.indexOf('/'));
-                })
-                .distinct()
-                .collect(Collectors.toList());
+        return changedFiles.stream().filter(path -> path.startsWith("guides")).map(path -> {
+            String guideFolder = path.substring("guides/".length());
+            return guideFolder.substring(0, guideFolder.indexOf('/'));
+        }).distinct().collect(Collectors.toList());
     }
 
     private static boolean changesMicronautVersion(List<String> changedFiles) {
@@ -72,43 +71,27 @@ public class DefaultTestScriptGenerator implements TestScriptGenerator {
         return changedFiles.stream().anyMatch(file -> file.contains("buildSrc"));
     }
 
-    private static String scriptForFolder(String nestedFolder,
-                                          String folder,
-                                          boolean stopIfFailure,
-                                          BuildTool buildTool,
-                                          boolean noDaemon,
-                                          boolean nativeTest,
-                                          boolean validateLicense) {
+    private static String scriptForFolder(String nestedFolder, String folder, boolean stopIfFailure, BuildTool buildTool, boolean noDaemon, boolean nativeTest, boolean validateLicense) {
         String testCopy = nativeTest ? "native tests" : "tests";
-        StringBuilder bashScript = new StringBuilder(String.format(
-                """
-                        cd %s
-                        echo "-------------------------------------------------"
-                        echo "Executing '%s' %s"
-                        """,
-                nestedFolder, folder, testCopy
-        ));
+        StringBuilder bashScript = new StringBuilder(String.format("""
+                cd %s
+                echo "-------------------------------------------------"
+                echo "Executing '%s' %s"
+                """, nestedFolder, folder, testCopy));
 
         if (noDaemon) {
             bashScript.append("kill_kotlin_daemon\n");
         }
 
         if (nativeTest) {
-            bashScript.append(String.format(
-                    "%s || EXIT_STATUS=$?\n",
-                    buildTool == BuildTool.MAVEN ? "./mvnw -Pnative test" : "./gradlew nativeTest"
-            ));
+            bashScript.append(String.format("%s || EXIT_STATUS=$?\n", buildTool == BuildTool.MAVEN ? "./mvnw -Pnative test" : "./gradlew nativeTest"));
         } else {
             String mavenCommand = validateLicense ? "./mvnw -q test spotless:check" : "./mvnw -q test";
-            bashScript.append(String.format(
-                    """
-                            %s || EXIT_STATUS=$?
-                            echo "Stopping shared test resources service (if created)"
-                            %s > /dev/null 2>&1 || true
-                            """,
-                    buildTool == BuildTool.MAVEN ? mavenCommand : "./gradlew -q check",
-                    buildTool == BuildTool.MAVEN ? "./mvnw -q mn:stop-testresources-service" : "./gradlew -q stopTestResourcesService"
-            ));
+            bashScript.append(String.format("""
+                    %s || EXIT_STATUS=$?
+                    echo "Stopping shared test resources service (if created)"
+                    %s > /dev/null 2>&1 || true
+                    """, buildTool == BuildTool.MAVEN ? mavenCommand : "./gradlew -q check", buildTool == BuildTool.MAVEN ? "./mvnw -q mn:stop-testresources-service" : "./gradlew -q stopTestResourcesService"));
         }
 
         if (noDaemon) {
@@ -118,35 +101,26 @@ public class DefaultTestScriptGenerator implements TestScriptGenerator {
         bashScript.append("cd ..\n");
 
         if (stopIfFailure) {
-            bashScript.append(String.format(
-                    """
-                            if [ $EXIT_STATUS -ne 0 ]; then
-                              echo "'%s' %s failed => exit $EXIT_STATUS"
-                              exit $EXIT_STATUS
-                            fi
-                            """,
-                    folder, testCopy
-            ));
+            bashScript.append(String.format("""
+                    if [ $EXIT_STATUS -ne 0 ]; then
+                      echo "'%s' %s failed => exit $EXIT_STATUS"
+                      exit $EXIT_STATUS
+                    fi
+                    """, folder, testCopy));
         } else {
-            bashScript.append(String.format(
-                    """
-                            if [ $EXIT_STATUS -ne 0 ]; then
-                              FAILED_PROJECTS=("${FAILED_PROJECTS[@]}" %s)
-                              echo "'%s' %s failed => exit $EXIT_STATUS"
-                            fi
-                            EXIT_STATUS=0
-                            """,
-                    folder, folder, testCopy
-            ));
+            bashScript.append(String.format("""
+                    if [ $EXIT_STATUS -ne 0 ]; then
+                      FAILED_PROJECTS=("${FAILED_PROJECTS[@]}" %s)
+                      echo "'%s' %s failed => exit $EXIT_STATUS"
+                    fi
+                    EXIT_STATUS=0
+                    """, folder, folder, testCopy));
         }
 
         return bashScript.toString();
     }
 
-    private static boolean shouldSkip(Guide metadata,
-                                      List<String> guidesChanged,
-                                      boolean forceExecuteEveryTest,
-                                      GuidesConfiguration guidesConfiguration) {
+    private static boolean shouldSkip(Guide metadata, List<String> guidesChanged, boolean forceExecuteEveryTest, GuidesConfiguration guidesConfiguration) {
 
         if (!GuideGenerationUtils.process(metadata, false, guidesConfiguration)) {
             return true;
@@ -159,56 +133,89 @@ public class DefaultTestScriptGenerator implements TestScriptGenerator {
         return !guidesChanged.contains(metadata.slug());
     }
 
+    /**
+     * Checks if the given app supports native tests.
+     *
+     * @param app          the app to check
+     * @param guidesOption the guides option containing additional configuration
+     * @return true if the app supports native tests, false otherwise
+     */
     @Override
     public boolean supportsNativeTest(App app, GuidesOption guidesOption) {
-        return isMicronautFramework(app) &&
-                guidesOption.getBuildTool() == GRADLE &&
-                supportsNativeTest(guidesOption.getLanguage()) &&
-                guidesOption.getTestFramework() == TestFramework.JUNIT;
+        return isMicronautFramework(app) && guidesOption.getBuildTool() == GRADLE && supportsNativeTest(guidesOption.getLanguage()) && guidesOption.getTestFramework() == TestFramework.JUNIT;
     }
 
+    /**
+     * Checks if the given app uses the Micronaut framework.
+     *
+     * @param app the app to check
+     * @return true if the app uses the Micronaut framework, false otherwise
+     */
     @Override
     public boolean isMicronautFramework(App app) {
         return app.framework() == null || app.framework().equals("Micronaut");
     }
 
+    /**
+     * Checks if the given language supports native tests.
+     *
+     * @param language the language to check
+     * @return true if the language supports native tests, false otherwise
+     */
     @Override
     public boolean supportsNativeTest(Language language) {
         return language != Language.GROOVY;
     }
 
+    /**
+     * Generates a script for running native tests for the given guides metadata.
+     *
+     * @param metadatas the list of guides metadata
+     * @return the generated script as a string
+     */
     @Override
     public String generateNativeTestScript(@NonNull @NotNull List<Guide> metadatas) {
         return generateScript(metadatas, false, true);
     }
 
+    /**
+     * Generates a script for running tests for the given guides metadata.
+     *
+     * @param metadatas the list of guides metadata
+     * @return the generated script as a string
+     */
     @Override
     public String generateTestScript(@NonNull @NotNull List<Guide> metadatas) {
         return generateScript(metadatas, false, false);
     }
 
-    public String generateScript(File guidesFolder,
-                                 String metadataConfigName,
-                                 boolean stopIfFailure,
-                                 List<String> changedFiles) {
+    /**
+     * Generates a script for running tests based on the changed files.
+     *
+     * @param guidesFolder       the folder containing the guides
+     * @param metadataConfigName the name of the metadata configuration
+     * @param stopIfFailure      whether to stop if a test fails
+     * @param changedFiles       the list of changed files
+     * @return the generated script as a string
+     */
+    public String generateScript(File guidesFolder, String metadataConfigName, boolean stopIfFailure, List<String> changedFiles) {
         List<String> slugsChanged = guidesChanged(changedFiles);
-        boolean forceExecuteEveryTest = changesMicronautVersion(changedFiles) ||
-                changesDependencies(changedFiles, slugsChanged) ||
-                changesBuildScr(changedFiles) ||
-                (System.getenv(guidesConfiguration.getEnvGithubWorkflow()) != null &&
-                        !System.getenv(guidesConfiguration.getEnvGithubWorkflow()).equals(guidesConfiguration.getGithubWorkflowJavaCi())) ||
-                (changedFiles.isEmpty() && System.getenv(guidesConfiguration.getEnvGithubWorkflow()) == null);
+        boolean forceExecuteEveryTest = changesMicronautVersion(changedFiles) || changesDependencies(changedFiles, slugsChanged) || changesBuildScr(changedFiles) || (System.getenv(guidesConfiguration.getEnvGithubWorkflow()) != null && !System.getenv(guidesConfiguration.getEnvGithubWorkflow()).equals(guidesConfiguration.getGithubWorkflowJavaCi())) || (changedFiles.isEmpty() && System.getenv(guidesConfiguration.getEnvGithubWorkflow()) == null);
 
         List<Guide> metadatas = guideParser.parseGuidesMetadata(guidesFolder, metadataConfigName);
-        metadatas = metadatas.stream()
-                .filter(metadata -> !shouldSkip(metadata, slugsChanged, forceExecuteEveryTest, guidesConfiguration))
-                .collect(Collectors.toList());
+        metadatas = metadatas.stream().filter(metadata -> !shouldSkip(metadata, slugsChanged, forceExecuteEveryTest, guidesConfiguration)).collect(Collectors.toList());
         return generateScript(metadatas, stopIfFailure, false);
     }
 
-    public String generateScript(List<Guide> metadatas,
-                                 boolean stopIfFailure,
-                                 boolean nativeTest) {
+    /**
+     * Generates a script for running tests for the given guides metadata.
+     *
+     * @param metadatas     the list of guides metadata
+     * @param stopIfFailure whether to stop if a test fails
+     * @param nativeTest    whether to run native tests
+     * @return the generated script as a string
+     */
+    public String generateScript(List<Guide> metadatas, boolean stopIfFailure, boolean nativeTest) {
         StringBuilder bashScript = new StringBuilder("""
                 #!/usr/bin/env bash
                 set -e

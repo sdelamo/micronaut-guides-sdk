@@ -17,16 +17,30 @@ package io.micronaut.guides.core;
 
 import io.micronaut.context.annotation.ConfigurationProperties;
 
+/**
+ * RssFeedConfigurationProperties is a configuration properties class that implements the RssFeedConfiguration interface.
+ * It is used to configure the RSS feed properties.
+ */
 @ConfigurationProperties(GuidesConfigurationProperties.PREFIX + ".rss-feed")
 public class RssFeedConfigurationProperties implements RssFeedConfiguration {
     private static final String JSON_FEED_FILENAME = "rss.xml";
     private String filename = JSON_FEED_FILENAME;
 
+    /**
+     * Returns the filename for the RSS feed.
+     *
+     * @return the filename for the RSS feed
+     */
     @Override
     public String getFilename() {
         return filename;
     }
 
+    /**
+     * Sets the filename for the RSS feed.
+     *
+     * @param filename the filename to be set for the RSS feed
+     */
     public void setFilename(String filename) {
         this.filename = filename;
     }

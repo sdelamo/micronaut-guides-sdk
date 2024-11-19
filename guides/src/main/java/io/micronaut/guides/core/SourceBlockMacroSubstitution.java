@@ -82,7 +82,7 @@ abstract class SourceBlockMacroSubstitution implements MacroSubstitution {
                 String title = Path.of(target).normalize().toString().replace("{sourceDir}/" + slug + "/", "").replace(getSourceDir(slug, option) + "/", "");
 
                 IncludeDirective.Builder includeDirectiveBuilder = IncludeDirective.builder().attributes(asciidocMacro.attributes())
-                        .target(target);
+                    .target(target);
                 if (getFileType() == FileType.CODE) {
                     Range range = new Range(getLicenseLoader().getNumberOfLines(), -1);
                     if (range.isValid() && asciidocMacro.attributes().stream().noneMatch(attribute -> attribute.key().equals(ATTRIBUTE_LINES))) {
@@ -90,11 +90,11 @@ abstract class SourceBlockMacroSubstitution implements MacroSubstitution {
                     }
                 }
                 String replacement = SourceBlock.builder()
-                        .title(title)
-                        .language(language)
-                        .includeDirective(includeDirectiveBuilder.build())
-                        .build()
-                        .toString();
+                    .title(title)
+                    .language(language)
+                    .includeDirective(includeDirectiveBuilder.build())
+                    .build()
+                    .toString();
                 str = str.replace(line, replacement);
             }
         }
@@ -110,26 +110,26 @@ abstract class SourceBlockMacroSubstitution implements MacroSubstitution {
     }
 
     protected String sourceTitle(
-            String appName,
-            String condensedTarget,
-            Classpath classpath,
-            String language,
-            String packageName) {
+        String appName,
+        String condensedTarget,
+        Classpath classpath,
+        String language,
+        String packageName) {
         return (appName.equals(MacroSubstitution.APP_NAME_DEFAULT) ? "" : (appName + "/")) + sourceConventionFolder(classpath, language) + "/"
-                + (getFileType() == FileType.CODE ? (packageName.replace(".", "/") + "/") : "")
-                + condensedTarget;
+            + (getFileType() == FileType.CODE ? (packageName.replace(".", "/") + "/") : "")
+            + condensedTarget;
     }
 
     protected String sourceInclude(
-            String slug,
-            String appName,
-            String condensedTarget,
-            Classpath classpath,
-            GuidesOption option,
-            String language,
-            String packageName) {
+        String slug,
+        String appName,
+        String condensedTarget,
+        Classpath classpath,
+        GuidesOption option,
+        String language,
+        String packageName) {
         return "{sourceDir}/" + slug + "/" + getSourceDir(slug, option) + "/" +
-                sourceTitle(appName, condensedTarget, classpath, language, packageName);
+            sourceTitle(appName, condensedTarget, classpath, language, packageName);
     }
 
     private String sourceConventionFolder(Classpath classpath, String language) {

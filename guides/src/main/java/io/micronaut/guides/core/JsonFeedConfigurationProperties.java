@@ -17,6 +17,11 @@ package io.micronaut.guides.core;
 
 import io.micronaut.context.annotation.ConfigurationProperties;
 
+/**
+ * Configuration properties for JSON feed.
+ * This class implements the JsonFeedConfiguration interface and provides
+ * configuration properties for the JSON feed.
+ */
 @ConfigurationProperties(GuidesConfigurationProperties.PREFIX + ".json-feed")
 public class JsonFeedConfigurationProperties implements JsonFeedConfiguration {
     private static final String JSON_FEED_FILENAME = "feed.json";
@@ -28,6 +33,11 @@ public class JsonFeedConfigurationProperties implements JsonFeedConfiguration {
         return filename;
     }
 
+    /**
+     * Sets the filename for the JSON feed.
+     *
+     * @param filename the filename to set
+     */
     public void setFilename(String filename) {
         this.filename = filename;
     }
@@ -37,6 +47,11 @@ public class JsonFeedConfigurationProperties implements JsonFeedConfiguration {
         return feedUrl;
     }
 
+    /**
+     * Sets the feed URL.
+     *
+     * @param feedUrl the feed URL to set
+     */
     public void setFeedUrl(String feedUrl) {
         this.feedUrl = feedUrl;
     }

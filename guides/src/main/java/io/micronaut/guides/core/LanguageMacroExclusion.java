@@ -19,15 +19,35 @@ import jakarta.inject.Singleton;
 
 import java.util.List;
 
+/**
+ * LanguageMacroExclusion is a singleton class that extends MacroExclusion.
+ * It provides methods to handle macro exclusions based on the programming language.
+ */
 @Singleton
 public class LanguageMacroExclusion extends MacroExclusion {
+    /**
+     * Macro name for language exclusion.
+     */
     private static final String MACRO_LANGUAGE_EXCLUSION = "exclude-for-languages";
 
+    /**
+     * Returns the name of the macro.
+     *
+     * @return the macro name
+     */
     @Override
     protected String getMacroName() {
         return MACRO_LANGUAGE_EXCLUSION;
     }
 
+    /**
+     * Determines whether the macro should be excluded based on the specified parameters, option, and guide.
+     *
+     * @param params the list of parameters
+     * @param option the guides option
+     * @param guide  the guide object
+     * @return true if the macro should be excluded, false otherwise
+     */
     @Override
     protected boolean shouldExclude(List<String> params, GuidesOption option, Guide guide) {
         return params.contains(option.getLanguage().toString());

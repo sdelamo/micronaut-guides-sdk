@@ -19,31 +19,60 @@ import io.micronaut.core.annotation.NonNull;
 import io.micronaut.guides.core.asciidoc.AsciidocMacro;
 import io.micronaut.guides.core.asciidoc.Attribute;
 
+/**
+ * MacroSubstitution is an interface that defines methods for substituting macros in Asciidoc files.
+ */
 public interface MacroSubstitution {
+    /**
+     * Attribute key for the application name.
+     */
     String ATTRIBUTE_APP = "app";
+
+    /**
+     * Default application name.
+     */
     String APP_NAME_DEFAULT = "default";
 
+    /**
+     * Substitutes macros in the given string with the appropriate values.
+     *
+     * @param str    the string containing macros
+     * @param guide  the guide object
+     * @param option the guides option
+     * @return the string with macros substituted
+     */
     @NonNull
     String substitute(@NonNull String str, @NonNull Guide guide, @NonNull GuidesOption option);
 
+    /**
+     * Retrieves the application associated with the given guide and Asciidoc macro.
+     *
+     * @param guide         the guide object
+     * @param asciidocMacro the Asciidoc macro
+     * @return the application associated with the guide and macro
+     */
     default App app(Guide guide, AsciidocMacro asciidocMacro) {
         return app(guide, appName(asciidocMacro));
     }
 
+    /**
+     * Retrieves the application associated with the given guide and application name.
+     *
+     * @param guide   the guide object
+     * @param appName the application name
+     * @return the application associated with the guide and application name
+     */
     default App app(Guide guide, String appName) {
-        return guide.apps().stream()
-                .filter(a -> a.name().equals(appName))
-                .findFirst()
-                .orElseThrow(() -> new RuntimeException("app not found for app name" + appName));
+        return guide.apps().stream().filter(a -> a.name().equals(appName)).findFirst().orElseThrow(() -> new RuntimeException("app not found for app name" + appName));
     }
 
+    /**
+     * Retrieves the application name from the given Asciidoc macro.
+     *
+     * @param asciidocMacro the Asciidoc macro
+     * @return the application name
+     */
     default String appName(AsciidocMacro asciidocMacro) {
-        return asciidocMacro.attributes().stream()
-                .filter(attribute -> attribute.key().equals(ATTRIBUTE_APP))
-                .map(Attribute::values)
-                .filter(l -> !l.isEmpty())
-                .map(l -> l.get(0))
-                .findFirst()
-                .orElse(APP_NAME_DEFAULT);
+        return asciidocMacro.attributes().stream().filter(attribute -> attribute.key().equals(ATTRIBUTE_APP)).map(Attribute::values).filter(l -> !l.isEmpty()).map(l -> l.get(0)).findFirst().orElse(APP_NAME_DEFAULT);
     }
 }

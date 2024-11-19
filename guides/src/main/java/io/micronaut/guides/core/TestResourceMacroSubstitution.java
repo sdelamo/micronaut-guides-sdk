@@ -18,24 +18,48 @@ package io.micronaut.guides.core;
 import io.micronaut.guides.core.asciidoc.Classpath;
 import jakarta.inject.Singleton;
 
+/**
+ * Class that provides macro substitution functionality for test resource placeholders in guide templates.
+ */
 @Singleton
 public class TestResourceMacroSubstitution extends SourceBlockMacroSubstitution {
     private static final String MACRO_TESTRESOURCE = "testResource";
 
+    /**
+     * Constructs a new TestResourceMacroSubstitution.
+     *
+     * @param guidesConfiguration the guides configuration
+     * @param licenseLoader       the license loader
+     */
     public TestResourceMacroSubstitution(GuidesConfiguration guidesConfiguration, LicenseLoader licenseLoader) {
         super(licenseLoader, guidesConfiguration);
     }
 
+    /**
+     * Returns the name of the macro.
+     *
+     * @return the macro name
+     */
     @Override
     public String getMacroName() {
         return MACRO_TESTRESOURCE;
     }
 
+    /**
+     * Returns the classpath for the macro substitution.
+     *
+     * @return the classpath
+     */
     @Override
     public Classpath getClasspath() {
         return Classpath.TEST;
     }
 
+    /**
+     * Returns the file type for the macro substitution.
+     *
+     * @return the file type
+     */
     @Override
     public FileType getFileType() {
         return FileType.RESOURCE;

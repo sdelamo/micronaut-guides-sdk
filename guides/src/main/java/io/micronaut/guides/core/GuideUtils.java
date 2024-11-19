@@ -17,19 +17,21 @@ package io.micronaut.guides.core;
 
 import io.micronaut.starter.options.BuildTool;
 import io.micronaut.starter.options.Language;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * GuideUtils is a utility class that provides various helper methods for handling guides.
+ * It contains methods for retrieving tags, features, frameworks, and merging guide data.
+ * This class cannot be instantiated.
+ */
 public final class GuideUtils {
     private static final String MICRONAUT_PREFIX = "micronaut-";
     private static final String VIEWS_PREFIX = "views-";
     private static final List<String> FEATURES_PREFIXES = List.of(MICRONAUT_PREFIX, VIEWS_PREFIX);
 
-    private GuideUtils() {
-    }
+    private GuideUtils() { }
 
     public static List<String> getTags(Guide guide) {
         Set<String> tagsList = new HashSet<>();
@@ -107,37 +109,13 @@ public final class GuideUtils {
     }
 
     public static Guide merge(Guide base, Guide guide) {
-        return new Guide(
-                guide.title() == null ? base.title() : guide.title(),
-                guide.intro() == null ? base.intro() : guide.intro(),
-                mergeLists(base.authors(), guide.authors()),
-                guide.categories() == null ? base.categories() : guide.categories(),
-                guide.publicationDate(),
-                guide.minimumJavaVersion() == null ? base.minimumJavaVersion() : guide.minimumJavaVersion(),
-                guide.maximumJavaVersion() == null ? base.maximumJavaVersion() : guide.maximumJavaVersion(),
-                guide.cloud() == null ? base.cloud() : guide.cloud(),
-                base.skipGradleTests() || guide.skipGradleTests(),
-                base.skipMavenTests() || guide.skipMavenTests(),
-                guide.asciidoctor(),
-                guide.languages() == null ? base.languages() : guide.languages(),
-                mergeLists(GuideUtils.getTags(base), GuideUtils.getTags(guide)),
-                guide.buildTools() == null ? base.buildTools() : guide.buildTools(),
-                guide.testFramework() == null ? base.testFramework() : guide.testFramework(),
-                guide.zipIncludes(),
-                guide.slug(),
-                guide.publish(),
-                guide.base(),
-                guide.env() == null ? base.env() : guide.env(),
-                mergeApps(base.apps(), guide.apps())
-        );
+        return new Guide(guide.title() == null ? base.title() : guide.title(), guide.intro() == null ? base.intro() : guide.intro(), mergeLists(base.authors(), guide.authors()), guide.categories() == null ? base.categories() : guide.categories(), guide.publicationDate(), guide.minimumJavaVersion() == null ? base.minimumJavaVersion() : guide.minimumJavaVersion(), guide.maximumJavaVersion() == null ? base.maximumJavaVersion() : guide.maximumJavaVersion(), guide.cloud() == null ? base.cloud() : guide.cloud(), base.skipGradleTests() || guide.skipGradleTests(), base.skipMavenTests() || guide.skipMavenTests(), guide.asciidoctor(), guide.languages() == null ? base.languages() : guide.languages(), mergeLists(GuideUtils.getTags(base), GuideUtils.getTags(guide)), guide.buildTools() == null ? base.buildTools() : guide.buildTools(), guide.testFramework() == null ? base.testFramework() : guide.testFramework(), guide.zipIncludes(), guide.slug(), guide.publish(), guide.base(), guide.env() == null ? base.env() : guide.env(), mergeApps(base.apps(), guide.apps()));
     }
 
     private static List<App> mergeApps(List<App> base, List<App> guide) {
-        Map<String, App> baseApps = base.stream()
-                .collect(Collectors.toMap(App::name, app -> app));
+        Map<String, App> baseApps = base.stream().collect(Collectors.toMap(App::name, app -> app));
 
-        Map<String, App> guideApps = guide.stream()
-                .collect(Collectors.toMap(App::name, app -> app));
+        Map<String, App> guideApps = guide.stream().collect(Collectors.toMap(App::name, app -> app));
 
         Set<String> baseOnly = new HashSet<>(baseApps.keySet());
         baseOnly.removeAll(guideApps.keySet());
@@ -149,31 +127,13 @@ public final class GuideUtils {
         inBoth.retainAll(guideApps.keySet());
 
         List<App> merged = new ArrayList<>();
-        merged.addAll(baseOnly.stream()
-                .map(baseApps::get)
-                .toList());
-        merged.addAll(guideOnly.stream()
-                .map(guideApps::get)
-                .toList());
+        merged.addAll(baseOnly.stream().map(baseApps::get).toList());
+        merged.addAll(guideOnly.stream().map(guideApps::get).toList());
 
         for (String name : inBoth) {
             App baseApp = baseApps.get(name);
             App guideApp = guideApps.get(name);
-            App mergedApp = new App(
-                    guideApp.name(),
-                    guideApp.packageName(),
-                    guideApp.applicationType(),
-                    guideApp.framework(),
-                    mergeLists(guideApp.features(), baseApp.features()),
-                    mergeLists(guideApp.invisibleFeatures(), baseApp.invisibleFeatures()),
-                    mergeLists(guideApp.javaFeatures(), baseApp.javaFeatures()),
-                    mergeLists(guideApp.kotlinFeatures(), baseApp.kotlinFeatures()),
-                    mergeLists(guideApp.groovyFeatures(), baseApp.groovyFeatures()),
-                    guideApp.testFramework(),
-                    guideApp.excludeTest(),
-                    guideApp.excludeSource(),
-                    baseApp.validateLicense()
-            );
+            App mergedApp = new App(guideApp.name(), guideApp.packageName(), guideApp.applicationType(), guideApp.framework(), mergeLists(guideApp.features(), baseApp.features()), mergeLists(guideApp.invisibleFeatures(), baseApp.invisibleFeatures()), mergeLists(guideApp.javaFeatures(), baseApp.javaFeatures()), mergeLists(guideApp.kotlinFeatures(), baseApp.kotlinFeatures()), mergeLists(guideApp.groovyFeatures(), baseApp.groovyFeatures()), guideApp.testFramework(), guideApp.excludeTest(), guideApp.excludeSource(), baseApp.validateLicense());
             merged.add(mergedApp);
         }
 

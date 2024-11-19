@@ -18,24 +18,49 @@ package io.micronaut.guides.core;
 import io.micronaut.guides.core.asciidoc.Classpath;
 import jakarta.inject.Singleton;
 
+/**
+ * SourceMacroSubstitution is a singleton class that extends SourceBlockMacroSubstitution.
+ * It provides the implementation for the "source" macro used in the guides.
+ */
 @Singleton
 public class SourceMacroSubstitution extends SourceBlockMacroSubstitution {
     private static final String MACRO_SOURCE = "source";
 
+    /**
+     * Constructs a new SourceMacroSubstitution with the specified GuidesConfiguration and LicenseLoader.
+     *
+     * @param guidesConfiguration the guides configuration
+     * @param licenseLoader       the license loader
+     */
     public SourceMacroSubstitution(GuidesConfiguration guidesConfiguration, LicenseLoader licenseLoader) {
         super(licenseLoader, guidesConfiguration);
     }
 
+    /**
+     * Returns the name of the macro.
+     *
+     * @return the macro name
+     */
     @Override
     public String getMacroName() {
         return MACRO_SOURCE;
     }
 
+    /**
+     * Returns the classpath for the macro.
+     *
+     * @return the classpath
+     */
     @Override
     public Classpath getClasspath() {
         return Classpath.MAIN;
     }
 
+    /**
+     * Returns the file type for the macro.
+     *
+     * @return the file type
+     */
     @Override
     public FileType getFileType() {
         return FileType.CODE;

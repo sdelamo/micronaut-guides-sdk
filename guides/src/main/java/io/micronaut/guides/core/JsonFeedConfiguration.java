@@ -15,8 +15,22 @@
  */
 package io.micronaut.guides.core;
 
+/**
+ * Interface for configuring JSON feed settings.
+ */
 public interface JsonFeedConfiguration {
+
+    /**
+     * Returns the URL of the feed.
+     *
+     * @return the feed URL
+     */
     String getFeedUrl();
 
+    /**
+     * Returns the filename for the feed.
+     *
+     * @return the filename
+     */
     String getFilename();
 }

@@ -15,6 +15,14 @@
  */
 package io.micronaut.guides.core;
 
+/**
+ * VersionLoader is an interface that defines a method to retrieve the version.
+ */
 public interface VersionLoader {
+    /**
+     * Returns the version as a string.
+     *
+     * @return the version
+     */
     String getVersion();
 }
