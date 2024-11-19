@@ -1,0 +1,15 @@
+{
+  "title": "Micronaut Hello World",
+  "intro": "This guide shows you how to generate a Hello World endpoint in a Micronaut application.",
+  "authors": ["Sergio del Amo"],
+  "tags": [],
+  "categories": ["Getting Started"],
+  "languages": ["java"],
+  "publicationDate": "2024-11-19",
+  "apps": [
+    {
+      "name": "default",
+      "features": []
+    }
+  ]
+}

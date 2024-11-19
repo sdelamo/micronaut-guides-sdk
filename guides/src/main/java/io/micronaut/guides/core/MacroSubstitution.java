@@ -16,10 +16,11 @@
 package io.micronaut.guides.core;
 
 import io.micronaut.core.annotation.NonNull;
+import io.micronaut.core.order.Ordered;
 import io.micronaut.guides.core.asciidoc.AsciidocMacro;
 import io.micronaut.guides.core.asciidoc.Attribute;
 
-public interface MacroSubstitution {
+public interface MacroSubstitution extends Ordered {
     String ATTRIBUTE_APP = "app";
     String APP_NAME_DEFAULT = "default";
 

@@ -81,7 +81,7 @@ public class GuideGenerationUtils {
     }
 
     @NonNull
-    static List<GuidesOption> guidesOptions(@NonNull Guide guideMetadata,
+    public static List<GuidesOption> guidesOptions(@NonNull Guide guideMetadata,
                                             @NonNull Logger logger) {
         List<BuildTool> buildTools = guideMetadata.buildTools();
         List<Language> languages = guideMetadata.languages();

@@ -54,12 +54,23 @@ import static io.micronaut.starter.options.JdkVersion.JDK_8;
 public class DefaultGuideProjectGenerator implements GuideProjectGenerator {
     private static final Logger LOG = LoggerFactory.getLogger(DefaultGuideProjectGenerator.class);
     private final GuidesConfiguration guidesConfiguration;
+    private final GuideParser guideParser;
     private final ProjectGenerator projectGenerator;
 
-    DefaultGuideProjectGenerator(GuidesConfiguration guidesConfiguration,
+    DefaultGuideProjectGenerator(GuidesConfiguration guidesConfiguration, GuideParser guideParser,
                                  ProjectGenerator projectGenerator) {
         this.guidesConfiguration = guidesConfiguration;
+        this.guideParser = guideParser;
         this.projectGenerator = projectGenerator;
+    }
+
+    @Override
+    public void generate(@NotNull @NonNull File inputDirectory,
+                  @NotNull @NonNull File outputDirectory) throws IOException {
+        List<Guide> guides = guideParser.parseGuidesMetadata(inputDirectory);
+        for (Guide guide : guides) {
+            generate(outputDirectory, guide);
+        }
     }
 
     @Override

@@ -15,7 +15,10 @@
  */
 package io.micronaut.guides.core.asciidoc;
 
+import io.micronaut.core.annotation.NonNull;
 import jakarta.inject.Singleton;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import org.asciidoctor.*;
 
 import java.io.File;
@@ -60,7 +63,18 @@ public class DefaultAsciidocConverter implements AsciidocConverter {
     }
 
     @Override
+    public String convert(@NonNull @NotBlank String asciidoc,
+                          @NonNull @NotBlank String sourceDir) {
+        return asciidoctor.convert(asciidoc, Options.builder().attributes(Attributes.builder()
+                .attribute("sourcedir", sourceDir).build()).build());
+    }
+
+    private Options getOptions() {
+        return optionsBuilder.attributes(attributesBuilder.build()).toFile(false).build();
+    }
+
+    @Override
     public String convert(File source) {
-        return asciidoctor.convertFile(source, optionsBuilder.attributes(attributesBuilder.build()).toFile(false).build());
+        return asciidoctor.convertFile(source, getOptions());
     }
 }
