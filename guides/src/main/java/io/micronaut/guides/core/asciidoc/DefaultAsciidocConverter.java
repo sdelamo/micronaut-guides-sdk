@@ -24,44 +24,43 @@ import java.io.File;
 public class DefaultAsciidocConverter implements AsciidocConverter {
 
     OptionsBuilder optionsBuilder;
+    AttributesBuilder attributesBuilder;
 
     Asciidoctor asciidoctor;
 
     DefaultAsciidocConverter(AsciidocConfiguration asciidocConfiguration) {
-        Attributes attributes = Attributes.builder()
-                .attribute("sourcedir", asciidocConfiguration.getSourceDir())
-                .attribute("commonsDir", asciidocConfiguration.getCommonsDir())
-                .attribute("calloutsDir", asciidocConfiguration.getCalloutsDir())
-                .attribute("guidesDir", asciidocConfiguration.getGuidesDir())
-                .sourceHighlighter(asciidocConfiguration.getSourceHighlighter())
-                .tableOfContents(asciidocConfiguration.getToc())
-                .attribute("toclevels", asciidocConfiguration.getToclevels())
-                .sectionNumbers(asciidocConfiguration.getSectnums())
-                .attribute("idprefix", asciidocConfiguration.getIdprefix())
-                .attribute("idseparator", asciidocConfiguration.getIdseparator())
-                .icons(asciidocConfiguration.getIcons())
-                .imagesDir(asciidocConfiguration.getImagesdir())
-                .noFooter(asciidocConfiguration.isNofooter())
-                .build();
+        attributesBuilder = Attributes.builder()
+            .attribute("sourcedir", asciidocConfiguration.getSourceDir())
+            .attribute("commonsDir", asciidocConfiguration.getCommonsDir())
+            .attribute("calloutsDir", asciidocConfiguration.getCalloutsDir())
+            .attribute("guidesDir", asciidocConfiguration.getGuidesDir())
+            .sourceHighlighter(asciidocConfiguration.getSourceHighlighter())
+            .tableOfContents(asciidocConfiguration.getToc())
+            .attribute("toclevels", asciidocConfiguration.getToclevels())
+            .sectionNumbers(asciidocConfiguration.getSectnums())
+            .attribute("idprefix", asciidocConfiguration.getIdprefix())
+            .attribute("idseparator", asciidocConfiguration.getIdseparator())
+            .icons(asciidocConfiguration.getIcons())
+            .imagesDir(asciidocConfiguration.getImagesdir())
+            .noFooter(asciidocConfiguration.isNofooter());
 
         optionsBuilder = Options.builder()
-                .docType(asciidocConfiguration.getDocType())
-                .eruby(asciidocConfiguration.getRuby())
-                .templateDirs(asciidocConfiguration.getTemplateDirs())
-                .attributes(attributes)
-                .safe(SafeMode.UNSAFE)
-                .baseDir(new File(asciidocConfiguration.getBaseDir()));
+            .docType(asciidocConfiguration.getDocType())
+            .eruby(asciidocConfiguration.getRuby())
+            .templateDirs(asciidocConfiguration.getTemplateDirs())
+            .safe(SafeMode.UNSAFE)
+            .baseDir(new File(asciidocConfiguration.getBaseDir()));
 
         asciidoctor = Asciidoctor.Factory.create();
     }
 
     @Override
     public void convert(File source, File destination) {
-        asciidoctor.convertFile(source, optionsBuilder.toFile(destination).build());
+        asciidoctor.convertFile(source, optionsBuilder.attributes(attributesBuilder.build()).toFile(destination).build());
     }
 
     @Override
     public String convert(File source) {
-        return asciidoctor.convertFile(source, optionsBuilder.toFile(false).build());
+        return asciidoctor.convertFile(source, optionsBuilder.attributes(attributesBuilder.build()).toFile(false).build());
     }
 }
