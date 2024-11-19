@@ -65,15 +65,6 @@ public class DefaultGuideProjectGenerator implements GuideProjectGenerator {
     }
 
     @Override
-    public void generate(@NotNull @NonNull File inputDirectory,
-                  @NotNull @NonNull File outputDirectory) throws IOException {
-        List<Guide> guides = guideParser.parseGuidesMetadata(inputDirectory);
-        for (Guide guide : guides) {
-            generate(outputDirectory, guide);
-        }
-    }
-
-    @Override
     public void generate(@NotNull @NonNull File outputDirectory, @NotNull @NonNull Guide guide) throws IOException {
         if (!outputDirectory.exists()) {
             throw new ConfigurationException("Output directory does not exist");

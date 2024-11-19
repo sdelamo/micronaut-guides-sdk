@@ -22,8 +22,6 @@ import java.io.File;
 import java.io.IOException;
 
 public interface GuideProjectGenerator {
-    void generate(@NotNull @NonNull File inputDirectory,
-                  @NotNull @NonNull File outputDirectory) throws IOException;
 
     void generate(@NotNull @NonNull File outputDirectory,
                   @NotNull @NonNull Guide guide) throws IOException;
