@@ -54,13 +54,11 @@ import static io.micronaut.starter.options.JdkVersion.JDK_8;
 public class DefaultGuideProjectGenerator implements GuideProjectGenerator {
     private static final Logger LOG = LoggerFactory.getLogger(DefaultGuideProjectGenerator.class);
     private final GuidesConfiguration guidesConfiguration;
-    private final GuideParser guideParser;
     private final ProjectGenerator projectGenerator;
 
-    DefaultGuideProjectGenerator(GuidesConfiguration guidesConfiguration, GuideParser guideParser,
+    DefaultGuideProjectGenerator(GuidesConfiguration guidesConfiguration,
                                  ProjectGenerator projectGenerator) {
         this.guidesConfiguration = guidesConfiguration;
-        this.guideParser = guideParser;
         this.projectGenerator = projectGenerator;
     }
 
