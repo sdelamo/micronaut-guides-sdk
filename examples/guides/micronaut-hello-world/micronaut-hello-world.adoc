@@ -1,0 +1,8 @@
+common:example.adoc[]
+
+callout:example.adoc[]
+callout:example.adoc[]
+
+source:HelloWorldController[]
+
+test:HelloWorldControllerTest[]

@@ -36,4 +36,9 @@ public class DependencyMacroSubstitution implements MacroSubstitution {
         }
         return str;
     }
+
+    @Override
+    public int getOrder() {
+        return 1;
+    }
 }

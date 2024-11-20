@@ -144,4 +144,9 @@ abstract class SourceBlockMacroSubstitution implements MacroSubstitution {
     protected String condensedTarget(@NonNull AsciidocMacro asciidocMacro, GuidesOption option) {
         return asciidocMacro.target();
     }
+
+    @Override
+    public int getOrder() {
+        return 1;
+    }
 }

@@ -16,6 +16,7 @@
 package io.micronaut.guides.core.asciidoc;
 
 import io.micronaut.core.annotation.NonNull;
+import io.micronaut.core.util.StringUtils;
 import jakarta.inject.Singleton;
 import jakarta.validation.constraints.NotBlank;
 import org.asciidoctor.*;
@@ -31,29 +32,61 @@ public class DefaultAsciidocConverter implements AsciidocConverter {
     Asciidoctor asciidoctor;
 
     DefaultAsciidocConverter(AsciidocConfiguration asciidocConfiguration) {
-        attributesBuilder = Attributes.builder().attribute("sourcedir", asciidocConfiguration.getSourceDir()).attribute("commonsDir", asciidocConfiguration.getCommonsDir()).attribute("calloutsDir", asciidocConfiguration.getCalloutsDir()).attribute("guidesDir", asciidocConfiguration.getGuidesDir()).sourceHighlighter(asciidocConfiguration.getSourceHighlighter()).tableOfContents(asciidocConfiguration.getToc()).attribute("toclevels", asciidocConfiguration.getToclevels()).sectionNumbers(asciidocConfiguration.getSectnums()).attribute("idprefix", asciidocConfiguration.getIdprefix()).attribute("idseparator", asciidocConfiguration.getIdseparator()).icons(asciidocConfiguration.getIcons()).imagesDir(asciidocConfiguration.getImagesdir()).noFooter(asciidocConfiguration.isNofooter());
+        attributesBuilder = Attributes.builder()
+                .attribute("sourcedir", asciidocConfiguration.getSourceDir())
+                .attribute("commonsDir", asciidocConfiguration.getCommonsDir())
+                .attribute("calloutsDir", asciidocConfiguration.getCalloutsDir())
+                .attribute("guidesDir", asciidocConfiguration.getGuidesDir())
+                .sourceHighlighter(asciidocConfiguration.getSourceHighlighter())
+                .tableOfContents(asciidocConfiguration.getToc())
+                .attribute("toclevels", asciidocConfiguration.getToclevels())
+                .sectionNumbers(asciidocConfiguration.getSectnums())
+                .attribute("idprefix", asciidocConfiguration.getIdprefix())
+                .attribute("idseparator", asciidocConfiguration.getIdseparator())
+                .icons(asciidocConfiguration.getIcons()).imagesDir(asciidocConfiguration.getImagesdir())
+                .noFooter(asciidocConfiguration.isNofooter());
 
-        optionsBuilder = Options.builder().docType(asciidocConfiguration.getDocType()).eruby(asciidocConfiguration.getRuby()).templateDirs(asciidocConfiguration.getTemplateDirs()).safe(SafeMode.UNSAFE).baseDir(new File(asciidocConfiguration.getBaseDir()));
+        optionsBuilder = Options.builder()
+                .docType(asciidocConfiguration.getDocType())
+                .eruby(asciidocConfiguration.getRuby())
+                .safe(SafeMode.UNSAFE);
+
+        if (StringUtils.isNotEmpty(asciidocConfiguration.getBaseDir())) {
+            optionsBuilder.baseDir(new File(asciidocConfiguration.getBaseDir()));
+        }
 
         asciidoctor = Asciidoctor.Factory.create();
     }
 
     @Override
-    public void convert(File source, File destination) {
-        asciidoctor.convertFile(source, optionsBuilder.attributes(attributesBuilder.build()).toFile(destination).build());
-    }
-
-    @Override
     public String convert(@NonNull @NotBlank String asciidoc, @NonNull @NotBlank String sourceDir) {
-        return asciidoctor.convert(asciidoc, optionsBuilder.attributes(attributesBuilder.attribute("sourcedir", sourceDir).build()).toFile(false).build());
-    }
-
-    private Options getOptions() {
-        return optionsBuilder.attributes(attributesBuilder.build()).toFile(false).build();
+        return asciidoctor.convert(asciidoc, optionsBuilder
+                .toFile(false)
+                .attributes(attributesBuilder.attribute("sourcedir", sourceDir).build())
+                .build());
     }
 
     @Override
-    public String convert(File source) {
-        return asciidoctor.convertFile(source, getOptions());
+    public String convert(@NonNull File asciidoc, @NonNull @NotBlank String sourceDir) {
+        return asciidoctor.convertFile(asciidoc, optionsBuilder
+                .toFile(false)
+                .attributes(attributesBuilder.attribute("sourcedir", sourceDir).build())
+                .build());
+    }
+
+    @Override
+    public void convert(@NonNull @NotBlank String asciidoc, @NonNull @NotBlank String sourceDir, @NonNull File destination) {
+        asciidoctor.convert(asciidoc, optionsBuilder
+                .toFile(destination)
+                .attributes(attributesBuilder.attribute("sourcedir", sourceDir).build())
+                .build());
+    }
+
+    @Override
+    public void convert(@NonNull File asciidoc, @NonNull @NotBlank String sourceDir, @NonNull File destination) {
+        asciidoctor.convertFile(asciidoc, optionsBuilder
+                .toFile(destination)
+                .attributes(attributesBuilder.attribute("sourcedir", sourceDir).build())
+                .build());
     }
 }

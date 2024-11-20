@@ -54,14 +54,7 @@ class DefaultWebsiteGenerator implements WebsiteGenerator {
     private final IndexGenerator indexGenerator;
     private final GuideMatrixGenerator guideMatrixGenerator;
 
-    DefaultWebsiteGenerator(GuideParser guideParser,
-                            GuideProjectGenerator guideProjectGenerator,
-                            JsonFeedGenerator jsonFeedGenerator,
-                            JsonFeedConfiguration jsonFeedConfiguration,
-                            RssFeedGenerator rssFeedGenerator,
-                            RssFeedConfiguration rssFeedConfiguration,
-                            FilesTransferUtility filesTransferUtility,
-                            TestScriptGenerator testScriptGenerator, MacroSubstitution macroSubstitution, AsciidocConverter asciidocConverter, IndexGenerator indexGenerator, GuideMatrixGenerator guideMatrixGenerator) {
+    DefaultWebsiteGenerator(GuideParser guideParser, GuideProjectGenerator guideProjectGenerator, JsonFeedGenerator jsonFeedGenerator, JsonFeedConfiguration jsonFeedConfiguration, RssFeedGenerator rssFeedGenerator, RssFeedConfiguration rssFeedConfiguration, FilesTransferUtility filesTransferUtility, TestScriptGenerator testScriptGenerator, MacroSubstitution macroSubstitution, AsciidocConverter asciidocConverter, IndexGenerator indexGenerator, GuideMatrixGenerator guideMatrixGenerator) {
         this.guideParser = guideParser;
         this.guideProjectGenerator = guideProjectGenerator;
         this.jsonFeedGenerator = jsonFeedGenerator;
@@ -77,8 +70,7 @@ class DefaultWebsiteGenerator implements WebsiteGenerator {
     }
 
     @Override
-    public void generate(@NonNull @NotNull File inputDirectory,
-                         @NonNull @NotNull File outputDirectory) throws IOException {
+    public void generate(@NonNull @NotNull File inputDirectory, @NonNull @NotNull File outputDirectory) throws IOException {
         List<Guide> guides = guideParser.parseGuidesMetadata(inputDirectory);
         for (Guide guide : guides) {
             File guideOutput = new File(outputDirectory, guide.slug());
@@ -104,8 +96,7 @@ class DefaultWebsiteGenerator implements WebsiteGenerator {
             String asciidoc = readFile(asciidocFile);
             for (GuidesOption guidesOption : guideOptions) {
                 String optionAsciidoc = macroSubstitution.substitute(asciidoc, guide, guidesOption);
-                File guideOptionOutput = new File(guideOutput, guide.slug() + "-" + guidesOption.getBuildTool() + "-" + guidesOption.getLanguage());
-                String optionHtml = asciidocConverter.convert(optionAsciidoc, guideOutput.getAbsolutePath());
+                String optionHtml = asciidocConverter.convert(optionAsciidoc, outputDirectory.getAbsolutePath());
                 String guideOptionHtmlFileName = guide.slug() + "-" + guidesOption.getBuildTool() + "-" + guidesOption.getLanguage() + ".html";
                 saveToFile(optionHtml, outputDirectory, guideOptionHtmlFileName);
             }
@@ -124,9 +115,7 @@ class DefaultWebsiteGenerator implements WebsiteGenerator {
         saveToFile(json, outputDirectory, jsonFeedConfiguration.getFilename());
     }
 
-    private void saveToFile(String content,
-                           File outputDirectory,
-                           String filename) throws IOException {
+    private void saveToFile(String content, File outputDirectory, String filename) throws IOException {
         Path filePath = Paths.get(outputDirectory.getAbsolutePath(), filename);
         Files.write(filePath, content.getBytes());
     }
