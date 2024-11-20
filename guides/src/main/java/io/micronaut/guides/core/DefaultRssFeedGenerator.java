@@ -63,11 +63,20 @@ public class DefaultRssFeedGenerator implements RssFeedGenerator {
     }
 
     private RssChannel.Builder rssBuilder() {
-        return RssChannel.builder(guidesConfiguration.getTitle(), guidesConfiguration.getHomePageUrl(), "RSS feed for " + guidesConfiguration.getTitle()).language(RssLanguage.LANG_ENGLISH);
+        return RssChannel.builder(
+                        guidesConfiguration.getTitle(),
+                        guidesConfiguration.getHomePageUrl(),
+                        "RSS feed for " + guidesConfiguration.getTitle())
+                .language(RssLanguage.LANG_ENGLISH);
     }
 
     private RssItem rssFeedElement(Guide metadata) {
-        RssItem.Builder rssItemBuilder = RssItem.builder().guid(metadata.slug()).title(metadata.title()).description(metadata.intro()).pubDate(ZonedDateTime.of(metadata.publicationDate(), LocalTime.of(0, 0), ZoneOffset.UTC)).link(guidesConfiguration.getHomePageUrl() + metadata.slug());
+        RssItem.Builder rssItemBuilder = RssItem.builder()
+                .guid(metadata.slug())
+                .title(metadata.title())
+                .description(metadata.intro())
+                .pubDate(ZonedDateTime.of(metadata.publicationDate(), LocalTime.of(0, 0), ZoneOffset.UTC))
+                .link(guidesConfiguration.getHomePageUrl() + metadata.slug());
         for (String author : metadata.authors()) {
             rssItemBuilder.author(author);
         }

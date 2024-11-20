@@ -19,5 +19,6 @@ package io.micronaut.guides.core;
  * FileType is an enumeration that represents the type of a file.
  */
 public enum FileType {
-    CODE, RESOURCE
+    CODE,
+    RESOURCE
 }

@@ -136,9 +136,19 @@ public class DefaultGuideProjectGenerator implements GuideProjectGenerator {
         destination.mkdir();
 
         String packageAndName = guidesConfiguration.getPackageName() + '.' + app.name();
-        GeneratorContext generatorContext = createProjectGeneratorContext(app.applicationType(), packageAndName, app.framework(), appFeatures, guidesOption.getBuildTool(), app.testFramework() != null ? app.testFramework() : guidesOption.getTestFramework(), guidesOption.getLanguage(), javaVersion);
+        GeneratorContext generatorContext = createProjectGeneratorContext(app.applicationType(),
+                packageAndName,
+                app.framework(),
+                appFeatures,
+                guidesOption.getBuildTool(),
+                app.testFramework() != null ? app.testFramework() : guidesOption.getTestFramework(),
+                guidesOption.getLanguage(),
+                javaVersion);
         try {
-            projectGenerator.generate(app.applicationType(), generatorContext.getProject(), new FileSystemOutputHandler(destination, ConsoleOutput.NOOP), generatorContext);
+            projectGenerator.generate(app.applicationType(),
+                    generatorContext.getProject(),
+                    new FileSystemOutputHandler(destination, ConsoleOutput.NOOP),
+                    generatorContext);
         } catch (Exception e) {
             LOG.error("Error generating application: " + e.getMessage(), e);
             throw new IOException(e.getMessage(), e);
@@ -153,6 +163,17 @@ public class DefaultGuideProjectGenerator implements GuideProjectGenerator {
             throw new HttpStatusException(BAD_REQUEST, "Invalid project name: " + e.getMessage());
         }
 
-        return projectGenerator.createGeneratorContext(type, project, new Options(lang, testFramework != null ? testFramework.toTestFramework() : null, buildTool == null ? GRADLE : buildTool, javaVersion != null ? javaVersion : JDK_8).withFramework(framework), null, features != null ? features : Collections.emptyList(), ConsoleOutput.NOOP);
+        return projectGenerator.createGeneratorContext(
+                type,
+                project,
+                new Options(
+                        lang,
+                        testFramework != null ? testFramework.toTestFramework() : null,
+                        buildTool == null ? GRADLE : buildTool,
+                        javaVersion != null ? javaVersion : JDK_8).withFramework(framework),
+                null,
+                features != null ? features : Collections.emptyList(),
+                ConsoleOutput.NOOP
+        );
     }
 }

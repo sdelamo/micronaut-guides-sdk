@@ -63,16 +63,19 @@ public interface MacroSubstitution {
      * @return the application associated with the guide and application name
      */
     default App app(Guide guide, String appName) {
-        return guide.apps().stream().filter(a -> a.name().equals(appName)).findFirst().orElseThrow(() -> new RuntimeException("app not found for app name" + appName));
+        return guide.apps().stream()
+                .filter(a -> a.name().equals(appName))
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("app not found for app name" + appName));
     }
 
-    /**
-     * Retrieves the application name from the given Asciidoc macro.
-     *
-     * @param asciidocMacro the Asciidoc macro
-     * @return the application name
-     */
     default String appName(AsciidocMacro asciidocMacro) {
-        return asciidocMacro.attributes().stream().filter(attribute -> attribute.key().equals(ATTRIBUTE_APP)).map(Attribute::values).filter(l -> !l.isEmpty()).map(l -> l.get(0)).findFirst().orElse(APP_NAME_DEFAULT);
+        return asciidocMacro.attributes().stream()
+                .filter(attribute -> attribute.key().equals(ATTRIBUTE_APP))
+                .map(Attribute::values)
+                .filter(l -> !l.isEmpty())
+                .map(l -> l.get(0))
+                .findFirst()
+                .orElse(APP_NAME_DEFAULT);
     }
 }

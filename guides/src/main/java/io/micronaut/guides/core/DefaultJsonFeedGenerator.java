@@ -80,11 +80,21 @@ public class DefaultJsonFeedGenerator implements JsonFeedGenerator {
     }
 
     private JsonFeed.Builder jsonFeedBuilder() {
-        return JsonFeed.builder().version(JsonFeed.VERSION_JSON_FEED_1_1).title(guidesConfiguration.getTitle()).homePageUrl(guidesConfiguration.getHomePageUrl()).feedUrl(jsonFeedConfiguration.getFeedUrl());
+        return JsonFeed.builder()
+                .version(JsonFeed.VERSION_JSON_FEED_1_1)
+                .title(guidesConfiguration.getTitle())
+                .homePageUrl(guidesConfiguration.getHomePageUrl())
+                .feedUrl(jsonFeedConfiguration.getFeedUrl());
     }
 
     private JsonFeedItem jsonFeedItem(Guide metadata) {
-        JsonFeedItem.Builder jsonFeedItemBuilder = JsonFeedItem.builder().id(metadata.slug()).title(metadata.title()).contentText(metadata.intro()).language(RssLanguage.LANG_ENGLISH).datePublished(ZonedDateTime.of(metadata.publicationDate(), LocalTime.of(0, 0), ZoneOffset.UTC)).url(guidesConfiguration.getHomePageUrl() + metadata.slug());
+        JsonFeedItem.Builder jsonFeedItemBuilder = JsonFeedItem.builder()
+                .id(metadata.slug())
+                .title(metadata.title())
+                .contentText(metadata.intro())
+                .language(RssLanguage.LANG_ENGLISH)
+                .datePublished(ZonedDateTime.of(metadata.publicationDate(), LocalTime.of(0, 0), ZoneOffset.UTC))
+                .url(guidesConfiguration.getHomePageUrl() + metadata.slug());
         for (String author : metadata.authors()) {
             jsonFeedItemBuilder.author(JsonFeedAuthor.builder().name(author).build());
         }

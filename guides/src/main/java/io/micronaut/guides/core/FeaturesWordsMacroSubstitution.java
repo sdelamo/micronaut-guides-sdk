@@ -46,7 +46,10 @@ public class FeaturesWordsMacroSubstitution extends PlaceholderWithTargetMacroSu
      */
     @Override
     protected String getSubstitution(Guide guide, GuidesOption option, String appName) {
-        List<String> features = GuideUtils.getAppVisibleFeatures(app(guide, appName), option.getLanguage()).stream().map(feature -> "`" + feature + "`").collect(Collectors.toList());
+        List<String> features = GuideUtils.getAppVisibleFeatures(app(guide, appName), option.getLanguage())
+                .stream()
+                .map(feature -> "`" + feature + "`")
+                .collect(Collectors.toList());
 
         if (features.size() > 1) {
             return String.join(", ", features.subList(0, features.size() - 1)) + ", and " + features.get(features.size() - 1);

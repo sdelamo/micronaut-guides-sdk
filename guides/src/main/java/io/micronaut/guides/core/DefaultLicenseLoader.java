@@ -46,10 +46,13 @@ public class DefaultLicenseLoader implements LicenseLoader {
      * @param guidesConfiguration the configuration for guides
      * @param resourceLoader      the resource loader to load the license file
      */
-    public DefaultLicenseLoader(GuidesConfiguration guidesConfiguration, ResourceLoader resourceLoader) {
+    public DefaultLicenseLoader(GuidesConfiguration guidesConfiguration,
+                                ResourceLoader resourceLoader) {
         Optional<InputStream> resourceAsStreamOptional = resourceLoader.getResourceAsStream(guidesConfiguration.getLicensePath());
         this.licenseHeaderText = resourceAsStreamOptional.map(this::readLicenseHeader).orElse("");
-        this.numberOfLines = StringUtils.isEmpty(licenseHeaderText) ? 0 : (int) licenseHeaderText.lines().count() + 1;
+        this.numberOfLines = StringUtils.isEmpty(licenseHeaderText)
+                ? 0 :
+                (int) licenseHeaderText.lines().count() + 1;
     }
 
     /**

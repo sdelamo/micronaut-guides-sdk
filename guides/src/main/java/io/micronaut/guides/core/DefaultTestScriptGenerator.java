@@ -142,7 +142,10 @@ public class DefaultTestScriptGenerator implements TestScriptGenerator {
      */
     @Override
     public boolean supportsNativeTest(App app, GuidesOption guidesOption) {
-        return isMicronautFramework(app) && guidesOption.getBuildTool() == GRADLE && supportsNativeTest(guidesOption.getLanguage()) && guidesOption.getTestFramework() == TestFramework.JUNIT;
+        return isMicronautFramework(app) &&
+                guidesOption.getBuildTool() == GRADLE &&
+                supportsNativeTest(guidesOption.getLanguage()) &&
+                guidesOption.getTestFramework() == TestFramework.JUNIT;
     }
 
     /**
@@ -198,12 +201,22 @@ public class DefaultTestScriptGenerator implements TestScriptGenerator {
      * @param changedFiles       the list of changed files
      * @return the generated script as a string
      */
-    public String generateScript(File guidesFolder, String metadataConfigName, boolean stopIfFailure, List<String> changedFiles) {
+    public String generateScript(File guidesFolder,
+                                 String metadataConfigName,
+                                 boolean stopIfFailure,
+                                 List<String> changedFiles) {
         List<String> slugsChanged = guidesChanged(changedFiles);
-        boolean forceExecuteEveryTest = changesMicronautVersion(changedFiles) || changesDependencies(changedFiles, slugsChanged) || changesBuildScr(changedFiles) || (System.getenv(guidesConfiguration.getEnvGithubWorkflow()) != null && !System.getenv(guidesConfiguration.getEnvGithubWorkflow()).equals(guidesConfiguration.getGithubWorkflowJavaCi())) || (changedFiles.isEmpty() && System.getenv(guidesConfiguration.getEnvGithubWorkflow()) == null);
+        boolean forceExecuteEveryTest = changesMicronautVersion(changedFiles) ||
+                changesDependencies(changedFiles, slugsChanged) ||
+                changesBuildScr(changedFiles) ||
+                (System.getenv(guidesConfiguration.getEnvGithubWorkflow()) != null &&
+                        !System.getenv(guidesConfiguration.getEnvGithubWorkflow()).equals(guidesConfiguration.getGithubWorkflowJavaCi())) ||
+                (changedFiles.isEmpty() && System.getenv(guidesConfiguration.getEnvGithubWorkflow()) == null);
 
         List<Guide> metadatas = guideParser.parseGuidesMetadata(guidesFolder, metadataConfigName);
-        metadatas = metadatas.stream().filter(metadata -> !shouldSkip(metadata, slugsChanged, forceExecuteEveryTest, guidesConfiguration)).collect(Collectors.toList());
+        metadatas = metadatas.stream()
+                .filter(metadata -> !shouldSkip(metadata, slugsChanged, forceExecuteEveryTest, guidesConfiguration))
+                .collect(Collectors.toList());
         return generateScript(metadatas, stopIfFailure, false);
     }
 

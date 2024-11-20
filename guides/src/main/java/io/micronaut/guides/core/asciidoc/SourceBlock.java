@@ -93,7 +93,9 @@ public class SourceBlock {
             lines.add("." + getTitle());
         }
         lines.add(SEPARATOR);
-        getIncludeDirectives().stream().map(IncludeDirective::toString).forEach(lines::add);
+        getIncludeDirectives().stream()
+                .map(IncludeDirective::toString)
+                .forEach(lines::add);
         lines.add(SEPARATOR);
         return String.join("\n", lines);
     }

@@ -69,8 +69,15 @@ public class BuildDiffLinkSubstitution implements MacroSubstitution {
         if (app != null) {
             features.addAll(GuideUtils.getAppVisibleFeatures(app, option.getLanguage()));
         }
-        asciidocMacro.attributes().stream().filter(attribute -> attribute.key().equals(ATTRIBUTE_FEATURES)).map(Attribute::values).forEach(features::addAll);
-        asciidocMacro.attributes().stream().filter(attribute -> attribute.key().equals(ATTRIBUTE_EXCLUDE_FEATURES)).map(Attribute::values).forEach(features::removeAll);
+        asciidocMacro.attributes().stream()
+                .filter(attribute -> attribute.key().equals(ATTRIBUTE_FEATURES))
+                .map(Attribute::values)
+                .forEach(features::addAll);
+        asciidocMacro.attributes().stream()
+                .filter(attribute -> attribute.key().equals(ATTRIBUTE_EXCLUDE_FEATURES))
+                .map(Attribute::values)
+                .forEach(features::removeAll);
+
         return features;
     }
 
@@ -108,7 +115,14 @@ public class BuildDiffLinkSubstitution implements MacroSubstitution {
         String appName = appName(asciidocMacro);
         App app = app(guide, asciidocMacro);
         Set<String> features = features(app, asciidocMacro, option);
-        UriBuilder uriBuilder = UriBuilder.of(guidesConfiguration.getProjectGeneratorUrl()).queryParam(QUERY_PARAMLANG, option.getLanguage().name()).queryParam(QUERY_PARAM_BUILD, option.getBuildTool().name()).queryParam(QUERY_PARAM_TEST, option.getTestFramework().name()).queryParam(QUERY_PARAM_NAME, appName.equals(guidesConfiguration.getDefaultAppName()) ? "micronautguide" : appName).queryParam(QUERY_PARAM_TYPE, app != null ? app.applicationType().name() : ApplicationType.DEFAULT.name()).queryParam(QUERY_PARAM_PACKAGE, guidesConfiguration.getPackageName()).queryParam(QUERY_PARAM_ACTIVITY, "diff");
+        UriBuilder uriBuilder = UriBuilder.of(guidesConfiguration.getProjectGeneratorUrl())
+                .queryParam(QUERY_PARAMLANG, option.getLanguage().name())
+                .queryParam(QUERY_PARAM_BUILD, option.getBuildTool().name())
+                .queryParam(QUERY_PARAM_TEST, option.getTestFramework().name())
+                .queryParam(QUERY_PARAM_NAME, appName.equals(guidesConfiguration.getDefaultAppName()) ? "micronautguide" : appName)
+                .queryParam(QUERY_PARAM_TYPE, app != null ? app.applicationType().name() : ApplicationType.DEFAULT.name())
+                .queryParam(QUERY_PARAM_PACKAGE, guidesConfiguration.getPackageName())
+                .queryParam(QUERY_PARAM_ACTIVITY, "diff");
         features.forEach(f -> uriBuilder.queryParam(QUERY_PARAM_FEATURES, f));
         return uriBuilder.build();
     }
