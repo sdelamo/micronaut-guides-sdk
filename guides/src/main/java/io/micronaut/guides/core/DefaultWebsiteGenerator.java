@@ -53,8 +53,9 @@ class DefaultWebsiteGenerator implements WebsiteGenerator {
     private final AsciidocConverter asciidocConverter;
     private final IndexGenerator indexGenerator;
     private final GuideMatrixGenerator guideMatrixGenerator;
+    private final GuideProjectZipper guideProjectZipper;
 
-    DefaultWebsiteGenerator(GuideParser guideParser, GuideProjectGenerator guideProjectGenerator, JsonFeedGenerator jsonFeedGenerator, JsonFeedConfiguration jsonFeedConfiguration, RssFeedGenerator rssFeedGenerator, RssFeedConfiguration rssFeedConfiguration, FilesTransferUtility filesTransferUtility, TestScriptGenerator testScriptGenerator, MacroSubstitution macroSubstitution, AsciidocConverter asciidocConverter, IndexGenerator indexGenerator, GuideMatrixGenerator guideMatrixGenerator) {
+    DefaultWebsiteGenerator(GuideParser guideParser, GuideProjectGenerator guideProjectGenerator, JsonFeedGenerator jsonFeedGenerator, JsonFeedConfiguration jsonFeedConfiguration, RssFeedGenerator rssFeedGenerator, RssFeedConfiguration rssFeedConfiguration, FilesTransferUtility filesTransferUtility, TestScriptGenerator testScriptGenerator, MacroSubstitution macroSubstitution, AsciidocConverter asciidocConverter, IndexGenerator indexGenerator, GuideMatrixGenerator guideMatrixGenerator, GuideProjectZipper guideProjectZipper) {
         this.guideParser = guideParser;
         this.guideProjectGenerator = guideProjectGenerator;
         this.jsonFeedGenerator = jsonFeedGenerator;
@@ -67,6 +68,7 @@ class DefaultWebsiteGenerator implements WebsiteGenerator {
         this.asciidocConverter = asciidocConverter;
         this.indexGenerator = indexGenerator;
         this.guideMatrixGenerator = guideMatrixGenerator;
+        this.guideProjectZipper = guideProjectZipper;
     }
 
     @Override
@@ -87,17 +89,27 @@ class DefaultWebsiteGenerator implements WebsiteGenerator {
             String nativeTestScript = testScriptGenerator.generateNativeTestScript(new ArrayList<>(List.of(guide)));
             saveToFile(nativeTestScript, guideOutput, FILENAME_NATIVE_TEST_SH);
 
-            // HTML rendering
             File asciidocFile = new File(guideInputDirectory, guide.slug() + ".adoc");
             if (!asciidocFile.exists()) {
                 throw new ConfigurationException("asciidoc file not found for " + guide.slug());
             }
+
             List<GuidesOption> guideOptions = GuideGenerationUtils.guidesOptions(guide, LOG);
             String asciidoc = readFile(asciidocFile);
             for (GuidesOption guidesOption : guideOptions) {
+                String name = MacroUtils.getSourceDir(guide.slug(), guidesOption);
+
+                // Zip creation
+                File zipFile = new File(outputDirectory, name + ".zip");
+                File folderFile = new File(guideOutput, name);
+                guideProjectZipper.zipDirectory(folderFile.getAbsolutePath(), zipFile.getAbsolutePath());
+
+                // Macro substitution
                 String optionAsciidoc = macroSubstitution.substitute(asciidoc, guide, guidesOption);
+
+                // HTML rendering
                 String optionHtml = asciidocConverter.convert(optionAsciidoc, outputDirectory.getAbsolutePath());
-                String guideOptionHtmlFileName = guide.slug() + "-" + guidesOption.getBuildTool() + "-" + guidesOption.getLanguage() + ".html";
+                String guideOptionHtmlFileName = name + ".html";
                 saveToFile(optionHtml, outputDirectory, guideOptionHtmlFileName);
             }
 
