@@ -1,5 +1,7 @@
 common:example.adoc[]
 
+* link:@sourceDir@.zip[Download] and unzip the source
+
 callout:example.adoc[]
 callout:example.adoc[]
 
