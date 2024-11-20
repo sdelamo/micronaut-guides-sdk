@@ -1,36 +1,38 @@
 package io.micronaut.guides.cli;
 
 import io.micronaut.configuration.picocli.PicocliRunner;
-import io.micronaut.context.ApplicationContext;
-
-import picocli.CommandLine;
+import io.micronaut.guides.core.WebsiteGenerator;
+import jakarta.inject.Inject;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
-import picocli.CommandLine.Parameters;
 
 import java.io.File;
+import java.io.IOException;
 
-@Command(name = "guidescli", description = "...",
-        mixinStandardHelpOptions = true)
+@Command(name = "guidescli", description = "...", mixinStandardHelpOptions = true)
 public class GuidescliCommand implements Runnable {
 
     @Option(names = {"-v", "--verbose"}, description = "...")
     boolean verbose;
 
-    @Option(names = {"-i", "--input"}, description = "...")
+    @Option(names = {"-i", "--input"}, description = "folder contain the tutorials")
     File input;
 
-    @Option(names = {"-o", "--output"}, description = "...")
+    @Option(names = {"-o", "--output"}, description = "folder where the website should be generated into")
     File output;
+
+    @Inject
+    WebsiteGenerator websiteGenerator;
 
     public static void main(String[] args) throws Exception {
         PicocliRunner.run(GuidescliCommand.class, args);
     }
 
     public void run() {
-        // business logic here
-        if (verbose) {
-            System.out.println("Hi!");
+        try {
+            websiteGenerator.generate(input, output);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 }

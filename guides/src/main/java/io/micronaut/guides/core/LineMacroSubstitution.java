@@ -57,4 +57,9 @@ abstract class LineMacroSubstitution implements MacroSubstitution {
         }
         return str;
     }
+
+    @Override
+    public int getOrder() {
+        return 0;
+    }
 }

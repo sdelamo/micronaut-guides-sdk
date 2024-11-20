@@ -46,4 +46,9 @@ public class GuideLinkMacroSubstitution implements MacroSubstitution {
         return str;
     }
 
+    @Override
+    public int getOrder() {
+        return 0;
+    }
+
 }

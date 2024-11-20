@@ -50,7 +50,7 @@ EXIT_STATUS=0
 cd base-maven-java
 echo "-------------------------------------------------"
 echo "Executing 'base-maven-java' tests"
-./mvnw -q test spotless:check || EXIT_STATUS=$?
+./mvnw -q test || EXIT_STATUS=$?
 echo "Stopping shared test resources service (if created)"
 ./mvnw -q mn:stop-testresources-service > /dev/null 2>&1 || true
 cd ..
@@ -62,7 +62,7 @@ EXIT_STATUS=0
 cd base-maven-kotlin
 echo "-------------------------------------------------"
 echo "Executing 'base-maven-kotlin' tests"
-./mvnw -q test spotless:check || EXIT_STATUS=$?
+./mvnw -q test || EXIT_STATUS=$?
 echo "Stopping shared test resources service (if created)"
 ./mvnw -q mn:stop-testresources-service > /dev/null 2>&1 || true
 cd ..
@@ -111,7 +111,7 @@ EXIT_STATUS=0
 cd child-maven-java
 echo "-------------------------------------------------"
 echo "Executing 'child-maven-java' tests"
-./mvnw -q test spotless:check || EXIT_STATUS=$?
+./mvnw -q test || EXIT_STATUS=$?
 echo "Stopping shared test resources service (if created)"
 ./mvnw -q mn:stop-testresources-service > /dev/null 2>&1 || true
 cd ..
@@ -123,7 +123,7 @@ EXIT_STATUS=0
 cd child-maven-kotlin
 echo "-------------------------------------------------"
 echo "Executing 'child-maven-kotlin' tests"
-./mvnw -q test spotless:check || EXIT_STATUS=$?
+./mvnw -q test || EXIT_STATUS=$?
 echo "Stopping shared test resources service (if created)"
 ./mvnw -q mn:stop-testresources-service > /dev/null 2>&1 || true
 cd ..
@@ -172,7 +172,7 @@ EXIT_STATUS=0
 cd creating-your-first-micronaut-app-maven-java
 echo "-------------------------------------------------"
 echo "Executing 'creating-your-first-micronaut-app-maven-java' tests"
-./mvnw -q test spotless:check || EXIT_STATUS=$?
+./mvnw -q test || EXIT_STATUS=$?
 echo "Stopping shared test resources service (if created)"
 ./mvnw -q mn:stop-testresources-service > /dev/null 2>&1 || true
 cd ..
@@ -184,7 +184,7 @@ EXIT_STATUS=0
 cd creating-your-first-micronaut-app-maven-kotlin
 echo "-------------------------------------------------"
 echo "Executing 'creating-your-first-micronaut-app-maven-kotlin' tests"
-./mvnw -q test spotless:check || EXIT_STATUS=$?
+./mvnw -q test || EXIT_STATUS=$?
 echo "Stopping shared test resources service (if created)"
 ./mvnw -q mn:stop-testresources-service > /dev/null 2>&1 || true
 cd ..

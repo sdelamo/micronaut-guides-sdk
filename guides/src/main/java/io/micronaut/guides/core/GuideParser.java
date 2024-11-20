@@ -24,9 +24,17 @@ import java.util.List;
 import java.util.Optional;
 
 public interface GuideParser {
+
+    String DEFAULT_METADATA_NAME = "metadata.json";
+
     @NonNull
     List<Guide> parseGuidesMetadata(@NonNull @NotNull File guidesDir,
                                     @NonNull @NotNull String metadataConfigName);
+
+    @NonNull
+    default List<Guide> parseGuidesMetadata(@NonNull @NotNull File guidesDir) {
+        return parseGuidesMetadata(guidesDir, DEFAULT_METADATA_NAME);
+    }
 
     @NonNull
     Optional<Guide> parseGuideMetadata(@NonNull @NotNull File guidesDir,

@@ -15,6 +15,7 @@
  */
 package io.micronaut.guides.core;
 
+import io.micronaut.core.annotation.Internal;
 import io.micronaut.core.annotation.NonNull;
 import io.micronaut.starter.api.TestFramework;
 import io.micronaut.starter.options.BuildTool;
@@ -33,15 +34,15 @@ import java.util.stream.Collectors;
 import static io.micronaut.starter.options.BuildTool.GRADLE;
 import static io.micronaut.starter.options.BuildTool.MAVEN;
 
-
+@Internal
 @Singleton
-public class DefaultTestScriptGenerator implements TestScriptGenerator {
+class DefaultTestScriptGenerator implements TestScriptGenerator {
     private static final Logger LOG = LoggerFactory.getLogger(DefaultTestScriptGenerator.class);
 
     private final GuidesConfiguration guidesConfiguration;
     private final GuideParser guideParser;
 
-    public DefaultTestScriptGenerator(GuidesConfiguration guidesConfiguration, GuideParser guideParser) {
+    DefaultTestScriptGenerator(GuidesConfiguration guidesConfiguration, GuideParser guideParser) {
         this.guidesConfiguration = guidesConfiguration;
         this.guideParser = guideParser;
     }

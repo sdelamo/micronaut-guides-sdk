@@ -32,4 +32,9 @@ public class BuildMacroExclusion extends MacroExclusion {
     protected boolean shouldExclude(List<String> params, GuidesOption option, Guide guide) {
         return params.contains(option.getBuildTool().toString());
     }
+
+    @Override
+    public int getOrder() {
+        return 1;
+    }
 }

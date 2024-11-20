@@ -16,6 +16,7 @@
 package io.micronaut.guides.core;
 
 import io.micronaut.context.exceptions.ConfigurationException;
+import io.micronaut.core.annotation.Internal;
 import io.micronaut.core.annotation.NonNull;
 import jakarta.inject.Singleton;
 import jakarta.validation.constraints.NotNull;
@@ -33,8 +34,9 @@ import java.util.List;
 
 import static io.micronaut.core.util.StringUtils.EMPTY_STRING;
 
+@Internal
 @Singleton
-public class DefaultFilesTransferUtility implements FilesTransferUtility {
+class DefaultFilesTransferUtility implements FilesTransferUtility {
     private static final Logger LOG = LoggerFactory.getLogger(DefaultFilesTransferUtility.class);
     private static final String EXTENSION_JAVA = ".java";
     private static final String EXTENSION_GROOVY = ".groovy";

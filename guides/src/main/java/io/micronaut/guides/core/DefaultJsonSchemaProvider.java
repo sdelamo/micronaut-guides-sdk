@@ -21,15 +21,13 @@ import jakarta.inject.Singleton;
 
 @Singleton
 public class DefaultJsonSchemaProvider implements JsonSchemaProvider {
-    JsonSchemaFactory jsonSchemaFactory = JsonSchemaFactory.getInstance(SpecVersion.VersionFlag.V202012, builder ->
-            builder.schemaMappers(schemaMappers -> schemaMappers.mapPrefix("https://guides.micronaut.io/schemas", "classpath:"))
-    );
+    JsonSchemaFactory jsonSchemaFactory = JsonSchemaFactory.getInstance(SpecVersion.VersionFlag.V202012);
 
     @Override
     @NonNull
     public JsonSchema getSchema() {
         SchemaValidatorsConfig.Builder builder = SchemaValidatorsConfig.builder();
         SchemaValidatorsConfig validatorsConfig = builder.build();
-        return jsonSchemaFactory.getSchema(SchemaLocation.of("https://guides.micronaut.io/schemas/guide-metadata.schema.json"), validatorsConfig);
+        return jsonSchemaFactory.getSchema(SchemaLocation.of("https://micronaut-projects.github.io/micronaut-guides-sdk/guide-metadata.schema.json"), validatorsConfig);
     }
 }

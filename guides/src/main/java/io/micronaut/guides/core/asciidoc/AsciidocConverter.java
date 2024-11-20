@@ -16,15 +16,16 @@
 package io.micronaut.guides.core.asciidoc;
 
 import io.micronaut.core.annotation.NonNull;
-import io.micronaut.core.annotation.Nullable;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotBlank;
 
 import java.io.File;
 
 public interface AsciidocConverter {
+    String convert(@NonNull @NotBlank String asciidoc, @NonNull @NotBlank String sourceDir);
 
-    void convert(@NotNull @NonNull File source, @NotNull @NonNull File destination);
+    String convert(@NonNull File asciidoc, @NonNull @NotBlank String sourceDir);
 
-    @Nullable
-    String convert(@NotNull @NonNull File source);
+    void convert(@NonNull @NotBlank String asciidoc, @NonNull @NotBlank String sourceDir, @NonNull File destination);
+
+    void convert(@NonNull File asciidoc, @NonNull @NotBlank String sourceDir, @NonNull File destination);
 }

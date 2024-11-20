@@ -92,4 +92,9 @@ public class BuildDiffLinkSubstitution implements MacroSubstitution {
         features.forEach(f -> uriBuilder.queryParam(QUERY_PARAM_FEATURES, f));
         return uriBuilder.build();
     }
+
+    @Override
+    public int getOrder() {
+        return 1;
+    }
 }
