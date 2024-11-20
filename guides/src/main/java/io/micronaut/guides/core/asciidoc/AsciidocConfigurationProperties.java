@@ -40,7 +40,7 @@ public class AsciidocConfigurationProperties implements AsciidocConfiguration {
     private static final String DEFAULT_TEMPLATE_DIRS = "src/docs/asciidoc";
     private static final String DEFAULT_COMMONS_DIR = "src/docs/asciidoc/common";
     private static final String DEFAULT_CALLOUTS_DIR = "src/docs/asciidoc/callouts";
-    private static final String DEFAULT_BASE_DIR = ".";
+    private static final String DEFAULT_BASE_DIR = "";
     private static final String DEFAULT_GUIDES_DIR = "guides";
 
     private String sourcedir = DEFAULT_SOURCEDIR;
