@@ -18,6 +18,7 @@ package io.micronaut.guides.core;
 import io.micronaut.context.exceptions.ConfigurationException;
 import io.micronaut.core.annotation.Internal;
 import io.micronaut.core.annotation.NonNull;
+import io.micronaut.guides.core.asciidoc.AsciidocConfiguration;
 import io.micronaut.guides.core.asciidoc.AsciidocConverter;
 import io.micronaut.guides.core.html.GuideMatrixGenerator;
 import io.micronaut.guides.core.html.IndexGenerator;
@@ -57,9 +58,26 @@ class DefaultWebsiteGenerator implements WebsiteGenerator {
     private final IndexGenerator indexGenerator;
     private final GuideMatrixGenerator guideMatrixGenerator;
     private final GuideProjectZipper guideProjectZipper;
-    private final ConfigurationsProvider configurationsProvider;
+    private final GuidesConfiguration guidesConfiguration;
+    private final AsciidocConfiguration asciidocConfiguration;
+    private final RssFeedConfiguration rssFeedConfiguration;
+    private final JsonFeedConfiguration jsonFeedConfiguration;
 
-    DefaultWebsiteGenerator(GuideParser guideParser, GuideProjectGenerator guideProjectGenerator, JsonFeedGenerator jsonFeedGenerator, RssFeedGenerator rssFeedGenerator, FilesTransferUtility filesTransferUtility, TestScriptGenerator testScriptGenerator, MacroSubstitution macroSubstitution, AsciidocConverter asciidocConverter, IndexGenerator indexGenerator, GuideMatrixGenerator guideMatrixGenerator, GuideProjectZipper guideProjectZipper, ConfigurationsProvider configurationsProvider) {
+    DefaultWebsiteGenerator(GuideParser guideParser,
+                            GuideProjectGenerator guideProjectGenerator,
+                            JsonFeedGenerator jsonFeedGenerator,
+                            RssFeedGenerator rssFeedGenerator,
+                            FilesTransferUtility filesTransferUtility,
+                            TestScriptGenerator testScriptGenerator,
+                            MacroSubstitution macroSubstitution,
+                            AsciidocConverter asciidocConverter,
+                            IndexGenerator indexGenerator,
+                            GuideMatrixGenerator guideMatrixGenerator,
+                            GuideProjectZipper guideProjectZipper,
+                            GuidesConfiguration guidesConfiguration,
+                            AsciidocConfiguration asciidocConfiguration,
+                            RssFeedConfiguration rssFeedConfiguration,
+                            JsonFeedConfiguration jsonFeedConfiguration) {
         this.guideParser = guideParser;
         this.guideProjectGenerator = guideProjectGenerator;
         this.jsonFeedGenerator = jsonFeedGenerator;
@@ -71,7 +89,10 @@ class DefaultWebsiteGenerator implements WebsiteGenerator {
         this.indexGenerator = indexGenerator;
         this.guideMatrixGenerator = guideMatrixGenerator;
         this.guideProjectZipper = guideProjectZipper;
-        this.configurationsProvider = configurationsProvider;
+        this.guidesConfiguration = guidesConfiguration;
+        this.asciidocConfiguration = asciidocConfiguration;
+        this.rssFeedConfiguration = rssFeedConfiguration;
+        this.jsonFeedConfiguration = jsonFeedConfiguration;
     }
 
     @Override
@@ -124,10 +145,10 @@ class DefaultWebsiteGenerator implements WebsiteGenerator {
         saveToFile(indexHtml, outputDirectory, FILENAME_INDEX_HTML);
 
         String rss = rssFeedGenerator.rssFeed(guides);
-        saveToFile(rss, outputDirectory, configurationsProvider.getRssFeedConfiguration().getFilename());
+        saveToFile(rss, outputDirectory, rssFeedConfiguration.getFilename());
 
         String json = jsonFeedGenerator.jsonFeedString(guides);
-        saveToFile(json, outputDirectory, configurationsProvider.getJsonFeedConfiguration().getFilename());
+        saveToFile(json, outputDirectory, jsonFeedConfiguration.getFilename());
     }
 
     private void saveToFile(String content, File outputDirectory, String filename) throws IOException {
