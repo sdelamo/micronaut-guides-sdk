@@ -105,7 +105,7 @@ class DefaultWebsiteGenerator implements WebsiteGenerator {
             for (GuidesOption guidesOption : guideOptions) {
                 String optionAsciidoc = macroSubstitution.substitute(asciidoc, guide, guidesOption);
                 File guideOptionOutput = new File(guideOutput, guide.slug() + "-" + guidesOption.getBuildTool() + "-" + guidesOption.getLanguage());
-                String optionHtml = asciidocConverter.convert(optionAsciidoc, guideOptionOutput.getAbsolutePath());
+                String optionHtml = asciidocConverter.convert(optionAsciidoc, guideOutput.getAbsolutePath());
                 String guideOptionHtmlFileName = guide.slug() + "-" + guidesOption.getBuildTool() + "-" + guidesOption.getLanguage() + ".html";
                 saveToFile(optionHtml, outputDirectory, guideOptionHtmlFileName);
             }
