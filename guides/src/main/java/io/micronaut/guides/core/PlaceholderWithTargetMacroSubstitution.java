@@ -41,4 +41,9 @@ abstract class PlaceholderWithTargetMacroSubstitution implements MacroSubstituti
         }
         return str;
     }
+
+    @Override
+    public int getOrder() {
+        return 2;
+    }
 }

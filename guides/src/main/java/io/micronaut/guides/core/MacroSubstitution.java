@@ -16,21 +16,15 @@
 package io.micronaut.guides.core;
 
 import io.micronaut.core.annotation.NonNull;
+import io.micronaut.core.order.Ordered;
 import io.micronaut.guides.core.asciidoc.AsciidocMacro;
 import io.micronaut.guides.core.asciidoc.Attribute;
 
 /**
  * MacroSubstitution is an interface that defines methods for substituting macros in Asciidoc files.
  */
-public interface MacroSubstitution {
-    /**
-     * Attribute key for the application name.
-     */
+public interface MacroSubstitution extends Ordered {
     String ATTRIBUTE_APP = "app";
-
-    /**
-     * Default application name.
-     */
     String APP_NAME_DEFAULT = "default";
 
     /**

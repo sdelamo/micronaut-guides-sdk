@@ -16,6 +16,7 @@
 package io.micronaut.guides.core;
 
 import io.micronaut.context.exceptions.ConfigurationException;
+import io.micronaut.core.annotation.Internal;
 import io.micronaut.core.annotation.NonNull;
 import jakarta.inject.Singleton;
 import jakarta.validation.constraints.NotNull;
@@ -36,8 +37,9 @@ import static io.micronaut.core.util.StringUtils.EMPTY_STRING;
 /**
  * Class that provides utility methods for transferring files.
  */
+@Internal
 @Singleton
-public class DefaultFilesTransferUtility implements FilesTransferUtility {
+class DefaultFilesTransferUtility implements FilesTransferUtility {
     private static final Logger LOG = LoggerFactory.getLogger(DefaultFilesTransferUtility.class);
     private static final String EXTENSION_JAVA = ".java";
     private static final String EXTENSION_GROOVY = ".groovy";
@@ -205,7 +207,8 @@ public class DefaultFilesTransferUtility implements FilesTransferUtility {
     void addLicenses(File folder) {
         String licenseHeader = licenseLoader.getLicenseHeaderText();
         Arrays.stream(folder.listFiles()).forEach(file -> {
-            if ((file.getPath().endsWith(EXTENSION_JAVA) || file.getPath().endsWith(EXTENSION_GROOVY) || file.getPath().endsWith(EXTENSION_KT)) && !fileContainsText(file, "Licensed under")) {
+            if ((file.getPath().endsWith(EXTENSION_JAVA) || file.getPath().endsWith(EXTENSION_GROOVY) || file.getPath().endsWith(EXTENSION_KT))
+                    && !fileContainsText(file, "Licensed under")) {
                 try {
                     String content = new String(Files.readAllBytes(file.toPath()));
                     Files.write(file.toPath(), (licenseHeader + content).getBytes());

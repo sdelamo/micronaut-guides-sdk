@@ -15,6 +15,7 @@
  */
 package io.micronaut.guides.core;
 
+import io.micronaut.core.annotation.Internal;
 import io.micronaut.core.annotation.NonNull;
 import io.micronaut.starter.api.TestFramework;
 import io.micronaut.starter.options.BuildTool;
@@ -38,22 +39,27 @@ import static io.micronaut.starter.options.BuildTool.MAVEN;
  * It provides methods to generate test scripts for guides.
  */
 @Singleton
-public class DefaultTestScriptGenerator implements TestScriptGenerator {
+@Internal
+class DefaultTestScriptGenerator implements TestScriptGenerator {
     private static final Logger LOG = LoggerFactory.getLogger(DefaultTestScriptGenerator.class);
 
     private final GuidesConfiguration guidesConfiguration;
     private final GuideParser guideParser;
 
-    public DefaultTestScriptGenerator(GuidesConfiguration guidesConfiguration, GuideParser guideParser) {
+    DefaultTestScriptGenerator(GuidesConfiguration guidesConfiguration, GuideParser guideParser) {
         this.guidesConfiguration = guidesConfiguration;
         this.guideParser = guideParser;
     }
 
     private static List<String> guidesChanged(List<String> changedFiles) {
-        return changedFiles.stream().filter(path -> path.startsWith("guides")).map(path -> {
-            String guideFolder = path.substring("guides/".length());
-            return guideFolder.substring(0, guideFolder.indexOf('/'));
-        }).distinct().collect(Collectors.toList());
+        return changedFiles.stream()
+                .filter(path -> path.startsWith("guides"))
+                .map(path -> {
+                    String guideFolder = path.substring("guides/".length());
+                    return guideFolder.substring(0, guideFolder.indexOf('/'));
+                })
+                .distinct()
+                .collect(Collectors.toList());
     }
 
     private static boolean changesMicronautVersion(List<String> changedFiles) {
@@ -71,27 +77,43 @@ public class DefaultTestScriptGenerator implements TestScriptGenerator {
         return changedFiles.stream().anyMatch(file -> file.contains("buildSrc"));
     }
 
-    private static String scriptForFolder(String nestedFolder, String folder, boolean stopIfFailure, BuildTool buildTool, boolean noDaemon, boolean nativeTest, boolean validateLicense) {
+    private static String scriptForFolder(String nestedFolder,
+                                          String folder,
+                                          boolean stopIfFailure,
+                                          BuildTool buildTool,
+                                          boolean noDaemon,
+                                          boolean nativeTest,
+                                          boolean validateLicense) {
         String testCopy = nativeTest ? "native tests" : "tests";
-        StringBuilder bashScript = new StringBuilder(String.format("""
-                cd %s
-                echo "-------------------------------------------------"
-                echo "Executing '%s' %s"
-                """, nestedFolder, folder, testCopy));
+        StringBuilder bashScript = new StringBuilder(String.format(
+                """
+                        cd %s
+                        echo "-------------------------------------------------"
+                        echo "Executing '%s' %s"
+                        """,
+                nestedFolder, folder, testCopy
+        ));
 
         if (noDaemon) {
             bashScript.append("kill_kotlin_daemon\n");
         }
 
         if (nativeTest) {
-            bashScript.append(String.format("%s || EXIT_STATUS=$?\n", buildTool == BuildTool.MAVEN ? "./mvnw -Pnative test" : "./gradlew nativeTest"));
+            bashScript.append(String.format(
+                    "%s || EXIT_STATUS=$?\n",
+                    buildTool == BuildTool.MAVEN ? "./mvnw -Pnative test" : "./gradlew nativeTest"
+            ));
         } else {
             String mavenCommand = validateLicense ? "./mvnw -q test spotless:check" : "./mvnw -q test";
-            bashScript.append(String.format("""
-                    %s || EXIT_STATUS=$?
-                    echo "Stopping shared test resources service (if created)"
-                    %s > /dev/null 2>&1 || true
-                    """, buildTool == BuildTool.MAVEN ? mavenCommand : "./gradlew -q check", buildTool == BuildTool.MAVEN ? "./mvnw -q mn:stop-testresources-service" : "./gradlew -q stopTestResourcesService"));
+            bashScript.append(String.format(
+                    """
+                            %s || EXIT_STATUS=$?
+                            echo "Stopping shared test resources service (if created)"
+                            %s > /dev/null 2>&1 || true
+                            """,
+                    buildTool == BuildTool.MAVEN ? mavenCommand : "./gradlew -q check",
+                    buildTool == BuildTool.MAVEN ? "./mvnw -q mn:stop-testresources-service" : "./gradlew -q stopTestResourcesService"
+            ));
         }
 
         if (noDaemon) {
@@ -101,26 +123,35 @@ public class DefaultTestScriptGenerator implements TestScriptGenerator {
         bashScript.append("cd ..\n");
 
         if (stopIfFailure) {
-            bashScript.append(String.format("""
-                    if [ $EXIT_STATUS -ne 0 ]; then
-                      echo "'%s' %s failed => exit $EXIT_STATUS"
-                      exit $EXIT_STATUS
-                    fi
-                    """, folder, testCopy));
+            bashScript.append(String.format(
+                    """
+                            if [ $EXIT_STATUS -ne 0 ]; then
+                              echo "'%s' %s failed => exit $EXIT_STATUS"
+                              exit $EXIT_STATUS
+                            fi
+                            """,
+                    folder, testCopy
+            ));
         } else {
-            bashScript.append(String.format("""
-                    if [ $EXIT_STATUS -ne 0 ]; then
-                      FAILED_PROJECTS=("${FAILED_PROJECTS[@]}" %s)
-                      echo "'%s' %s failed => exit $EXIT_STATUS"
-                    fi
-                    EXIT_STATUS=0
-                    """, folder, folder, testCopy));
+            bashScript.append(String.format(
+                    """
+                            if [ $EXIT_STATUS -ne 0 ]; then
+                              FAILED_PROJECTS=("${FAILED_PROJECTS[@]}" %s)
+                              echo "'%s' %s failed => exit $EXIT_STATUS"
+                            fi
+                            EXIT_STATUS=0
+                            """,
+                    folder, folder, testCopy
+            ));
         }
 
         return bashScript.toString();
     }
 
-    private static boolean shouldSkip(Guide metadata, List<String> guidesChanged, boolean forceExecuteEveryTest, GuidesConfiguration guidesConfiguration) {
+    private static boolean shouldSkip(Guide metadata,
+                                      List<String> guidesChanged,
+                                      boolean forceExecuteEveryTest,
+                                      GuidesConfiguration guidesConfiguration) {
 
         if (!GuideGenerationUtils.process(metadata, false, guidesConfiguration)) {
             return true;

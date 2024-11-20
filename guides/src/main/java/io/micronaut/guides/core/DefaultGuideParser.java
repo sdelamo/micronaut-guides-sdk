@@ -33,7 +33,7 @@ import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
-
+import com.networknt.schema.JsonSchema;
 import static io.micronaut.guides.core.GuideUtils.mergeMetadataList;
 
 /**
@@ -43,8 +43,9 @@ import static io.micronaut.guides.core.GuideUtils.mergeMetadataList;
 public class DefaultGuideParser implements GuideParser {
 
     private static final Logger LOG = LoggerFactory.getLogger(DefaultGuideParser.class);
+    public static final String SPOTLESS = "spotless";
 
-    private final JsonSchemaProvider jsonSchemaProvider;
+    private final JsonSchema jsonSchema;
     private final JsonMapper jsonMapper;
 
     /**
@@ -54,7 +55,7 @@ public class DefaultGuideParser implements GuideParser {
      * @param jsonMapper         the JSON mapper
      */
     public DefaultGuideParser(JsonSchemaProvider jsonSchemaProvider, JsonMapper jsonMapper) {
-        this.jsonSchemaProvider = jsonSchemaProvider;
+        this.jsonSchema = jsonSchemaProvider.getSchema();
         this.jsonMapper = jsonMapper;
     }
 
@@ -116,7 +117,7 @@ public class DefaultGuideParser implements GuideParser {
         boolean publish = config.get("publish") == null || (Boolean) config.get("publish");
 
         if (publish) {
-            Set<ValidationMessage> assertions = jsonSchemaProvider.getSchema().validate(content, InputFormat.JSON);
+            Set<ValidationMessage> assertions = jsonSchema.validate(content, InputFormat.JSON);
 
             if (!assertions.isEmpty()) {
                 LOG.trace("Guide metadata {} does not validate the JSON Schema. Skipping guide.", configFile);
@@ -148,7 +149,7 @@ public class DefaultGuideParser implements GuideParser {
                     app.testFramework(),
                     app.excludeTest(),
                     app.excludeSource(),
-                    app.validateLicense()
+                    app.validateLicense() && hasSpotless(app.features(), app.invisibleFeatures(), app.kotlinFeatures(), app.javaFeatures(), app.groovyFeatures())
             ));
         }
 
@@ -175,5 +176,14 @@ public class DefaultGuideParser implements GuideParser {
                 raw.env() != null ? raw.env() : new HashMap<>(),
                 apps
         ));
+    }
+
+    private boolean hasSpotless(List<String>... featureLists) {
+        for (List<String> features : featureLists) {
+            if (features != null && features.contains(SPOTLESS)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

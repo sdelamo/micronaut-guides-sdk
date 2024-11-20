@@ -110,26 +110,26 @@ abstract class SourceBlockMacroSubstitution implements MacroSubstitution {
     }
 
     protected String sourceTitle(
-        String appName,
-        String condensedTarget,
-        Classpath classpath,
-        String language,
-        String packageName) {
+            String appName,
+            String condensedTarget,
+            Classpath classpath,
+            String language,
+            String packageName) {
         return (appName.equals(MacroSubstitution.APP_NAME_DEFAULT) ? "" : (appName + "/")) + sourceConventionFolder(classpath, language) + "/"
-            + (getFileType() == FileType.CODE ? (packageName.replace(".", "/") + "/") : "")
-            + condensedTarget;
+                + (getFileType() == FileType.CODE ? (packageName.replace(".", "/") + "/") : "")
+                + condensedTarget;
     }
 
     protected String sourceInclude(
-        String slug,
-        String appName,
-        String condensedTarget,
-        Classpath classpath,
-        GuidesOption option,
-        String language,
-        String packageName) {
+            String slug,
+            String appName,
+            String condensedTarget,
+            Classpath classpath,
+            GuidesOption option,
+            String language,
+            String packageName) {
         return "{sourceDir}/" + slug + "/" + getSourceDir(slug, option) + "/" +
-            sourceTitle(appName, condensedTarget, classpath, language, packageName);
+                sourceTitle(appName, condensedTarget, classpath, language, packageName);
     }
 
     private String sourceConventionFolder(Classpath classpath, String language) {
@@ -143,5 +143,10 @@ abstract class SourceBlockMacroSubstitution implements MacroSubstitution {
 
     protected String condensedTarget(@NonNull AsciidocMacro asciidocMacro, GuidesOption option) {
         return asciidocMacro.target();
+    }
+
+    @Override
+    public int getOrder() {
+        return 1;
     }
 }

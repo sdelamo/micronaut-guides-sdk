@@ -29,6 +29,7 @@ import java.util.Optional;
  * or for a single guide.
  */
 public interface GuideParser {
+    String DEFAULT_METADATA_NAME = "metadata.json";
 
     /**
      * Parses the metadata for all guides in the specified directory.
@@ -38,7 +39,20 @@ public interface GuideParser {
      * @return a list of parsed guide metadata
      */
     @NonNull
-    List<Guide> parseGuidesMetadata(@NonNull @NotNull File guidesDir, @NonNull @NotNull String metadataConfigName);
+    List<Guide> parseGuidesMetadata(@NonNull @NotNull File guidesDir,
+                                    @NonNull @NotNull String metadataConfigName);
+
+    /**
+     * Parses the metadata for a single guide in the specified directory.
+     *
+     * @param guidesDir          the directory containing the guides
+     * @return an optional containing the parsed guide metadata, or empty if not found
+     * @throws IOException if an I/O error occurs during parsing
+     */
+    @NonNull
+    default List<Guide> parseGuidesMetadata(@NonNull @NotNull File guidesDir) {
+        return parseGuidesMetadata(guidesDir, DEFAULT_METADATA_NAME);
+    }
 
     /**
      * Parses the metadata for a single guide in the specified directory.
@@ -49,5 +63,6 @@ public interface GuideParser {
      * @throws IOException if an I/O error occurs during parsing
      */
     @NonNull
-    Optional<Guide> parseGuideMetadata(@NonNull @NotNull File guidesDir, @NonNull @NotNull String metadataConfigName) throws IOException;
+    Optional<Guide> parseGuideMetadata(@NonNull @NotNull File guidesDir,
+                                       @NonNull @NotNull String metadataConfigName) throws IOException;
 }

@@ -83,4 +83,9 @@ public class PlaceholderMacroSubstitution implements MacroSubstitution {
 
         return str;
     }
+
+    @Override
+    public int getOrder() {
+        return 2;
+    }
 }

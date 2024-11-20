@@ -28,9 +28,6 @@ import static io.micronaut.guides.core.MacroUtils.findMacroInstances;
  */
 @Singleton
 public class GuideLinkMacroSubstitution implements MacroSubstitution {
-    /**
-     * Regular expression pattern to match guide link macros.
-     */
     private static final Pattern GUIDE_LINK_REGEX = Pattern.compile("guideLink:(.*?)\\[(.*?)]");
 
     /**
@@ -66,4 +63,10 @@ public class GuideLinkMacroSubstitution implements MacroSubstitution {
 
         return str;
     }
+
+    @Override
+    public int getOrder() {
+        return 0;
+    }
+
 }

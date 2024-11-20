@@ -5,6 +5,7 @@ plugins {
 dependencies {
     api(libs.micronaut.starter.api)
     api(libs.managed.asciidoctorj)
+    api(libs.managed.apache.compress)
     implementation(mnRss.micronaut.rss)
     implementation(mnRss.micronaut.jsonfeed.core)
     annotationProcessor(mnValidation.micronaut.validation.processor)
