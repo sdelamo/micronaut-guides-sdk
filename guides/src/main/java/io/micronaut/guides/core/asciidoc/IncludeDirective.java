@@ -88,6 +88,8 @@ public class IncludeDirective {
     }
 
     /**
+     * Gets the target.
+     *
      * @return Target may be an absolute path, a path relative to the current document, or a URL.
      */
     @NonNull
@@ -96,6 +98,8 @@ public class IncludeDirective {
     }
 
     /**
+     * Gets the level offset.
+     *
      * @return the level offset.
      * @see <a href="https://docs.asciidoctor.org/asciidoc/latest/directives/include-with-leveloffset/">Level Offset</a>
      */
@@ -104,6 +108,8 @@ public class IncludeDirective {
     }
 
     /**
+     * Gets the line ranges.
+     *
      * @return ranges of line numbers.
      */
     @Nullable
@@ -177,7 +183,7 @@ public class IncludeDirective {
             if (getTags().size() > 1) {
                 attributes.add(ATTRIBUTE_TAGS + "=" + String.join(";", getTags()));
             } else if (getTags().size() == 1) {
-                attributes.add(ATTRIBUTE_TAG + "=" + getTags().get(0));
+                attributes.add(ATTRIBUTE_TAG + "=" + getTags().getFirst());
             }
         }
         if (getIndent() != null) {
@@ -342,7 +348,7 @@ public class IncludeDirective {
                         for (String value : attribute.values()) {
                             String[] arr = value.split("\\.\\.");
                             if (arr.length == 2) {
-                                lines(new Range(Integer.valueOf(arr[0]), Integer.valueOf(arr[1])));
+                                lines(new Range(Integer.parseInt(arr[0]), Integer.parseInt(arr[1])));
                             }
                         }
                         break;

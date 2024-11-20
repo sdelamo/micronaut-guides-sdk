@@ -23,8 +23,21 @@ import java.util.regex.Pattern;
 
 abstract class PlaceholderWithTargetMacroSubstitution implements MacroSubstitution {
 
+    /**
+     * Gets the name of the macro.
+     *
+     * @return the name of the macro
+     */
     protected abstract String getMacroName();
 
+    /**
+     * Gets the substitution string for the given guide, option, and app.
+     *
+     * @param guide  the guide to consider
+     * @param option the GuidesOption to consider
+     * @param app    the application name or target
+     * @return the substitution string
+     */
     protected abstract String getSubstitution(Guide guide, GuidesOption option, String app);
 
     public String substitute(String str, Guide guide, GuidesOption option) {

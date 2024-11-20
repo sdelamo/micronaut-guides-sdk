@@ -19,7 +19,6 @@ import io.micronaut.core.annotation.NonNull;
 import jakarta.validation.constraints.NotNull;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -45,9 +44,8 @@ public interface GuideParser {
     /**
      * Parses the metadata for a single guide in the specified directory.
      *
-     * @param guidesDir          the directory containing the guides
+     * @param guidesDir the directory containing the guides
      * @return an optional containing the parsed guide metadata, or empty if not found
-     * @throws IOException if an I/O error occurs during parsing
      */
     @NonNull
     default List<Guide> parseGuidesMetadata(@NonNull @NotNull File guidesDir) {
@@ -60,9 +58,8 @@ public interface GuideParser {
      * @param guidesDir          the directory containing the guides
      * @param metadataConfigName the name of the metadata configuration file
      * @return an optional containing the parsed guide metadata, or empty if not found
-     * @throws IOException if an I/O error occurs during parsing
      */
     @NonNull
     Optional<Guide> parseGuideMetadata(@NonNull @NotNull File guidesDir,
-                                       @NonNull @NotNull String metadataConfigName) throws IOException;
+                                       @NonNull @NotNull String metadataConfigName);
 }

@@ -44,6 +44,15 @@ public final class GuideGenerationUtils {
     private GuideGenerationUtils() {
     }
 
+    /**
+     * Generates the main path for a given application name, file name, option, and configuration.
+     *
+     * @param appName       the name of the application
+     * @param fileName      the name of the file
+     * @param option        the GuidesOption to consider
+     * @param configuration the GuidesConfiguration to use
+     * @return the generated main path
+     */
     @NonNull
     static String mainPath(@NonNull String appName,
                            @NonNull String fileName,
@@ -52,6 +61,15 @@ public final class GuideGenerationUtils {
         return pathByFolder(appName, fileName, "main", option, configuration);
     }
 
+    /**
+     * Generates the test path for a given application name, file name, option, and configuration.
+     *
+     * @param appName       the name of the application
+     * @param name          the name of the file
+     * @param option        the GuidesOption to consider
+     * @param configuration the GuidesConfiguration to use
+     * @return the generated test path
+     */
     @NonNull
     static String testPath(@NonNull String appName,
                            @NonNull String name,
@@ -68,6 +86,16 @@ public final class GuideGenerationUtils {
         return pathByFolder(appName, fileName, "test", option, configuration);
     }
 
+    /**
+     * Generates a path by folder for a given application name, file name, folder, option, and configuration.
+     *
+     * @param appName       the name of the application
+     * @param fileName      the name of the file
+     * @param folder        the folder name (e.g., "main" or "test")
+     * @param option        the GuidesOption to consider
+     * @param configuration the GuidesConfiguration to use
+     * @return the generated path
+     */
     @NonNull
     static String pathByFolder(@NonNull String appName,
                                @NonNull String fileName,
@@ -76,17 +104,24 @@ public final class GuideGenerationUtils {
                                @NonNull GuidesConfiguration configuration) {
         String module = StringUtils.isNotEmpty(appName) ? appName + "/" : "";
         Path path = Path.of(module,
-            "src",
-            folder,
-            option.getLanguage().getName(),
-            configuration.getPackageName().replace(".", "/"),
-            fileName + "." + option.getLanguage().getExtension());
+                "src",
+                folder,
+                option.getLanguage().getName(),
+                configuration.getPackageName().replace(".", "/"),
+                fileName + "." + option.getLanguage().getExtension());
         return path.toString();
     }
 
+    /**
+     * Generates a list of GuidesOption based on the given guide metadata and logger.
+     *
+     * @param guideMetadata the guide metadata to consider
+     * @param logger        the logger to use
+     * @return the list of generated GuidesOption
+     */
     @NonNull
     public static List<GuidesOption> guidesOptions(@NonNull Guide guideMetadata,
-                                            @NonNull Logger logger) {
+                                                   @NonNull Logger logger) {
         List<BuildTool> buildTools = guideMetadata.buildTools();
         List<Language> languages = guideMetadata.languages();
         TestFramework testFramework = guideMetadata.testFramework();
@@ -107,6 +142,13 @@ public final class GuideGenerationUtils {
         return guidesOptionList;
     }
 
+    /**
+     * Determines the test framework option based on the given language and test framework.
+     *
+     * @param language      the language to consider
+     * @param testFramework the test framework to consider
+     * @return the determined test framework option
+     */
     @NonNull
     static TestFramework testFrameworkOption(@NonNull Language language,
                                              @Nullable TestFramework testFramework) {
@@ -119,6 +161,12 @@ public final class GuideGenerationUtils {
         return JUNIT;
     }
 
+    /**
+     * Resolves the JDK version based on the given guides configuration.
+     *
+     * @param guidesConfiguration the guides configuration to use
+     * @return the resolved JDK version
+     */
     @NonNull
     static JdkVersion resolveJdkVersion(@NonNull GuidesConfiguration guidesConfiguration) {
         JdkVersion javaVersion;
@@ -141,6 +189,13 @@ public final class GuideGenerationUtils {
         return javaVersion;
     }
 
+    /**
+     * Resolves the JDK version based on the given guides configuration and guide.
+     *
+     * @param guidesConfiguration the guides configuration to use
+     * @param guide               the guide to consider
+     * @return the resolved JDK version
+     */
     public static JdkVersion resolveJdkVersion(GuidesConfiguration guidesConfiguration, @NotNull @NonNull Guide guide) {
         JdkVersion javaVersion = GuideGenerationUtils.resolveJdkVersion(guidesConfiguration);
         if (guide.minimumJavaVersion() != null) {
@@ -152,16 +207,37 @@ public final class GuideGenerationUtils {
         return javaVersion;
     }
 
+    /**
+     * Determines whether to skip processing a guide based on the Java version.
+     *
+     * @param metadata            the guide metadata to consider
+     * @param guidesConfiguration the guides configuration to use
+     * @return true if the guide should be skipped, false otherwise
+     */
     static boolean skipBecauseOfJavaVersion(Guide metadata, GuidesConfiguration guidesConfiguration) {
         int jdkVersion = resolveJdkVersion(guidesConfiguration).majorVersion();
         return (metadata.minimumJavaVersion() != null && jdkVersion < metadata.minimumJavaVersion()) ||
-            (metadata.maximumJavaVersion() != null && jdkVersion > metadata.maximumJavaVersion());
+                (metadata.maximumJavaVersion() != null && jdkVersion > metadata.maximumJavaVersion());
     }
 
+    /**
+     * Retrieves the single guide property from the system properties.
+     *
+     * @param guidesConfiguration the guides configuration to use
+     * @return the single guide property
+     */
     public static String singleGuide(GuidesConfiguration guidesConfiguration) {
         return System.getProperty(guidesConfiguration.getSysPropMicronautGuide());
     }
 
+    /**
+     * Checks whether a guide should be processed a guide based on the given metadata, JDK check flag, and guides configuration.
+     *
+     * @param metadata            the guide metadata to consider
+     * @param checkJdk            whether to check the JDK version
+     * @param guidesConfiguration the guides configuration to use
+     * @return true if the guide should be processed, false otherwise
+     */
     public static boolean process(Guide metadata, boolean checkJdk, GuidesConfiguration guidesConfiguration) {
 
         if (!metadata.publish()) {
@@ -175,11 +251,10 @@ public final class GuideGenerationUtils {
 
         if (checkJdk && skipBecauseOfJavaVersion(metadata, guidesConfiguration)) {
             System.out.println("Not processing " + metadata.slug() + ", JDK not between " +
-                metadata.minimumJavaVersion() + " and " + metadata.maximumJavaVersion());
+                    metadata.minimumJavaVersion() + " and " + metadata.maximumJavaVersion());
             return false;
         }
 
         return true;
     }
-
 }

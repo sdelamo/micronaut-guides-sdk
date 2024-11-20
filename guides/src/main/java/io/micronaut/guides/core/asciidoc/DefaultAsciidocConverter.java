@@ -62,12 +62,6 @@ public class DefaultAsciidocConverter implements AsciidocConverter {
         asciidoctor = Asciidoctor.Factory.create();
     }
 
-    /**
-     * Converts the source Asciidoc file to the specified destination file.
-     *
-     * @param source      the source Asciidoc file
-     * @param destination the destination file
-     */
     @Override
     public String convert(@NonNull @NotBlank String asciidoc, @NonNull @NotBlank String sourceDir) {
         return asciidoctor.convert(asciidoc, optionsBuilder
@@ -76,12 +70,6 @@ public class DefaultAsciidocConverter implements AsciidocConverter {
                 .build());
     }
 
-    /**
-     * Converts the source Asciidoc file to a string.
-     *
-     * @param source the source Asciidoc file
-     * @return the converted content as a string
-     */
     @Override
     public String convert(@NonNull File asciidoc, @NonNull @NotBlank String sourceDir) {
         return asciidoctor.convertFile(asciidoc, optionsBuilder

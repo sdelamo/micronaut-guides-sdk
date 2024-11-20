@@ -33,6 +33,12 @@ public final class GuideUtils {
 
     private GuideUtils() { }
 
+    /**
+     * Retrieves a list of tags for a given guide.
+     *
+     * @param guide The guide from which to retrieve tags.
+     * @return A list of tags associated with the guide.
+     */
     public static List<String> getTags(Guide guide) {
         Set<String> tagsList = new HashSet<>();
         if (guide.tags() != null) {
@@ -59,6 +65,13 @@ public final class GuideUtils {
         return new ArrayList<>(tagsList);
     }
 
+    /**
+     * Retrieves a list of features for a given app and language.
+     *
+     * @param app      The app from which to retrieve features.
+     * @param language The language for which to retrieve features.
+     * @return A list of features associated with the app and language.
+     */
     public static List<String> getAppFeatures(App app, Language language) {
         if (language == Language.JAVA) {
             return mergeLists(app.features(), getAppInvisibleFeatures(app), app.javaFeatures());
@@ -72,6 +85,12 @@ public final class GuideUtils {
         return mergeLists(app.features(), getAppInvisibleFeatures(app));
     }
 
+    /**
+     * Retrieves a list of invisible features for a given app.
+     *
+     * @param app The app from which to retrieve invisible features.
+     * @return A list of invisible features associated with the app.
+     */
     public static List<String> getAppInvisibleFeatures(App app) {
         if (app.validateLicense()) {
             List<String> result = new ArrayList<>();
@@ -81,6 +100,13 @@ public final class GuideUtils {
         return app.invisibleFeatures();
     }
 
+    /**
+     * Retrieves a list of visible features for a given app and language.
+     *
+     * @param app      The app from which to retrieve visible features.
+     * @param language The language for which to retrieve visible features.
+     * @return A list of visible features associated with the app and language.
+     */
     public static List<String> getAppVisibleFeatures(App app, Language language) {
         if (language == Language.JAVA) {
             return mergeLists(app.features(), app.javaFeatures());
@@ -94,6 +120,13 @@ public final class GuideUtils {
         return app.features();
     }
 
+    /**
+     * Determines if a guide should skip tests based on the build tool.
+     *
+     * @param guide     The guide to check.
+     * @param buildTool The build tool to check against.
+     * @return True if the guide should skip tests, false otherwise.
+     */
     public static boolean shouldSkip(Guide guide, BuildTool buildTool) {
         if (BuildTool.valuesGradle().contains(buildTool)) {
             return guide.skipGradleTests();
@@ -104,10 +137,23 @@ public final class GuideUtils {
         return false;
     }
 
+    /**
+     * Retrieves a set of frameworks used in a given guide.
+     *
+     * @param guide The guide from which to retrieve frameworks.
+     * @return A set of frameworks associated with the guide.
+     */
     public static Set<String> getFrameworks(Guide guide) {
         return guide.apps().stream().map(App::framework).collect(Collectors.toSet());
     }
 
+    /**
+     * Merges two guides into one.
+     *
+     * @param base  The base guide.
+     * @param guide The guide to merge with the base.
+     * @return A new guide that is the result of merging the base and the guide.
+     */
     public static Guide merge(Guide base, Guide guide) {
         return new Guide(
                 guide.title() == null ? base.title() : guide.title(),
@@ -188,9 +234,10 @@ public final class GuideUtils {
      * @param lists An array of Collection objects to be merged.
      * @return A single List containing all elements from the provided Collections, excluding any null values.
      */
-    private static List mergeLists(Collection... lists) {
-        List merged = new ArrayList<>();
-        for (Collection list : lists) {
+    @SafeVarargs
+    private static List<String> mergeLists(Collection<String>... lists) {
+        List<String> merged = new ArrayList<>();
+        for (Collection<String> list : lists) {
             if (list != null) {
                 merged.addAll(list);
             }
@@ -205,7 +252,7 @@ public final class GuideUtils {
      * @param src    The collection whose elements are to be added to the target.
      * @throws NullPointerException If the target collection is null.
      */
-    private static void addAllSafe(Collection target, Collection src) {
+    private static void addAllSafe(Collection<String> target, Collection<String> src) {
         if (target == null) {
             throw new NullPointerException("Target list cannot be null");
         }
@@ -215,6 +262,11 @@ public final class GuideUtils {
         }
     }
 
+    /**
+     * Merges a list of guide metadata.
+     *
+     * @param metadatas The list of guide metadata to be merged.
+     */
     static void mergeMetadataList(List<Guide> metadatas) {
         Map<String, Guide> metadatasByDirectory = new TreeMap<>();
         for (Guide metadata : metadatas) {

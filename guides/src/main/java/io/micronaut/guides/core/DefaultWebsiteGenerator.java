@@ -34,6 +34,10 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Default implementation of the {@link WebsiteGenerator} interface.
+ * This class is responsible for generating a website from the specified input directory to the specified output directory.
+ */
 @Internal
 @Singleton
 class DefaultWebsiteGenerator implements WebsiteGenerator {
@@ -41,12 +45,11 @@ class DefaultWebsiteGenerator implements WebsiteGenerator {
     private static final String FILENAME_TEST_SH = "test.sh";
     private static final String FILENAME_NATIVE_TEST_SH = "native-test.sh";
     private static final String FILENAME_INDEX_HTML = "index.html";
+
     private final GuideParser guideParser;
     private final GuideProjectGenerator guideProjectGenerator;
     private final JsonFeedGenerator jsonFeedGenerator;
-    private final JsonFeedConfiguration jsonFeedConfiguration;
     private final RssFeedGenerator rssFeedGenerator;
-    private final RssFeedConfiguration rssFeedConfiguration;
     private final FilesTransferUtility filesTransferUtility;
     private final TestScriptGenerator testScriptGenerator;
     private final MacroSubstitution macroSubstitution;
@@ -54,14 +57,13 @@ class DefaultWebsiteGenerator implements WebsiteGenerator {
     private final IndexGenerator indexGenerator;
     private final GuideMatrixGenerator guideMatrixGenerator;
     private final GuideProjectZipper guideProjectZipper;
+    private final ConfigurationsProvider configurationsProvider;
 
-    DefaultWebsiteGenerator(GuideParser guideParser, GuideProjectGenerator guideProjectGenerator, JsonFeedGenerator jsonFeedGenerator, JsonFeedConfiguration jsonFeedConfiguration, RssFeedGenerator rssFeedGenerator, RssFeedConfiguration rssFeedConfiguration, FilesTransferUtility filesTransferUtility, TestScriptGenerator testScriptGenerator, MacroSubstitution macroSubstitution, AsciidocConverter asciidocConverter, IndexGenerator indexGenerator, GuideMatrixGenerator guideMatrixGenerator, GuideProjectZipper guideProjectZipper) {
+    DefaultWebsiteGenerator(GuideParser guideParser, GuideProjectGenerator guideProjectGenerator, JsonFeedGenerator jsonFeedGenerator, RssFeedGenerator rssFeedGenerator, FilesTransferUtility filesTransferUtility, TestScriptGenerator testScriptGenerator, MacroSubstitution macroSubstitution, AsciidocConverter asciidocConverter, IndexGenerator indexGenerator, GuideMatrixGenerator guideMatrixGenerator, GuideProjectZipper guideProjectZipper, ConfigurationsProvider configurationsProvider) {
         this.guideParser = guideParser;
         this.guideProjectGenerator = guideProjectGenerator;
         this.jsonFeedGenerator = jsonFeedGenerator;
-        this.jsonFeedConfiguration = jsonFeedConfiguration;
         this.rssFeedGenerator = rssFeedGenerator;
-        this.rssFeedConfiguration = rssFeedConfiguration;
         this.filesTransferUtility = filesTransferUtility;
         this.testScriptGenerator = testScriptGenerator;
         this.macroSubstitution = macroSubstitution;
@@ -69,6 +71,7 @@ class DefaultWebsiteGenerator implements WebsiteGenerator {
         this.indexGenerator = indexGenerator;
         this.guideMatrixGenerator = guideMatrixGenerator;
         this.guideProjectZipper = guideProjectZipper;
+        this.configurationsProvider = configurationsProvider;
     }
 
     @Override
@@ -121,10 +124,10 @@ class DefaultWebsiteGenerator implements WebsiteGenerator {
         saveToFile(indexHtml, outputDirectory, FILENAME_INDEX_HTML);
 
         String rss = rssFeedGenerator.rssFeed(guides);
-        saveToFile(rss, outputDirectory, rssFeedConfiguration.getFilename());
+        saveToFile(rss, outputDirectory, configurationsProvider.getRssFeedConfiguration().getFilename());
 
         String json = jsonFeedGenerator.jsonFeedString(guides);
-        saveToFile(json, outputDirectory, jsonFeedConfiguration.getFilename());
+        saveToFile(json, outputDirectory, configurationsProvider.getJsonFeedConfiguration().getFilename());
     }
 
     private void saveToFile(String content, File outputDirectory, String filename) throws IOException {

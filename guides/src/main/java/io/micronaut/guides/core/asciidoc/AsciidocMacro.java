@@ -31,6 +31,13 @@ public record AsciidocMacro(String name, String target, List<Attribute> attribut
     private static final String MACRO_OPEN_BRACKET = "[";
     private static final String MACRO_CLOSE_BRACKET = "]";
 
+    /**
+     * Creates an AsciidocMacro from the given name and string representation.
+     *
+     * @param name the name of the macro
+     * @param str  the string representation of the macro
+     * @return an Optional containing the AsciidocMacro if the string representation is valid, otherwise an empty Optional
+     */
     public static Optional<AsciidocMacro> of(String name, String str) {
         int bracketIndex = str.indexOf(MACRO_OPEN_BRACKET);
         int closingBracketIndex = str.indexOf(MACRO_CLOSE_BRACKET);

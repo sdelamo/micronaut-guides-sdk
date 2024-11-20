@@ -16,6 +16,7 @@
 package io.micronaut.guides.core;
 
 import com.networknt.schema.InputFormat;
+import com.networknt.schema.JsonSchema;
 import com.networknt.schema.ValidationMessage;
 import io.micronaut.core.annotation.NonNull;
 import io.micronaut.core.type.Argument;
@@ -33,7 +34,7 @@ import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
-import com.networknt.schema.JsonSchema;
+
 import static io.micronaut.guides.core.GuideUtils.mergeMetadataList;
 
 /**
@@ -41,9 +42,8 @@ import static io.micronaut.guides.core.GuideUtils.mergeMetadataList;
  */
 @Singleton
 public class DefaultGuideParser implements GuideParser {
-
-    private static final Logger LOG = LoggerFactory.getLogger(DefaultGuideParser.class);
     public static final String SPOTLESS = "spotless";
+    private static final Logger LOG = LoggerFactory.getLogger(DefaultGuideParser.class);
 
     private final JsonSchema jsonSchema;
     private final JsonMapper jsonMapper;
@@ -59,13 +59,6 @@ public class DefaultGuideParser implements GuideParser {
         this.jsonMapper = jsonMapper;
     }
 
-    /**
-     * Parses the metadata of all guides in the specified directory.
-     *
-     * @param guidesDir          the directory containing the guides
-     * @param metadataConfigName the name of the metadata configuration file
-     * @return a list of parsed guides
-     */
     @Override
     @NonNull
     public List<Guide> parseGuidesMetadata(@NonNull @NotNull File guidesDir, @NonNull @NotNull String metadataConfigName) {
@@ -84,13 +77,6 @@ public class DefaultGuideParser implements GuideParser {
         return metadatas;
     }
 
-    /**
-     * Parses the metadata of a single guide.
-     *
-     * @param guidesDir          the directory containing the guide
-     * @param metadataConfigName the name of the metadata configuration file
-     * @return an optional containing the parsed guide, or empty if parsing failed
-     */
     @Override
     @NonNull
     public Optional<Guide> parseGuideMetadata(@NonNull @NotNull File guidesDir, @NonNull @NotNull String metadataConfigName) {
@@ -108,7 +94,7 @@ public class DefaultGuideParser implements GuideParser {
             return Optional.empty();
         }
 
-        Map<String, Object> config = null;
+        Map<String, Object> config;
         try {
             config = jsonMapper.readValue(content, Argument.mapOf(String.class, Object.class));
         } catch (IOException e) {
@@ -178,6 +164,7 @@ public class DefaultGuideParser implements GuideParser {
         ));
     }
 
+    @SafeVarargs
     private boolean hasSpotless(List<String>... featureLists) {
         for (List<String> features : featureLists) {
             if (features != null && features.contains(SPOTLESS)) {
