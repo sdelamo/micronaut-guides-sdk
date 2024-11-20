@@ -25,20 +25,20 @@ public class GuideParserTest {
         String path = "src/test/resources/guides";
         File file = new File(path);
 
-        List<Guide> metadatas = guideParser.parseGuidesMetadata(file,"metadata.json");
+        List<Guide> metadatas = guideParser.parseGuidesMetadata(file, "metadata.json");
 
-        assertEquals(5,metadatas.size());
+        assertEquals(5, metadatas.size());
 
         Guide guide = metadatas.get(1);
         assertEquals(List.of("Graeme Rocher"), guide.authors());
         assertEquals("Connect a Micronaut Data JDBC Application to Azure Database for MySQL", guide.title());
         assertEquals("Learn how to connect a Micronaut Data JDBC application to a Microsoft Azure Database for MySQL", guide.intro());
         assertEquals(List.of("Data JDBC"), guide.categories());
-        assertEquals(LocalDate.of(2022,2, 17), guide.publicationDate());
-        assertEquals("base",guide.base());
-        assertEquals("child",guide.slug());
-        assertEquals(List.of(Language.JAVA, Language.GROOVY, Language.KOTLIN),guide.languages());
-        assertEquals(List.of(BuildTool.GRADLE, BuildTool.MAVEN),guide.buildTools());
+        assertEquals(LocalDate.of(2022, 2, 17), guide.publicationDate());
+        assertEquals("base", guide.base());
+        assertEquals("child", guide.slug());
+        assertEquals(List.of(Language.JAVA, Language.GROOVY, Language.KOTLIN), guide.languages());
+        assertEquals(List.of(BuildTool.GRADLE, BuildTool.MAVEN), guide.buildTools());
         assertTrue(guide.zipIncludes().isEmpty());
         assertTrue(guide.env().isEmpty());
         List<String> tags = guide.tags();
@@ -47,19 +47,7 @@ public class GuideParserTest {
         List<App> apps = guide.apps();
         assertNotNull(apps);
         assertEquals(1, apps.size());
-        assertTrue(apps.stream().anyMatch(app -> app.name().equals("default") &&
-                app.applicationType() == ApplicationType.DEFAULT &&
-                app.packageName().equals("example.micronaut") &&
-                app.framework().equals("Micronaut") &&
-                app.features().isEmpty() &&
-                app.invisibleFeatures().isEmpty() &&
-                app.kotlinFeatures().isEmpty() &&
-                app.javaFeatures().isEmpty() &&
-                app.groovyFeatures().isEmpty() &&
-                app.testFramework() ==  null &&
-                app.excludeTest() ==  null &&
-                app.excludeSource() ==  null &&
-                app.validateLicense()));
+        assertTrue(apps.stream().anyMatch(app -> app.name().equals("default") && app.applicationType() == ApplicationType.DEFAULT && app.packageName().equals("example.micronaut") && app.framework().equals("Micronaut") && app.features().isEmpty() && app.invisibleFeatures().isEmpty() && app.kotlinFeatures().isEmpty() && app.javaFeatures().isEmpty() && app.groovyFeatures().isEmpty() && app.testFramework() == null && app.excludeTest() == null && app.excludeSource() == null && !app.validateLicense()));
 
         guide = metadatas.get(4);
         assertEquals(List.of("Sergio del Amo"), guide.authors());
@@ -73,53 +61,17 @@ public class GuideParserTest {
         apps = guide.apps();
         assertNotNull(apps);
         assertEquals(3, apps.size());
-        assertTrue(apps.stream().anyMatch(app -> app.name().equals("springboot") &&
-                app.applicationType() == ApplicationType.DEFAULT &&
-                app.packageName().equals("example.micronaut") &&
-                app.framework().equals("Spring Boot") &&
-                app.features().equals(List.of("spring-boot-starter-web")) &&
-                app.invisibleFeatures().isEmpty() &&
-                app.kotlinFeatures().isEmpty() &&
-                app.javaFeatures().isEmpty() &&
-                app.groovyFeatures().isEmpty() &&
-                app.testFramework() ==  null &&
-                app.excludeTest() ==  null &&
-                app.excludeSource() ==  null &&
-                app.validateLicense()));
-        assertTrue(apps.stream().anyMatch(app -> app.name().equals("micronautframeworkjacksondatabind") &&
-                app.applicationType() == ApplicationType.DEFAULT &&
-                app.packageName().equals("example.micronaut") &&
-                app.framework().equals("Micronaut") &&
-                app.features().equals(List.of("json-path", "assertj", "jackson-databind")) &&
-                app.invisibleFeatures().isEmpty() &&
-                app.kotlinFeatures().isEmpty() &&
-                app.javaFeatures().isEmpty() &&
-                app.groovyFeatures().isEmpty() &&
-                app.testFramework() ==  null &&
-                app.excludeTest() ==  null &&
-                app.excludeSource() ==  null &&
-                app.validateLicense()));
-        assertTrue(apps.stream().anyMatch(app -> app.name().equals("micronautframeworkserde") &&
-                app.applicationType() == ApplicationType.DEFAULT &&
-                app.packageName().equals("example.micronaut") &&
-                app.framework().equals("Micronaut") &&
-                app.features().equals(List.of("json-path", "assertj")) &&
-                app.invisibleFeatures().isEmpty() &&
-                app.kotlinFeatures().isEmpty() &&
-                app.javaFeatures().isEmpty() &&
-                app.groovyFeatures().isEmpty() &&
-                app.testFramework() ==  null &&
-                app.excludeTest() ==  null &&
-                app.excludeSource() ==  null &&
-                app.validateLicense()));
+        assertTrue(apps.stream().anyMatch(app -> app.name().equals("springboot") && app.applicationType() == ApplicationType.DEFAULT && app.packageName().equals("example.micronaut") && app.framework().equals("Spring Boot") && app.features().equals(List.of("spring-boot-starter-web")) && app.invisibleFeatures().isEmpty() && app.kotlinFeatures().isEmpty() && app.javaFeatures().isEmpty() && app.groovyFeatures().isEmpty() && app.testFramework() == null && app.excludeTest() == null && app.excludeSource() == null && !app.validateLicense()));
+        assertTrue(apps.stream().anyMatch(app -> app.name().equals("micronautframeworkjacksondatabind") && app.applicationType() == ApplicationType.DEFAULT && app.packageName().equals("example.micronaut") && app.framework().equals("Micronaut") && app.features().equals(List.of("json-path", "assertj", "jackson-databind")) && app.invisibleFeatures().isEmpty() && app.kotlinFeatures().isEmpty() && app.javaFeatures().isEmpty() && app.groovyFeatures().isEmpty() && app.testFramework() == null && app.excludeTest() == null && app.excludeSource() == null && !app.validateLicense()));
+        assertTrue(apps.stream().anyMatch(app -> app.name().equals("micronautframeworkserde") && app.applicationType() == ApplicationType.DEFAULT && app.packageName().equals("example.micronaut") && app.framework().equals("Micronaut") && app.features().equals(List.of("json-path", "assertj")) && app.invisibleFeatures().isEmpty() && app.kotlinFeatures().isEmpty() && app.javaFeatures().isEmpty() && app.groovyFeatures().isEmpty() && app.testFramework() == null && app.excludeTest() == null && app.excludeSource() == null && !app.validateLicense()));
         assertFalse(guide.skipGradleTests());
         assertFalse(guide.skipMavenTests());
         assertNull(guide.minimumJavaVersion());
         assertNull(guide.maximumJavaVersion());
         assertNull(guide.cloud());
         assertTrue(guide.publish());
-        assertEquals("test.adoc",guide.asciidoctor());
-        assertEquals("test",guide.slug());
+        assertEquals("test.adoc", guide.asciidoctor());
+        assertEquals("test", guide.slug());
         assertTrue(guide.zipIncludes().isEmpty());
         assertNull(guide.base());
         assertTrue(guide.env().isEmpty());
