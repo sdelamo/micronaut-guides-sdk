@@ -141,8 +141,11 @@ class DefaultWebsiteGenerator implements WebsiteGenerator {
                 // HTML rendering
 
                 String optionHtml = asciidocConverter.convert(optionAsciidoc, inputDirectory, outputDirectory.getAbsolutePath(), new File(guideOutput, name).getAbsolutePath());
+
+                String tocHtml = extractToc(optionHtml);
+
                 String guideOptionHtmlFileName = name + ".html";
-                optionHtml = guidePageGenerator.render(optionHtml);
+                optionHtml = guidePageGenerator.render(tocHtml, optionHtml);
                 saveToFile(optionHtml, outputDirectory, guideOptionHtmlFileName);
             }
 
@@ -158,6 +161,11 @@ class DefaultWebsiteGenerator implements WebsiteGenerator {
 
         String json = jsonFeedGenerator.jsonFeedString(guides);
         saveToFile(json, outputDirectory, jsonFeedConfiguration.getFilename());
+    }
+
+    private String extractToc(String optionHtml) {
+    //TODO: Implement this method
+        return "TODO";
     }
 
     private void saveToFile(String content, File outputDirectory, String filename) throws IOException {
