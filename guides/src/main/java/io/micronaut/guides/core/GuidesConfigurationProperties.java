@@ -45,6 +45,8 @@ public class GuidesConfigurationProperties implements GuidesConfiguration {
     private static final String GITHUB_WORKFLOW_JAVA_CI = "Java CI";
     private static final String ENV_GITHUB_WORKFLOW = "GITHUB_WORKFLOW";
     private static final String SYS_PROP_MICRONAUT_GUIDE = "micronaut.guide";
+    private static final String DEFAULT_GUIDES_DIR = "guides";
+    private String guidesDir = DEFAULT_GUIDES_DIR;
     private String title = "Micronaut Guides";
     private String homePageUrl = GUIDES_URL;
     private String licensePath = DEFAULT_LICENSEHEADER;
@@ -323,5 +325,24 @@ public class GuidesConfigurationProperties implements GuidesConfiguration {
      */
     public void setSourceFilesExtensions(List<String> sourceFilesExtensions) {
         this.sourceFilesExtensions = sourceFilesExtensions;
+    }
+
+    /**
+     * Gets the guides directory.
+     *
+     * @return the guides directory
+     */
+    @Override
+    public String getGuidesDir() {
+        return guidesDir;
+    }
+
+    /**
+     * Sets the guides directory.
+     *
+     * @param guidesDir the guides directory to set
+     */
+    public void setGuidesDir(String guidesDir) {
+        this.guidesDir = guidesDir;
     }
 }
