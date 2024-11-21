@@ -23,12 +23,6 @@ import java.io.File;
  * AsciidocConfiguration is an interface that defines the configuration properties for Asciidoc processing.
  */
 public interface AsciidocConfiguration {
-    /**
-     * Returns the source directory.
-     *
-     * @return the source directory
-     */
-    String getSourceDir();
 
     /**
      * Returns the source highlighter.
@@ -127,13 +121,6 @@ public interface AsciidocConfiguration {
      * @return the base directory
      */
     String getBaseDir();
-
-    /**
-     * Returns the guides directory.
-     *
-     * @return the guides directory
-     */
-    String getGuidesDir();
 
     /**
      * Returns the callouts directory.

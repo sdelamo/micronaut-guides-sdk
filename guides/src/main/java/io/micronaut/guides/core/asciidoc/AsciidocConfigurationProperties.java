@@ -29,7 +29,6 @@ import java.io.File;
 @ConfigurationProperties(AsciidocConfigurationProperties.PREFIX)
 public class AsciidocConfigurationProperties implements AsciidocConfiguration {
     public static final String PREFIX = "asciidoc";
-    private static final String DEFAULT_SOURCEDIR = "build/code";
     private static final String DEFAULT_SOURCE_HIGHLIGHTER = "coderay";
     private static final Placement DEFAULT_TOC = Placement.LEFT;
     private static final int DEFAULT_TOCLEVELS = 2;
@@ -45,9 +44,7 @@ public class AsciidocConfigurationProperties implements AsciidocConfiguration {
     private static final String DEFAULT_COMMONS_DIR = "src/docs/asciidoc/common";
     private static final String DEFAULT_CALLOUTS_DIR = "src/docs/asciidoc/callouts";
     private static final String DEFAULT_BASE_DIR = "";
-    private static final String DEFAULT_GUIDES_DIR = "guides";
 
-    private String sourcedir = DEFAULT_SOURCEDIR;
     private String sourceHighlighter = DEFAULT_SOURCE_HIGHLIGHTER;
     private Placement toc = DEFAULT_TOC;
     private int toclevels = DEFAULT_TOCLEVELS;
@@ -62,27 +59,7 @@ public class AsciidocConfigurationProperties implements AsciidocConfiguration {
     private File templateDirs = new File(DEFAULT_TEMPLATE_DIRS);
     private String commonsDir = DEFAULT_COMMONS_DIR;
     private String baseDir = DEFAULT_BASE_DIR;
-    private String guidesDir = DEFAULT_GUIDES_DIR;
     private String calloutsDir = DEFAULT_CALLOUTS_DIR;
-
-    /**
-     * Gets the source directory.
-     *
-     * @return the source directory
-     */
-    @Override
-    public String getSourceDir() {
-        return sourcedir;
-    }
-
-    /**
-     * Sets the source directory.
-     *
-     * @param sourcedir the source directory to set
-     */
-    public void setSourceDir(String sourcedir) {
-        this.sourcedir = sourcedir;
-    }
 
     /**
      * Gets the source highlighter.
@@ -348,25 +325,6 @@ public class AsciidocConfigurationProperties implements AsciidocConfiguration {
      */
     public void setBaseDir(String baseDir) {
         this.baseDir = baseDir;
-    }
-
-    /**
-     * Gets the guides directory.
-     *
-     * @return the guides directory
-     */
-    @Override
-    public String getGuidesDir() {
-        return guidesDir;
-    }
-
-    /**
-     * Sets the guides directory.
-     *
-     * @param guidesDir the guides directory to set
-     */
-    public void setGuidesDir(String guidesDir) {
-        this.guidesDir = guidesDir;
     }
 
     /**

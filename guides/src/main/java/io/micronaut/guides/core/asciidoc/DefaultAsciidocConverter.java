@@ -19,6 +19,7 @@ import io.micronaut.core.annotation.NonNull;
 import io.micronaut.core.util.StringUtils;
 import jakarta.inject.Singleton;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import org.asciidoctor.*;
 
 import java.io.File;
@@ -37,10 +38,6 @@ public class DefaultAsciidocConverter implements AsciidocConverter {
 
     DefaultAsciidocConverter(AsciidocConfiguration asciidocConfiguration) {
         attributesBuilder = Attributes.builder()
-                .attribute("sourcedir", asciidocConfiguration.getSourceDir())
-                .attribute("commonsDir", asciidocConfiguration.getCommonsDir())
-                .attribute("calloutsDir", asciidocConfiguration.getCalloutsDir())
-                .attribute("guidesDir", asciidocConfiguration.getGuidesDir())
                 .sourceHighlighter(asciidocConfiguration.getSourceHighlighter())
                 .tableOfContents(asciidocConfiguration.getToc())
                 .attribute("toclevels", asciidocConfiguration.getToclevels())
@@ -63,34 +60,15 @@ public class DefaultAsciidocConverter implements AsciidocConverter {
     }
 
     @Override
-    public String convert(@NonNull @NotBlank String asciidoc, @NonNull @NotBlank String sourceDir) {
+    public String convert(@NonNull @NotBlank String asciidoc,
+                          @NonNull @NotNull File baseDir,
+                          @NonNull @NotBlank String sourceDir,
+                          @NonNull @NotBlank String guideSourceDir) {
         return asciidoctor.convert(asciidoc, optionsBuilder
+                        .baseDir(baseDir)
                 .toFile(false)
                 .attributes(attributesBuilder.attribute("sourcedir", sourceDir).build())
-                .build());
-    }
-
-    @Override
-    public String convert(@NonNull File asciidoc, @NonNull @NotBlank String sourceDir) {
-        return asciidoctor.convertFile(asciidoc, optionsBuilder
-                .toFile(false)
-                .attributes(attributesBuilder.attribute("sourcedir", sourceDir).build())
-                .build());
-    }
-
-    @Override
-    public void convert(@NonNull @NotBlank String asciidoc, @NonNull @NotBlank String sourceDir, @NonNull File destination) {
-        asciidoctor.convert(asciidoc, optionsBuilder
-                .toFile(destination)
-                .attributes(attributesBuilder.attribute("sourcedir", sourceDir).build())
-                .build());
-    }
-
-    @Override
-    public void convert(@NonNull File asciidoc, @NonNull @NotBlank String sourceDir, @NonNull File destination) {
-        asciidoctor.convertFile(asciidoc, optionsBuilder
-                .toFile(destination)
-                .attributes(attributesBuilder.attribute("sourcedir", sourceDir).build())
+                .attributes(attributesBuilder.attribute("guidesourcedir", guideSourceDir).build())
                 .build());
     }
 }

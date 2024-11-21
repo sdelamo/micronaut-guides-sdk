@@ -59,6 +59,7 @@ class DefaultWebsiteGenerator implements WebsiteGenerator {
     private final GuideProjectZipper guideProjectZipper;
     private final RssFeedConfiguration rssFeedConfiguration;
     private final JsonFeedConfiguration jsonFeedConfiguration;
+    private final GuidesConfiguration guidesConfiguration;
 
     @SuppressWarnings("checkstyle:ParameterNumber")
     DefaultWebsiteGenerator(GuideParser guideParser,
@@ -73,7 +74,8 @@ class DefaultWebsiteGenerator implements WebsiteGenerator {
                             GuideMatrixGenerator guideMatrixGenerator,
                             GuideProjectZipper guideProjectZipper,
                             RssFeedConfiguration rssFeedConfiguration,
-                            JsonFeedConfiguration jsonFeedConfiguration) {
+                            JsonFeedConfiguration jsonFeedConfiguration,
+                            GuidesConfiguration guidesConfiguration) {
         this.guideParser = guideParser;
         this.guideProjectGenerator = guideProjectGenerator;
         this.jsonFeedGenerator = jsonFeedGenerator;
@@ -87,16 +89,24 @@ class DefaultWebsiteGenerator implements WebsiteGenerator {
         this.guideProjectZipper = guideProjectZipper;
         this.rssFeedConfiguration = rssFeedConfiguration;
         this.jsonFeedConfiguration = jsonFeedConfiguration;
+        this.guidesConfiguration = guidesConfiguration;
     }
 
     @Override
     public void generate(@NonNull @NotNull File inputDirectory, @NonNull @NotNull File outputDirectory) throws IOException {
-        List<Guide> guides = guideParser.parseGuidesMetadata(inputDirectory);
+        File guidesInputDirectory = new File(inputDirectory, guidesConfiguration.getGuidesDir());
+        if (!guidesInputDirectory.exists()) {
+            throw new ConfigurationException("Guides directory " + guidesInputDirectory.getAbsolutePath() +" not found");
+        }
+        if (!guidesInputDirectory.isDirectory()) {
+            throw new ConfigurationException("Guides path " + guidesInputDirectory.getAbsolutePath() +" is not a directory");
+        }
+        List<Guide> guides = guideParser.parseGuidesMetadata(guidesInputDirectory);
         for (Guide guide : guides) {
             File guideOutput = new File(outputDirectory, guide.slug());
             guideOutput.mkdir();
             guideProjectGenerator.generate(guideOutput, guide);
-            File guideInputDirectory = new File(inputDirectory, guide.slug());
+            File guideInputDirectory = new File(guidesInputDirectory, guide.slug());
             filesTransferUtility.transferFiles(guideInputDirectory, guideOutput, guide);
 
             // Test script generation
@@ -126,7 +136,8 @@ class DefaultWebsiteGenerator implements WebsiteGenerator {
                 String optionAsciidoc = macroSubstitution.substitute(asciidoc, guide, guidesOption);
 
                 // HTML rendering
-                String optionHtml = asciidocConverter.convert(optionAsciidoc, outputDirectory.getAbsolutePath());
+
+                String optionHtml = asciidocConverter.convert(optionAsciidoc, inputDirectory, outputDirectory.getAbsolutePath(), new File(guideOutput, name).getAbsolutePath());
                 String guideOptionHtmlFileName = name + ".html";
                 saveToFile(optionHtml, outputDirectory, guideOptionHtmlFileName);
             }

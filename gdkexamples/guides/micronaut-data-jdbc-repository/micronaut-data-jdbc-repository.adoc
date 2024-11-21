@@ -109,9 +109,7 @@ During application startup, Flyway runs the commands in the SQL file and creates
 
 === 1.3. Domain Entity
 
-{% include_relative includes/genre.md parentDir=&quot;&quot; %}
-
-source:domain.Genre.java[]
+include::asciidoc/commons/genre.adoc[]
 
 You could use a https://micronaut-projects.github.io/micronaut-data/latest/guide/#sqlAnnotations[subset of supported JPA annotations] instead by including the following `compileOnly` scoped dependency: `jakarta.persistence:jakarta.persistence-api`.
 

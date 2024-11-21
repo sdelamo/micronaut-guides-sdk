@@ -24,6 +24,13 @@ import java.util.List;
  */
 public interface GuidesConfiguration {
     /**
+     * Returns the guides directory.
+     *
+     * @return the guides directory
+     */
+    String getGuidesDir();
+
+    /**
      * Returns the home page URL.
      *
      * @return the home page URL

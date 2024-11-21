@@ -18,6 +18,7 @@ package io.micronaut.guides.core.asciidoc;
 import io.micronaut.core.annotation.NonNull;
 import io.micronaut.core.annotation.Nullable;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 import java.io.File;
 
@@ -33,33 +34,8 @@ public interface AsciidocConverter {
      * @return the converted content as a string, or null if the conversion fails
      */
     @Nullable
-    String convert(@NonNull @NotBlank String asciidoc, @NonNull @NotBlank String sourceDir);
-
-    /**
-     * Converts the source Asciidoc file to the specified destination file.
-     *
-     * @param asciidoc the Asciidoc file, must not be null
-     * @param sourceDir the directory where all the projects source code has been generated
-     * @return the converted content as a string, or null if the conversion fails
-     */
-    @Nullable
-    String convert(@NonNull File asciidoc, @NonNull @NotBlank String sourceDir);
-
-    /**
-     * Converts the source Asciidoc file to the specified destination file.
-     *
-     * @param asciidoc the source Asciidoc, must not be null
-     * @param sourceDir the directory where all the projects source code has been generated
-     * @param destination the destination file, must not be null
-     */
-    void convert(@NonNull @NotBlank String asciidoc, @NonNull @NotBlank String sourceDir, @NonNull File destination);
-
-    /**
-     * Converts the source Asciidoc file to the specified destination file.
-     *
-     * @param source the source Asciidoc file, must not be null
-     * @param sourceDir the directory where all the projects source code has been generated
-     * @param destination the destination file, must not be null
-     */
-    void convert(@NonNull File source, @NonNull @NotBlank String sourceDir, @NonNull File destination);
+    String convert(@NonNull @NotBlank String asciidoc,
+                   @NonNull @NotNull File baseDir,
+                   @NonNull @NotBlank String sourceDir,
+                   @NonNull @NotBlank String guideSourceDir);
 }
