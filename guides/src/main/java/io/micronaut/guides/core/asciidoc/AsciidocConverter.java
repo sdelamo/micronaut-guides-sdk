@@ -30,7 +30,9 @@ public interface AsciidocConverter {
      * Converts the source Asciidoc file to the specified destination file.
      *
      * @param asciidoc the source Asciidoc, must not be null
+     * @param baseDir Base directory for asciidoc
      * @param sourceDir the directory where all the projects source code has been generated
+     * @param guideSourceDir the directory where the source code for the guide option has been generated
      * @return the converted content as a string, or null if the conversion fails
      */
     @Nullable
