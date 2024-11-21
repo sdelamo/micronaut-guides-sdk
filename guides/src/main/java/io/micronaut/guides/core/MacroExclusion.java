@@ -20,14 +20,27 @@ import java.util.List;
 abstract class MacroExclusion implements MacroSubstitution {
     private static final String LINE_BREAK = "\n";
 
+    /**
+     * Gets the name of the macro.
+     *
+     * @return the name of the macro
+     */
     protected abstract String getMacroName();
 
+    /**
+     * Determines whether the exclusion applies for this guide and option.
+     *
+     * @param params the list of parameters for the macro
+     * @param option the GuidesOption
+     * @param guide  the Guide
+     * @return true if the exclusion applies for this guide and option, false otherwise
+     */
     protected abstract boolean shouldExclude(List<String> params, GuidesOption option, Guide guide);
 
     @Override
     public String substitute(String str, Guide guide, GuidesOption option) {
         for (List<String> group : MacroUtils.findMacroGroupsNested(str, getMacroName())) {
-            List<String> params = MacroUtils.extractMacroGroupParameters(group.get(0), getMacroName());
+            List<String> params = MacroUtils.extractMacroGroupParameters(group.getFirst(), getMacroName());
             if (shouldExclude(params, option, guide)) {
                 str = str.replace(String.join(LINE_BREAK, group) + LINE_BREAK, "");
             } else {

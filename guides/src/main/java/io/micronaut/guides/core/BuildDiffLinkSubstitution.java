@@ -28,6 +28,10 @@ import java.util.Set;
 
 import static io.micronaut.guides.core.MacroUtils.findMacroLines;
 
+/**
+ * BuildDiffLinkSubstitution is a singleton class that implements the MacroSubstitution interface.
+ * It provides methods to substitute macros in Asciidoc files with appropriate values.
+ */
 @Singleton
 public class BuildDiffLinkSubstitution implements MacroSubstitution {
     public static final String MACRO_DIFF_LINK = "diffLink";
@@ -43,10 +47,23 @@ public class BuildDiffLinkSubstitution implements MacroSubstitution {
     private static final String ATTRIBUTE_EXCLUDE_FEATURES = "featureExcludes";
     private final GuidesConfiguration guidesConfiguration;
 
+    /**
+     * Constructs a new BuildDiffLinkSubstitution with the specified guides configuration.
+     *
+     * @param config the guides configuration
+     */
     public BuildDiffLinkSubstitution(GuidesConfiguration config) {
         this.guidesConfiguration = config;
     }
 
+    /**
+     * Extracts features from the given application and Asciidoc macro based on the specified guides option.
+     *
+     * @param app           the application object
+     * @param asciidocMacro the Asciidoc macro
+     * @param option        the guides option
+     * @return a set of features
+     */
     private static Set<String> features(App app, AsciidocMacro asciidocMacro, GuidesOption option) {
         Set<String> features = new HashSet<>();
         if (app != null) {
@@ -60,9 +77,18 @@ public class BuildDiffLinkSubstitution implements MacroSubstitution {
                 .filter(attribute -> attribute.key().equals(ATTRIBUTE_EXCLUDE_FEATURES))
                 .map(Attribute::values)
                 .forEach(features::removeAll);
+
         return features;
     }
 
+    /**
+     * Substitutes macros in the given string with the appropriate values.
+     *
+     * @param str    the string containing macros
+     * @param guide  the guide object
+     * @param option the guides option
+     * @return the string with macros substituted
+     */
     @Override
     public String substitute(String str, Guide guide, GuidesOption option) {
         for (String line : findMacroLines(str, MACRO_DIFF_LINK)) {
@@ -77,6 +103,14 @@ public class BuildDiffLinkSubstitution implements MacroSubstitution {
         return str;
     }
 
+    /**
+     * Builds a URI for the diff link based on the given Asciidoc macro, guide, and guides option.
+     *
+     * @param asciidocMacro the Asciidoc macro
+     * @param guide         the guide object
+     * @param option        the guides option
+     * @return the URI for the diff link
+     */
     private URI buildDiffLink(AsciidocMacro asciidocMacro, Guide guide, GuidesOption option) {
         String appName = appName(asciidocMacro);
         App app = app(guide, asciidocMacro);

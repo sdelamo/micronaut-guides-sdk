@@ -17,19 +17,37 @@ package io.micronaut.guides.core;
 
 import jakarta.inject.Singleton;
 
+/**
+ * Class that provides macro substitution functionality for common placeholders in guide templates.
+ */
 @Singleton
 public class CommonMacroSubstitution extends LineMacroSubstitution {
 
+    /**
+     * Returns the name of the macro.
+     *
+     * @return the macro name
+     */
     @Override
     protected String getMacroName() {
         return "common";
     }
 
+    /**
+     * Returns the base directory for the macro substitution.
+     *
+     * @return the base directory
+     */
     @Override
     protected String getBaseDirectory() {
         return "{commonsDir}";
     }
 
+    /**
+     * Returns the prefix for the macro substitution.
+     *
+     * @return the prefix
+     */
     @Override
     protected String getPrefix() {
         return "common-";

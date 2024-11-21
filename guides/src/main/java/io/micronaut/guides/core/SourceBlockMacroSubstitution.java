@@ -35,16 +35,41 @@ abstract class SourceBlockMacroSubstitution implements MacroSubstitution {
         this.guidesConfiguration = guidesConfiguration;
     }
 
+    /**
+     * Retrieves the name of the macro.
+     *
+     * @return The name of the macro.
+     */
     protected abstract String getMacroName();
 
+    /**
+     * Retrieves the classpath for the macro.
+     *
+     * @return The classpath for the macro.
+     */
     protected abstract Classpath getClasspath();
 
+    /**
+     * Retrieves the file type for the macro.
+     *
+     * @return The file type for the macro.
+     */
     protected abstract FileType getFileType();
 
+    /**
+     * Retrieves the LicenseLoader instance.
+     *
+     * @return The LicenseLoader instance.
+     */
     public LicenseLoader getLicenseLoader() {
         return licenseLoader;
     }
 
+    /**
+     * Retrieves the GuidesConfiguration instance.
+     *
+     * @return The GuidesConfiguration instance.
+     */
     public GuidesConfiguration getGuidesConfiguration() {
         return guidesConfiguration;
     }
@@ -101,14 +126,36 @@ abstract class SourceBlockMacroSubstitution implements MacroSubstitution {
         return str;
     }
 
+    /**
+     * Retrieves the language from the given GuidesOption.
+     *
+     * @param option The GuidesOption from which to retrieve the language.
+     * @return The language as a String.
+     */
     protected String getLanguage(GuidesOption option) {
         return option.getLanguage().toString();
     }
 
+    /**
+     * Retrieves the file extension from the given GuidesOption.
+     *
+     * @param option The GuidesOption from which to retrieve the file extension.
+     * @return The file extension as a String.
+     */
     protected String getExtension(GuidesOption option) {
         return option.getLanguage().getExtension();
     }
 
+    /**
+     * Constructs the source title based on the provided parameters.
+     *
+     * @param appName         The name of the application.
+     * @param condensedTarget The condensed target path.
+     * @param classpath       The classpath for the source.
+     * @param language        The language of the source.
+     * @param packageName     The package name of the source.
+     * @return The constructed source title as a String.
+     */
     protected String sourceTitle(
             String appName,
             String condensedTarget,
@@ -120,6 +167,18 @@ abstract class SourceBlockMacroSubstitution implements MacroSubstitution {
                 + condensedTarget;
     }
 
+    /**
+     * Constructs the source include path based on the provided parameters.
+     *
+     * @param slug            The slug of the guide.
+     * @param appName         The name of the application.
+     * @param condensedTarget The condensed target path.
+     * @param classpath       The classpath for the source.
+     * @param option          The GuidesOption containing additional options.
+     * @param language        The language of the source.
+     * @param packageName     The package name of the source.
+     * @return The constructed source include path as a String.
+     */
     protected String sourceInclude(
             String slug,
             String appName,
@@ -141,6 +200,13 @@ abstract class SourceBlockMacroSubstitution implements MacroSubstitution {
         throw new UnsupportedOperationException("Unimplemented sourceConventionFolder for " + getFileType());
     }
 
+    /**
+     * Retrieves the condensed target from the given AsciidocMacro and GuidesOption.
+     *
+     * @param asciidocMacro The AsciidocMacro from which to retrieve the target.
+     * @param option        The GuidesOption containing additional options.
+     * @return The condensed target as a String.
+     */
     protected String condensedTarget(@NonNull AsciidocMacro asciidocMacro, GuidesOption option) {
         return asciidocMacro.target();
     }

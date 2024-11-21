@@ -20,11 +20,23 @@ import io.micronaut.core.annotation.NonNull;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Attribute is a record that represents an Asciidoc attribute with a key and a list of values.
+ *
+ * @param key    the key of the attribute
+ * @param values the list of values associated with the key
+ */
 public record Attribute(String key, List<String> values) {
     private static final String ATTRIBUTE_SEPARATOR = ",";
     private static final String VALUE_SEPARATOR = ";";
     private static final String KEY_VALUE_SEPARATOR = "=";
 
+    /**
+     * Parses a string to create a list of Attribute instances.
+     *
+     * @param str the string to parse, must not be null
+     * @return a list of Attribute instances
+     */
     @NonNull
     public static List<Attribute> of(@NonNull String str) {
         List<Attribute> result = new ArrayList<>();

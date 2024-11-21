@@ -19,14 +19,25 @@ import java.util.Optional;
 
 import static io.micronaut.guides.core.asciidoc.AsciidocMacro.MACRO_NAME_SEPARATOR;
 
+/**
+ * PlacheholderMacro is a record that represents a macro with a name and a target.
+ *
+ * @param name   the name of the macro
+ * @param target the target of the macro
+ */
 public record PlacheholderMacro(String name, String target) {
     private static final String MACRO_BRACKET = "@";
 
+    /**
+     * Creates an Optional containing a PlacheholderMacro if the given string matches the macro format.
+     *
+     * @param name the name of the macro
+     * @param str  the string to parse
+     * @return an Optional containing a PlacheholderMacro if the string matches the macro format, otherwise an empty Optional
+     */
     public static Optional<PlacheholderMacro> of(String name, String str) {
         if (str.startsWith(MACRO_BRACKET) && str.endsWith(name + MACRO_BRACKET)) {
-            String target = str.replace(name + MACRO_BRACKET, "")
-                    .replace(MACRO_BRACKET, "")
-                    .replace(MACRO_NAME_SEPARATOR, "");
+            String target = str.replace(name + MACRO_BRACKET, "").replace(MACRO_BRACKET, "").replace(MACRO_NAME_SEPARATOR, "");
             return Optional.of(new PlacheholderMacro(name, target));
         }
         return Optional.empty();

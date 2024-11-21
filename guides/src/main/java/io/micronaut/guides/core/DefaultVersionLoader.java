@@ -24,16 +24,31 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Optional;
 
+/**
+ * DefaultVersionLoader is a singleton class that implements the VersionLoader interface.
+ * It loads the version information from a resource specified in the GuidesConfiguration.
+ */
 @Singleton
 public class DefaultVersionLoader implements VersionLoader {
     private final String version;
 
-    public DefaultVersionLoader(GuidesConfiguration guidesConfiguration,
-                                ResourceLoader resourceLoader) {
+    /**
+     * Constructs a new DefaultVersionLoader with the specified guides configuration and resource loader.
+     *
+     * @param guidesConfiguration the guides configuration
+     * @param resourceLoader      the resource loader
+     */
+    public DefaultVersionLoader(GuidesConfiguration guidesConfiguration, ResourceLoader resourceLoader) {
         Optional<InputStream> resourceAsStreamOptional = resourceLoader.getResourceAsStream(guidesConfiguration.getVersionPath());
         this.version = resourceAsStreamOptional.map(DefaultVersionLoader::loadVersion).orElse("0.0.0");
     }
 
+    /**
+     * Loads the version from the given input stream.
+     *
+     * @param inputStream the input stream
+     * @return the version string
+     */
     private static String loadVersion(InputStream inputStream) {
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
             return reader.readLine();
@@ -42,6 +57,11 @@ public class DefaultVersionLoader implements VersionLoader {
         }
     }
 
+    /**
+     * Returns the loaded version.
+     *
+     * @return the version string
+     */
     @Override
     public String getVersion() {
         return version;

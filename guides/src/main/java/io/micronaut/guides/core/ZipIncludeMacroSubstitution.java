@@ -18,36 +18,66 @@ package io.micronaut.guides.core;
 import io.micronaut.guides.core.asciidoc.Classpath;
 import jakarta.inject.Singleton;
 
+/**
+ * ZipIncludeMacroSubstitution is a singleton class that extends SourceBlockMacroSubstitution.
+ * It provides methods to substitute the "zipInclude" macro in Asciidoc files.
+ */
 @Singleton
 public class ZipIncludeMacroSubstitution extends SourceBlockMacroSubstitution {
     private static final String MACRO_ZIPINCLUDE = "zipInclude";
 
+    /**
+     * Constructs a new ZipIncludeMacroSubstitution with the specified guides configuration and license loader.
+     *
+     * @param guidesConfiguration the guides configuration
+     * @param licenseLoader       the license loader
+     */
     public ZipIncludeMacroSubstitution(GuidesConfiguration guidesConfiguration, LicenseLoader licenseLoader) {
         super(licenseLoader, guidesConfiguration);
     }
 
+    /**
+     * Returns the name of the macro.
+     *
+     * @return the macro name
+     */
     @Override
     public String getMacroName() {
         return MACRO_ZIPINCLUDE;
     }
 
+    /**
+     * Returns the classpath for the macro substitution.
+     *
+     * @return the classpath
+     */
     @Override
     protected Classpath getClasspath() {
         return Classpath.MAIN;
     }
 
+    /**
+     * Returns the file type for the macro substitution.
+     *
+     * @return the file type
+     */
     @Override
     protected FileType getFileType() {
         return FileType.RESOURCE;
     }
 
+    /**
+     * Returns the source title for the macro substitution.
+     *
+     * @param appName         the application name
+     * @param condensedTarget the condensed target
+     * @param classpath       the classpath
+     * @param language        the language
+     * @param packageName     the package name
+     * @return the source title
+     */
     @Override
-    protected String sourceTitle(
-            String appName,
-            String condensedTarget,
-            Classpath classpath,
-            String language,
-            String packageName) {
+    protected String sourceTitle(String appName, String condensedTarget, Classpath classpath, String language, String packageName) {
         return condensedTarget;
     }
 }

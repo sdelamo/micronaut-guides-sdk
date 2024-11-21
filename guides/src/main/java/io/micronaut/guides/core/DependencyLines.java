@@ -26,6 +26,9 @@ import static io.micronaut.starter.options.BuildTool.MAVEN;
 import static io.micronaut.starter.options.Language.GROOVY;
 import static io.micronaut.starter.options.Language.KOTLIN;
 
+/**
+ * Class that provides utility methods for generating dependency lines in Asciidoc format.
+ */
 public class DependencyLines {
 
     private static final String SCOPE_COMPILE = "compile";
@@ -33,6 +36,12 @@ public class DependencyLines {
     private static final String SCOPE_ANNOTATION_PROCESSOR = "annotationProcessor";
     private static final String SCOPE_ANNOTATION_PROCESSOR_KAPT = "kapt";
 
+    /**
+     * Converts Maven scope attributes to their corresponding scope strings.
+     *
+     * @param attributes the map of attributes
+     * @return the Maven scope string
+     */
     private static String toMavenScope(Map<String, String> attributes) {
         String s = attributes.get("scope");
         if (s == null) {
@@ -47,6 +56,13 @@ public class DependencyLines {
         };
     }
 
+    /**
+     * Converts Gradle scope attributes to their corresponding scope strings.
+     *
+     * @param attributes the map of attributes
+     * @param language   the programming language
+     * @return the Gradle scope string
+     */
     private static String toGradleScope(Map<String, String> attributes, Language language) {
         String s = attributes.get("scope");
         if (s == null) {
@@ -73,10 +89,26 @@ public class DependencyLines {
         }
     }
 
+    /**
+     * Generates Asciidoc formatted dependency lines for a single dependency.
+     *
+     * @param line      the dependency line
+     * @param buildTool the build tool
+     * @param language  the programming language
+     * @return the list of Asciidoc formatted dependency lines
+     */
     public static List<String> asciidoc(String line, BuildTool buildTool, Language language) {
         return asciidoc(Collections.singletonList(line), buildTool, language);
     }
 
+    /**
+     * Generates Asciidoc formatted dependency lines for multiple dependencies.
+     *
+     * @param lines     the list of dependency lines
+     * @param buildTool the build tool
+     * @param language  the programming language
+     * @return the list of Asciidoc formatted dependency lines
+     */
     public static List<String> asciidoc(List<String> lines, BuildTool buildTool, Language language) {
         List<String> dependencyLines = new ArrayList<>();
 
@@ -165,11 +197,23 @@ public class DependencyLines {
         return dependencyLines;
     }
 
+    /**
+     * Extracts callout information from the attributes map.
+     *
+     * @param attributes the map of attributes
+     * @return the callout string
+     */
     private static String extractCallout(Map<String, String> attributes) {
         String callout = attributes.getOrDefault("callout", null);
         return callout != null ? " // <" + callout + ">" : "";
     }
 
+    /**
+     * Returns the XML path for Maven annotation processor scope based on the programming language.
+     *
+     * @param language the programming language
+     * @return the XML path string
+     */
     private static String getMavenAnnotationScopeXMLPath(Language language) {
         return switch (language) {
             case JAVA -> "path";

@@ -29,20 +29,34 @@ import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.util.List;
 
+/**
+ * Class that implements the JsonFeedGenerator interface.
+ */
 @Singleton
 public class DefaultJsonFeedGenerator implements JsonFeedGenerator {
     private final GuidesConfiguration guidesConfiguration;
     private final JsonFeedConfiguration jsonFeedConfiguration;
     private final JsonMapper jsonMapper;
 
-    public DefaultJsonFeedGenerator(GuidesConfiguration guidesConfiguration,
-                                    JsonFeedConfiguration jsonFeedConfiguration,
-                                    JsonMapper jsonMapper) {
+    /**
+     * Constructs a new DefaultJsonFeedGenerator.
+     *
+     * @param guidesConfiguration   the configuration for guides
+     * @param jsonFeedConfiguration the configuration for JSON feed
+     * @param jsonMapper            the JSON mapper
+     */
+    public DefaultJsonFeedGenerator(GuidesConfiguration guidesConfiguration, JsonFeedConfiguration jsonFeedConfiguration, JsonMapper jsonMapper) {
         this.guidesConfiguration = guidesConfiguration;
         this.jsonFeedConfiguration = jsonFeedConfiguration;
         this.jsonMapper = jsonMapper;
     }
 
+    /**
+     * Generates a JsonFeed from the provided list of guide metadata.
+     *
+     * @param metadatas the list of guide metadata
+     * @return the generated JsonFeed
+     */
     public JsonFeed jsonFeed(List<Guide> metadatas) {
         JsonFeed.Builder jsonFeedBuilder = jsonFeedBuilder();
         for (Guide metadata : metadatas) {
@@ -51,6 +65,13 @@ public class DefaultJsonFeedGenerator implements JsonFeedGenerator {
         return jsonFeedBuilder.build();
     }
 
+    /**
+     * Generates a JSON string representation of the JsonFeed from the provided list of guide metadata.
+     *
+     * @param metadatas the list of guide metadata
+     * @return the JSON string representation of the JsonFeed
+     * @throws IOException if an I/O error occurs during JSON serialization
+     */
     @Override
     @NonNull
     public String jsonFeedString(@NonNull List<Guide> metadatas) throws IOException {

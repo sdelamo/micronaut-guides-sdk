@@ -21,8 +21,17 @@ import jakarta.validation.constraints.NotNull;
 import java.io.File;
 import java.io.IOException;
 
+/**
+ * GuideProjectGenerator is an interface for generating guide projects.
+ */
 public interface GuideProjectGenerator {
 
-    void generate(@NotNull @NonNull File outputDirectory,
-                  @NotNull @NonNull Guide guide) throws IOException;
+    /**
+     * Generates a guide project in the specified output directory.
+     *
+     * @param outputDirectory the directory where the project will be generated
+     * @param guide           the guide containing the project details
+     * @throws IOException if an I/O error occurs during project generation
+     */
+    void generate(@NotNull @NonNull File outputDirectory, @NotNull @NonNull Guide guide) throws IOException;
 }

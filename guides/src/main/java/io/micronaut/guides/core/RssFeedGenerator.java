@@ -19,7 +19,16 @@ import io.micronaut.core.annotation.NonNull;
 
 import java.util.List;
 
+/**
+ * RssFeedGenerator is an interface that defines a method to generate an RSS feed from a list of guides.
+ */
 public interface RssFeedGenerator {
+    /**
+     * Generates an RSS feed from the given list of guide metadata.
+     *
+     * @param metadatas the list of guide metadata
+     * @return the generated RSS feed as a string
+     */
     @NonNull
     String rssFeed(@NonNull List<Guide> metadatas);
 }

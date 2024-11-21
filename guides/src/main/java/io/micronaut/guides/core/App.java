@@ -28,6 +28,8 @@ import jakarta.validation.constraints.NotBlank;
 import java.util.List;
 
 /**
+ * Represents the app metadata.
+ *
  * @param name              The app's name. For single application guides, the application needs to be named default
  * @param packageName       The app's package name. If you don't specify, the package name example.micronaut is used
  * @param applicationType   The app type.  If you don't specify, default is used

@@ -23,6 +23,10 @@ import org.asciidoctor.*;
 
 import java.io.File;
 
+/**
+ * DefaultAsciidocConverter is a singleton class that implements the AsciidocConverter interface.
+ * It provides methods to convert Asciidoc files to html using Asciidoctor.
+ */
 @Singleton
 public class DefaultAsciidocConverter implements AsciidocConverter {
 

@@ -19,24 +19,47 @@ import io.micronaut.core.annotation.NonNull;
 import jakarta.validation.constraints.NotNull;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * GuideParser is an interface that defines methods for parsing metadata of guides.
+ * It provides methods to parse metadata for all guides in a specified directory
+ * or for a single guide.
+ */
 public interface GuideParser {
-
     String DEFAULT_METADATA_NAME = "metadata.json";
 
+    /**
+     * Parses the metadata for all guides in the specified directory.
+     *
+     * @param guidesDir          the directory containing the guides
+     * @param metadataConfigName the name of the metadata configuration file
+     * @return a list of parsed guide metadata
+     */
     @NonNull
     List<Guide> parseGuidesMetadata(@NonNull @NotNull File guidesDir,
                                     @NonNull @NotNull String metadataConfigName);
 
+    /**
+     * Parses the metadata for a single guide in the specified directory.
+     *
+     * @param guidesDir the directory containing the guides
+     * @return an optional containing the parsed guide metadata, or empty if not found
+     */
     @NonNull
     default List<Guide> parseGuidesMetadata(@NonNull @NotNull File guidesDir) {
         return parseGuidesMetadata(guidesDir, DEFAULT_METADATA_NAME);
     }
 
+    /**
+     * Parses the metadata for a single guide in the specified directory.
+     *
+     * @param guidesDir          the directory containing the guides
+     * @param metadataConfigName the name of the metadata configuration file
+     * @return an optional containing the parsed guide metadata, or empty if not found
+     */
     @NonNull
     Optional<Guide> parseGuideMetadata(@NonNull @NotNull File guidesDir,
-                                       @NonNull @NotNull String metadataConfigName) throws IOException;
+                                       @NonNull @NotNull String metadataConfigName);
 }

@@ -17,18 +17,38 @@ package io.micronaut.guides.core;
 
 import jakarta.inject.Singleton;
 
+/**
+ * ExternalTemplateMacroSubstitution is a singleton class that extends LineMacroSubstitution.
+ * It provides methods to handle macro substitutions for external templates in Asciidoc files.
+ */
 @Singleton
 public class ExternalTemplateMacroSubstitution extends LineMacroSubstitution {
+
+    /**
+     * Returns the name of the macro.
+     *
+     * @return the macro name
+     */
     @Override
     protected String getMacroName() {
         return "external-template";
     }
 
+    /**
+     * Returns the base directory for the macro.
+     *
+     * @return the base directory
+     */
     @Override
     protected String getBaseDirectory() {
         return "{guidesDir}";
     }
 
+    /**
+     * Returns the prefix for the macro.
+     *
+     * @return the prefix
+     */
     @Override
     protected String getPrefix() {
         return "";

@@ -26,10 +26,25 @@ import java.util.Optional;
 import static io.micronaut.guides.core.MacroUtils.findMacroLines;
 
 abstract class LineMacroSubstitution implements MacroSubstitution {
+    /**
+     * Gets the name of the macro.
+     *
+     * @return the name of the macro
+     */
     protected abstract String getMacroName();
 
+    /**
+     * Gets the base directory for the macro substitution.
+     *
+     * @return the base directory
+     */
     protected abstract String getBaseDirectory();
 
+    /**
+     * Gets the prefix to be used in the macro substitution.
+     *
+     * @return the prefix
+     */
     protected abstract String getPrefix();
 
     @Override
@@ -44,7 +59,7 @@ abstract class LineMacroSubstitution implements MacroSubstitution {
             StringBuilder builder = new StringBuilder();
 
             for (Attribute attribute : macro.attributes()) {
-                Argument argument = new Argument(attribute.key(), attribute.values().get(0));
+                Argument argument = new Argument(attribute.key(), attribute.values().getFirst());
                 builder.append(argument).append("\n");
             }
 

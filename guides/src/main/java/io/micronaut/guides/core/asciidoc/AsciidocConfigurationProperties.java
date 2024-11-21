@@ -21,6 +21,10 @@ import org.asciidoctor.Placement;
 
 import java.io.File;
 
+/**
+ * AsciidocConfigurationProperties is a class that implements the AsciidocConfiguration interface.
+ * It is annotated with @Internal and @ConfigurationProperties to define configuration properties for Asciidoc processing.
+ */
 @Internal
 @ConfigurationProperties(AsciidocConfigurationProperties.PREFIX)
 public class AsciidocConfigurationProperties implements AsciidocConfiguration {
@@ -61,155 +65,325 @@ public class AsciidocConfigurationProperties implements AsciidocConfiguration {
     private String guidesDir = DEFAULT_GUIDES_DIR;
     private String calloutsDir = DEFAULT_CALLOUTS_DIR;
 
+    /**
+     * Gets the source directory.
+     *
+     * @return the source directory
+     */
     @Override
     public String getSourceDir() {
         return sourcedir;
     }
 
+    /**
+     * Sets the source directory.
+     *
+     * @param sourcedir the source directory to set
+     */
     public void setSourceDir(String sourcedir) {
         this.sourcedir = sourcedir;
     }
 
+    /**
+     * Gets the source highlighter.
+     *
+     * @return the source highlighter
+     */
     @Override
     public String getSourceHighlighter() {
         return sourceHighlighter;
     }
 
+    /**
+     * Sets the source highlighter.
+     *
+     * @param sourceHighlighter the source highlighter to set
+     */
     public void setSourceHighlighter(String sourceHighlighter) {
         this.sourceHighlighter = sourceHighlighter;
     }
 
+    /**
+     * Gets the table of contents (TOC) placement.
+     *
+     * @return the TOC placement
+     */
     @Override
     public Placement getToc() {
         return toc;
     }
 
+    /**
+     * Sets the table of contents (TOC) placement.
+     *
+     * @param toc the TOC placement to set
+     */
     public void setToc(Placement toc) {
         this.toc = toc;
     }
 
+    /**
+     * Gets the number of TOC levels.
+     *
+     * @return the number of TOC levels
+     */
     @Override
     public int getToclevels() {
         return toclevels;
     }
 
+    /**
+     * Sets the number of TOC levels.
+     *
+     * @param toclevels the number of TOC levels to set
+     */
     public void setToclevels(int toclevels) {
         this.toclevels = toclevels;
     }
 
+    /**
+     * Gets the section numbers.
+     *
+     * @return true if section numbers are enabled, false otherwise
+     */
     @Override
     public boolean getSectnums() {
         return sectnums;
     }
 
+    /**
+     * Sets the section numbers.
+     *
+     * @param sectnums true to enable section numbers, false to disable
+     */
     public void setSectnums(boolean sectnums) {
         this.sectnums = sectnums;
     }
 
+    /**
+     * Gets the ID prefix.
+     *
+     * @return the ID prefix
+     */
     @Override
     public String getIdprefix() {
         return idprefix;
     }
 
+    /**
+     * Sets the ID prefix.
+     *
+     * @param idprefix the ID prefix to set
+     */
     public void setIdprefix(String idprefix) {
         this.idprefix = idprefix;
     }
 
+    /**
+     * Gets the ID separator.
+     *
+     * @return the ID separator
+     */
     @Override
     public String getIdseparator() {
         return idseparator;
     }
 
+    /**
+     * Sets the ID separator.
+     *
+     * @param idseparator the ID separator to set
+     */
     public void setIdseparator(String idseparator) {
         this.idseparator = idseparator;
     }
 
+    /**
+     * Gets the icons.
+     *
+     * @return the icons
+     */
     @Override
     public String getIcons() {
         return icons;
     }
 
+    /**
+     * Sets the icons.
+     *
+     * @param icons the icons to set
+     */
     public void setIcons(String icons) {
         this.icons = icons;
     }
 
+    /**
+     * Gets the images directory.
+     *
+     * @return the images directory
+     */
     @Override
     public String getImagesdir() {
         return imagesdir;
     }
 
+    /**
+     * Sets the images directory.
+     *
+     * @param imagesdir the images directory to set
+     */
     public void setImagesdir(String imagesdir) {
         this.imagesdir = imagesdir;
     }
 
+    /**
+     * Checks if the footer is disabled.
+     *
+     * @return true if the footer is disabled, false otherwise
+     */
     @Override
     public boolean isNofooter() {
         return nofooter;
     }
 
+    /**
+     * Sets the footer visibility.
+     *
+     * @param nofooter true to disable the footer, false to enable
+     */
     public void setNofooter(boolean nofooter) {
         this.nofooter = nofooter;
     }
 
+    /**
+     * Gets the document type.
+     *
+     * @return the document type
+     */
     @Override
     public String getDocType() {
         return docType;
     }
 
+    /**
+     * Sets the document type.
+     *
+     * @param docType the document type to set
+     */
     public void setDocType(String docType) {
         this.docType = docType;
     }
 
+    /**
+     * Gets the Ruby engine.
+     *
+     * @return the Ruby engine
+     */
     @Override
     public String getRuby() {
         return ruby;
     }
 
+    /**
+     * Sets the Ruby engine.
+     *
+     * @param ruby the Ruby engine to set
+     */
     public void setRuby(String ruby) {
         this.ruby = ruby;
     }
 
+    /**
+     * Gets the template directories.
+     *
+     * @return the template directories
+     */
     @Override
     public File getTemplateDirs() {
         return templateDirs;
     }
 
+    /**
+     * Sets the template directories.
+     *
+     * @param templateDirs the template directories to set
+     */
     public void setTemplateDirs(File templateDirs) {
         this.templateDirs = templateDirs;
     }
 
+    /**
+     * Gets the commons directory.
+     *
+     * @return the commons directory
+     */
     @Override
     public String getCommonsDir() {
         return commonsDir;
     }
 
+    /**
+     * Sets the commons directory.
+     *
+     * @param commonsDir the commons directory to set
+     */
     public void setCommonsDir(String commonsDir) {
         this.commonsDir = commonsDir;
     }
 
+    /**
+     * Gets the base directory.
+     *
+     * @return the base directory
+     */
     @Override
     public String getBaseDir() {
         return baseDir;
     }
 
+    /**
+     * Sets the base directory.
+     *
+     * @param baseDir the base directory to set
+     */
     public void setBaseDir(String baseDir) {
         this.baseDir = baseDir;
     }
 
+    /**
+     * Gets the guides directory.
+     *
+     * @return the guides directory
+     */
     @Override
     public String getGuidesDir() {
         return guidesDir;
     }
 
+    /**
+     * Sets the guides directory.
+     *
+     * @param guidesDir the guides directory to set
+     */
     public void setGuidesDir(String guidesDir) {
         this.guidesDir = guidesDir;
     }
 
+    /**
+     * Gets the callouts directory.
+     *
+     * @return the callouts directory
+     */
     @Override
     public String getCalloutsDir() {
         return calloutsDir;
     }
 
+    /**
+     * Sets the callouts directory.
+     *
+     * @param calloutsDir the callouts directory to set
+     */
     public void setCalloutsDir(String calloutsDir) {
         this.calloutsDir = calloutsDir;
     }

@@ -19,15 +19,31 @@ import jakarta.inject.Singleton;
 
 import java.util.List;
 
+/**
+ * C that provides macro exclusion functionality for build tools.
+ */
 @Singleton
 public class BuildMacroExclusion extends MacroExclusion {
     private static final String MACRO_BUILD_EXCLUSION = "exclude-for-build";
 
+    /**
+     * Returns the name of the macro.
+     *
+     * @return the macro name
+     */
     @Override
     protected String getMacroName() {
         return MACRO_BUILD_EXCLUSION;
     }
 
+    /**
+     * Determines whether the given parameters should be excluded based on the build tool option.
+     *
+     * @param params the list of parameters
+     * @param option the guide option
+     * @param guide  the guide
+     * @return true if the parameters should be excluded, false otherwise
+     */
     @Override
     protected boolean shouldExclude(List<String> params, GuidesOption option, Guide guide) {
         return params.contains(option.getBuildTool().toString());

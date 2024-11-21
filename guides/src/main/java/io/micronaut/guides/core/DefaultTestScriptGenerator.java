@@ -34,8 +34,12 @@ import java.util.stream.Collectors;
 import static io.micronaut.starter.options.BuildTool.GRADLE;
 import static io.micronaut.starter.options.BuildTool.MAVEN;
 
-@Internal
+/**
+ * DefaultTestScriptGenerator is a singleton class that implements the TestScriptGenerator interface.
+ * It provides methods to generate test scripts for guides.
+ */
 @Singleton
+@Internal
 class DefaultTestScriptGenerator implements TestScriptGenerator {
     private static final Logger LOG = LoggerFactory.getLogger(DefaultTestScriptGenerator.class);
 
@@ -160,6 +164,13 @@ class DefaultTestScriptGenerator implements TestScriptGenerator {
         return !guidesChanged.contains(metadata.slug());
     }
 
+    /**
+     * Checks if the given app supports native tests.
+     *
+     * @param app          the app to check
+     * @param guidesOption the guides option containing additional configuration
+     * @return true if the app supports native tests, false otherwise
+     */
     @Override
     public boolean supportsNativeTest(App app, GuidesOption guidesOption) {
         return isMicronautFramework(app) &&
@@ -168,26 +179,59 @@ class DefaultTestScriptGenerator implements TestScriptGenerator {
                 guidesOption.getTestFramework() == TestFramework.JUNIT;
     }
 
+    /**
+     * Checks if the given app uses the Micronaut framework.
+     *
+     * @param app the app to check
+     * @return true if the app uses the Micronaut framework, false otherwise
+     */
     @Override
     public boolean isMicronautFramework(App app) {
         return app.framework() == null || app.framework().equals("Micronaut");
     }
 
+    /**
+     * Checks if the given language supports native tests.
+     *
+     * @param language the language to check
+     * @return true if the language supports native tests, false otherwise
+     */
     @Override
     public boolean supportsNativeTest(Language language) {
         return language != Language.GROOVY;
     }
 
+    /**
+     * Generates a script for running native tests for the given guides metadata.
+     *
+     * @param metadatas the list of guides metadata
+     * @return the generated script as a string
+     */
     @Override
     public String generateNativeTestScript(@NonNull @NotNull List<Guide> metadatas) {
         return generateScript(metadatas, false, true);
     }
 
+    /**
+     * Generates a script for running tests for the given guides metadata.
+     *
+     * @param metadatas the list of guides metadata
+     * @return the generated script as a string
+     */
     @Override
     public String generateTestScript(@NonNull @NotNull List<Guide> metadatas) {
         return generateScript(metadatas, false, false);
     }
 
+    /**
+     * Generates a script for running tests based on the changed files.
+     *
+     * @param guidesFolder       the folder containing the guides
+     * @param metadataConfigName the name of the metadata configuration
+     * @param stopIfFailure      whether to stop if a test fails
+     * @param changedFiles       the list of changed files
+     * @return the generated script as a string
+     */
     public String generateScript(File guidesFolder,
                                  String metadataConfigName,
                                  boolean stopIfFailure,
@@ -207,9 +251,15 @@ class DefaultTestScriptGenerator implements TestScriptGenerator {
         return generateScript(metadatas, stopIfFailure, false);
     }
 
-    public String generateScript(List<Guide> metadatas,
-                                 boolean stopIfFailure,
-                                 boolean nativeTest) {
+    /**
+     * Generates a script for running tests for the given guides metadata.
+     *
+     * @param metadatas     the list of guides metadata
+     * @param stopIfFailure whether to stop if a test fails
+     * @param nativeTest    whether to run native tests
+     * @return the generated script as a string
+     */
+    public String generateScript(List<Guide> metadatas, boolean stopIfFailure, boolean nativeTest) {
         StringBuilder bashScript = new StringBuilder("""
                 #!/usr/bin/env bash
                 set -e

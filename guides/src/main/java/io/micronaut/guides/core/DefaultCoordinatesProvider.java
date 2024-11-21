@@ -22,8 +22,19 @@ import jakarta.inject.Singleton;
 
 import java.util.Map;
 
+/**
+ * Interface for generating test scripts for guides.
+ * This interface provides methods to check if an app or language supports native tests,
+ * if an app uses the Micronaut framework, and to generate scripts for running tests.
+ */
 @Singleton
 public class DefaultCoordinatesProvider implements CoordinatesProvider {
+
+    /**
+     * Retrieves the coordinates for dependencies by utilizing the PomDependencyVersionResolver.
+     *
+     * @return a map containing the coordinates of dependencies
+     */
     @Override
     public Map<String, Coordinate> getCoordinates() {
         try (ApplicationContext context = ApplicationContext.run()) {
@@ -32,3 +43,4 @@ public class DefaultCoordinatesProvider implements CoordinatesProvider {
         }
     }
 }
+

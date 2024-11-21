@@ -20,6 +20,11 @@ import io.micronaut.core.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * GuideUtils is a utility class that provides various helper methods for handling guides.
+ * It contains methods for retrieving tags, features, frameworks, and merging guide data.
+ * This class cannot be instantiated.
+ */
 public class SourceBlock {
     private static final String SEPARATOR = "----";
 
@@ -32,29 +37,54 @@ public class SourceBlock {
     @Nullable
     private final String language;
 
-    public SourceBlock(String title,
-                       List<IncludeDirective> includeDirectives,
-                       String language) {
+    /**
+     * Constructs a new SourceBlock.
+     *
+     * @param title             the title of the source block
+     * @param includeDirectives the list of include directives
+     * @param language          the language of the source block
+     */
+    public SourceBlock(String title, List<IncludeDirective> includeDirectives, String language) {
         this.title = title;
         this.includeDirectives = includeDirectives;
         this.language = language;
     }
 
+    /**
+     * Gets the title of the source block.
+     *
+     * @return the title, or null if not set
+     */
     @Nullable
     public String getTitle() {
         return title;
     }
 
+    /**
+     * Gets the list of include directives.
+     *
+     * @return the list of include directives, or null if not set
+     */
     @Nullable
     public List<IncludeDirective> getIncludeDirectives() {
         return includeDirectives;
     }
 
+    /**
+     * Gets the language of the source block.
+     *
+     * @return the language, or null if not set
+     */
     @Nullable
     public String getLanguage() {
         return language;
     }
 
+    /**
+     * Returns a string representation of the source block.
+     *
+     * @return the string representation of the source block
+     */
     @Override
     public String toString() {
         List<String> lines = new ArrayList<>();
@@ -70,10 +100,18 @@ public class SourceBlock {
         return String.join("\n", lines);
     }
 
+    /**
+     * Creates a new Builder instance.
+     *
+     * @return a new Builder instance
+     */
     public static Builder builder() {
         return new Builder();
     }
 
+    /**
+     * Builder class for constructing SourceBlock instances.
+     */
     public static class Builder {
         @Nullable
         private String title;
@@ -84,16 +122,34 @@ public class SourceBlock {
         @Nullable
         private String language;
 
+        /**
+         * Sets the title of the source block.
+         *
+         * @param title the title to set
+         * @return the builder instance
+         */
         public Builder title(@Nullable String title) {
             this.title = title;
             return this;
         }
 
+        /**
+         * Sets the list of include directives.
+         *
+         * @param includeDirectives the list of include directives to set
+         * @return the builder instance
+         */
         public Builder includeDirectives(@Nullable List<IncludeDirective> includeDirectives) {
             this.includeDirectives = includeDirectives;
             return this;
         }
 
+        /**
+         * Adds an include directive to the list.
+         *
+         * @param includeDirective the include directive to add
+         * @return the builder instance
+         */
         public Builder includeDirective(@Nullable IncludeDirective includeDirective) {
             if (this.includeDirectives == null) {
                 this.includeDirectives = new ArrayList<>();
@@ -102,11 +158,22 @@ public class SourceBlock {
             return this;
         }
 
+        /**
+         * Sets the language of the source block.
+         *
+         * @param language the language to set
+         * @return the builder instance
+         */
         public Builder language(@Nullable String language) {
             this.language = language;
             return this;
         }
 
+        /**
+         * Builds a new SourceBlock instance.
+         *
+         * @return the built SourceBlock instance
+         */
         public SourceBlock build() {
             return new SourceBlock(title, includeDirectives, language);
         }

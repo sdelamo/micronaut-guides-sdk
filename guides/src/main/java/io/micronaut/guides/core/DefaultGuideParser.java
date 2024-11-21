@@ -16,6 +16,7 @@
 package io.micronaut.guides.core;
 
 import com.networknt.schema.InputFormat;
+import com.networknt.schema.JsonSchema;
 import com.networknt.schema.ValidationMessage;
 import io.micronaut.core.annotation.NonNull;
 import io.micronaut.core.type.Argument;
@@ -33,18 +34,26 @@ import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
-import com.networknt.schema.JsonSchema;
+
 import static io.micronaut.guides.core.GuideUtils.mergeMetadataList;
 
+/**
+ * Class that provides methods to parse guide metadata.
+ */
 @Singleton
 public class DefaultGuideParser implements GuideParser {
-
-    private static final Logger LOG = LoggerFactory.getLogger(DefaultGuideParser.class);
     public static final String SPOTLESS = "spotless";
+    private static final Logger LOG = LoggerFactory.getLogger(DefaultGuideParser.class);
 
     private final JsonSchema jsonSchema;
     private final JsonMapper jsonMapper;
 
+    /**
+     * Constructs a new DefaultGuideParser.
+     *
+     * @param jsonSchemaProvider the JSON schema provider
+     * @param jsonMapper         the JSON mapper
+     */
     public DefaultGuideParser(JsonSchemaProvider jsonSchemaProvider, JsonMapper jsonMapper) {
         this.jsonSchema = jsonSchemaProvider.getSchema();
         this.jsonMapper = jsonMapper;
@@ -52,8 +61,7 @@ public class DefaultGuideParser implements GuideParser {
 
     @Override
     @NonNull
-    public List<Guide> parseGuidesMetadata(@NonNull @NotNull File guidesDir,
-                                           @NonNull @NotNull String metadataConfigName) {
+    public List<Guide> parseGuidesMetadata(@NonNull @NotNull File guidesDir, @NonNull @NotNull String metadataConfigName) {
         List<Guide> metadatas = new ArrayList<>();
 
         File[] dirs = guidesDir.listFiles(File::isDirectory);
@@ -86,7 +94,7 @@ public class DefaultGuideParser implements GuideParser {
             return Optional.empty();
         }
 
-        Map<String, Object> config = null;
+        Map<String, Object> config;
         try {
             config = jsonMapper.readValue(content, Argument.mapOf(String.class, Object.class));
         } catch (IOException e) {
@@ -156,6 +164,7 @@ public class DefaultGuideParser implements GuideParser {
         ));
     }
 
+    @SafeVarargs
     private boolean hasSpotless(List<String>... featureLists) {
         for (List<String> features : featureLists) {
             if (features != null && features.contains(SPOTLESS)) {

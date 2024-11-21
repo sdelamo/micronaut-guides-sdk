@@ -25,18 +25,35 @@ import java.nio.file.attribute.BasicFileAttributes;
 import static java.nio.file.FileVisitResult.CONTINUE;
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 
+/**
+ * CopyFileVisitor is a class that extends SimpleFileVisitor to copy files and directories
+ * from a source path to a target path.
+ */
 public class CopyFileVisitor extends SimpleFileVisitor<Path> {
 
     private final Path targetPath;
     private Path sourcePath;
 
+    /**
+     * Constructs a new CopyFileVisitor with the specified target path.
+     *
+     * @param targetPath the target path where files and directories will be copied
+     */
     public CopyFileVisitor(Path targetPath) {
         this.targetPath = targetPath;
     }
 
+    /**
+     * Invoked for a directory before entries in the directory are visited.
+     * Creates the corresponding directory in the target path.
+     *
+     * @param dir   the directory about to be visited
+     * @param attrs the directory's basic attributes
+     * @return the visit result
+     * @throws IOException if an I/O error occurs
+     */
     @Override
-    public FileVisitResult preVisitDirectory(final Path dir,
-                                             final BasicFileAttributes attrs) throws IOException {
+    public FileVisitResult preVisitDirectory(final Path dir, final BasicFileAttributes attrs) throws IOException {
         if (sourcePath == null) {
             sourcePath = dir;
         } else {
@@ -45,14 +62,18 @@ public class CopyFileVisitor extends SimpleFileVisitor<Path> {
         return CONTINUE;
     }
 
+    /**
+     * Invoked for a file in a directory.
+     * Copies the file to the corresponding location in the target path.
+     *
+     * @param file  the file being visited
+     * @param attrs the file's basic attributes
+     * @return the visit result
+     * @throws IOException if an I/O error occurs
+     */
     @Override
-    public FileVisitResult visitFile(final Path file,
-                                     final BasicFileAttributes attrs) throws IOException {
-        Files.copy(
-                file,
-                targetPath.resolve(sourcePath.relativize(file)),
-                REPLACE_EXISTING
-        );
+    public FileVisitResult visitFile(final Path file, final BasicFileAttributes attrs) throws IOException {
+        Files.copy(file, targetPath.resolve(sourcePath.relativize(file)), REPLACE_EXISTING);
         return CONTINUE;
     }
 }

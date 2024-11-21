@@ -15,6 +15,15 @@
  */
 package io.micronaut.guides.core;
 
+/**
+ * Interface for RSS feed configuration.
+ */
 public interface RssFeedConfiguration {
+
+    /**
+     * Gets the filename for the RSS feed.
+     *
+     * @return the filename
+     */
     String getFilename();
 }

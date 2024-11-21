@@ -15,8 +15,19 @@
  */
 package io.micronaut.guides.core.asciidoc;
 
+/**
+ * Range is a record that represents a range with a starting point (from) and an ending point (to).
+ *
+ * @param from the starting point of the range
+ * @param to   the ending point of the range
+ */
 public record Range(int from, int to) {
 
+    /**
+     * Checks if the range is valid.
+     *
+     * @return true if the range is valid, false otherwise
+     */
     public boolean isValid() {
         if (from == to) {
             return false;

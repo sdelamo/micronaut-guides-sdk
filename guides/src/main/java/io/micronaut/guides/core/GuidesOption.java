@@ -21,6 +21,10 @@ import io.micronaut.starter.api.TestFramework;
 import io.micronaut.starter.options.BuildTool;
 import io.micronaut.starter.options.Language;
 
+/**
+ * GuidesOption is a class that encapsulates the options for a guide, including the build tool,
+ * programming language, and test framework.
+ */
 @Introspected
 public class GuidesOption {
 
@@ -33,37 +37,72 @@ public class GuidesOption {
     @NonNull
     private TestFramework testFramework;
 
-    public GuidesOption(@NonNull BuildTool buildTool,
-                        @NonNull Language language,
-                        @NonNull TestFramework testFramework) {
+    /**
+     * Constructs a new GuidesOption with the specified build tool, language, and test framework.
+     *
+     * @param buildTool     the build tool to be used
+     * @param language      the programming language to be used
+     * @param testFramework the test framework to be used
+     */
+    public GuidesOption(@NonNull BuildTool buildTool, @NonNull Language language, @NonNull TestFramework testFramework) {
         this.buildTool = buildTool;
         this.language = language;
         this.testFramework = testFramework;
     }
 
+    /**
+     * Returns the build tool.
+     *
+     * @return the build tool
+     */
     @NonNull
     public BuildTool getBuildTool() {
         return buildTool;
     }
 
+    /**
+     * Sets the build tool.
+     *
+     * @param buildTool the build tool to be set
+     */
     public void setBuildTool(@NonNull BuildTool buildTool) {
         this.buildTool = buildTool;
     }
 
+    /**
+     * Returns the programming language.
+     *
+     * @return the programming language
+     */
     @NonNull
     public Language getLanguage() {
         return language;
     }
 
+    /**
+     * Sets the programming language.
+     *
+     * @param language the programming language to be set
+     */
     public void setLanguage(@NonNull Language language) {
         this.language = language;
     }
 
+    /**
+     * Returns the test framework.
+     *
+     * @return the test framework
+     */
     @NonNull
     public TestFramework getTestFramework() {
         return testFramework;
     }
 
+    /**
+     * Sets the test framework.
+     *
+     * @param testFramework the test framework to be set
+     */
     public void setTestFramework(@NonNull TestFramework testFramework) {
         this.testFramework = testFramework;
     }

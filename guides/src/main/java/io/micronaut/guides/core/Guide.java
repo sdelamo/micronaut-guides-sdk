@@ -33,6 +33,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * Represents a guide metadata.
+ *
  * @param title              The guide's title
  * @param intro              The guide introduction
  * @param authors            The guide's authors

@@ -18,12 +18,26 @@ package io.micronaut.guides.core.asciidoc;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * AsciidocMacro is a record that represents an Asciidoc macro.
+ *
+ * @param name       the name of the macro
+ * @param target     the target of the macro
+ * @param attributes the list of attributes associated with the macro
+ */
 public record AsciidocMacro(String name, String target, List<Attribute> attributes) {
     public static final String MACRO_NAME_SEPARATOR = ":";
     public static final String ATTRIBUTE_SEPARATOR = ",";
     private static final String MACRO_OPEN_BRACKET = "[";
     private static final String MACRO_CLOSE_BRACKET = "]";
 
+    /**
+     * Creates an AsciidocMacro from the given name and string representation.
+     *
+     * @param name the name of the macro
+     * @param str  the string representation of the macro
+     * @return an Optional containing the AsciidocMacro if the string representation is valid, otherwise an empty Optional
+     */
     public static Optional<AsciidocMacro> of(String name, String str) {
         int bracketIndex = str.indexOf(MACRO_OPEN_BRACKET);
         int closingBracketIndex = str.indexOf(MACRO_CLOSE_BRACKET);

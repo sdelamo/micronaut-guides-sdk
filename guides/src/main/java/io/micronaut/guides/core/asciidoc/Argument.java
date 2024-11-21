@@ -20,9 +20,21 @@ import io.micronaut.core.util.StringUtils;
 
 import java.util.Optional;
 
+/**
+ * Argument is a record that represents a key-value pair argument.
+ *
+ * @param key   the key of the argument
+ * @param value the value of the argument
+ */
 public record Argument(String key, String value) {
     private static final String ARGUMENT_DELIMITATOR = ":";
 
+    /**
+     * Creates an Optional containing an Argument if the provided string is not empty and contains a key-value pair.
+     *
+     * @param str the string to parse
+     * @return an Optional containing the Argument if the string is valid, otherwise an empty Optional
+     */
     @NonNull
     public static Optional<Argument> of(@NonNull String str) {
         if (StringUtils.isEmpty(str)) {
@@ -37,9 +49,13 @@ public record Argument(String key, String value) {
         return Optional.empty();
     }
 
+    /**
+     * Returns a string representation of the Argument in the format ":key: value".
+     *
+     * @return the string representation of the Argument
+     */
     @Override
     public String toString() {
         return ARGUMENT_DELIMITATOR + key + ARGUMENT_DELIMITATOR + " " + value;
     }
 }
-

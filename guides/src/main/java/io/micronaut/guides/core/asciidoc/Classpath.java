@@ -15,10 +15,18 @@
  */
 package io.micronaut.guides.core.asciidoc;
 
+/**
+ * Enum representing the classpath types.
+ */
 public enum Classpath {
-    MAIN,
-    TEST;
+    MAIN,  // Main classpath
+    TEST;  // Test classpath
 
+    /**
+     * Returns the name of the enum constant in lowercase.
+     *
+     * @return the name of the enum constant in lowercase
+     */
     @Override
     public String toString() {
         return this.name().toLowerCase();

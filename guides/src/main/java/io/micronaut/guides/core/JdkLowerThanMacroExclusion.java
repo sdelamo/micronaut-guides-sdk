@@ -20,21 +20,49 @@ import jakarta.inject.Singleton;
 
 import java.util.List;
 
+/**
+ * JdkLowerThanMacroExclusion is a singleton class that extends MacroExclusion.
+ * It provides methods to handle macro exclusions based on the JDK version.
+ */
 @Singleton
 public class JdkLowerThanMacroExclusion extends MacroExclusion {
+    /**
+     * Macro name for JDK lower than exclusion.
+     */
     private static final String MACRO_JDK_LOWER_THAN_EXCLUSION = "exclude-for-jdk-lower-than";
 
+    /**
+     * Guides configuration instance.
+     */
     private final GuidesConfiguration guidesConfiguration;
 
+    /**
+     * Constructs a new JdkLowerThanMacroExclusion with the specified guides configuration.
+     *
+     * @param guidesConfiguration the guides configuration
+     */
     public JdkLowerThanMacroExclusion(GuidesConfiguration guidesConfiguration) {
         this.guidesConfiguration = guidesConfiguration;
     }
 
+    /**
+     * Returns the name of the macro.
+     *
+     * @return the macro name
+     */
     @Override
     protected String getMacroName() {
         return MACRO_JDK_LOWER_THAN_EXCLUSION;
     }
 
+    /**
+     * Determines whether the macro should be excluded based on the specified parameters, option, and guide.
+     *
+     * @param params the list of parameters
+     * @param option the guides option
+     * @param guide  the guide object
+     * @return true if the macro should be excluded, false otherwise
+     */
     @Override
     protected boolean shouldExclude(List<String> params, GuidesOption option, Guide guide) {
         if (StringUtils.isNotEmpty(params.get(0))) {

@@ -24,21 +24,45 @@ import java.util.Stack;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * MacroUtils is a utility class that provides various methods for handling macros in strings.
+ */
 public final class MacroUtils {
-    private MacroUtils() {
-    }
+    /**
+     * Private constructor to prevent instantiation.
+     */
+    private MacroUtils() { }
 
+    /**
+     * Returns the source directory name based on the provided slug and GuidesOption.
+     *
+     * @param slug   the slug
+     * @param option the guides option
+     * @return the source directory name
+     */
     @NonNull
     static String getSourceDir(@NonNull String slug, @NonNull GuidesOption option) {
         return slug + "-" + option.getBuildTool() + "-" + option.getLanguage();
     }
 
+    /**
+     * Finds lines in the provided string that start with the specified macro.
+     *
+     * @param str   the string to search
+     * @param macro the macro to find
+     * @return a list of lines that start with the specified macro
+     */
     static List<String> findMacroLines(@NonNull String str, @NonNull String macro) {
-        return str.lines()
-                .filter(line -> line.startsWith(macro + ":"))
-                .toList();
+        return str.lines().filter(line -> line.startsWith(macro + ":")).toList();
     }
 
+    /**
+     * Finds instances of the specified pattern in the provided string.
+     *
+     * @param str     the string to search
+     * @param pattern the pattern to find
+     * @return a list of matches found in the string
+     */
     static List<String> findMacroInstances(@NonNull String str, @NonNull Pattern pattern) {
         List<String> matches = new ArrayList<>();
         Matcher matcher = pattern.matcher(str);
@@ -50,6 +74,13 @@ public final class MacroUtils {
         return matches;
     }
 
+    /**
+     * Finds groups of macros in the provided string.
+     *
+     * @param str   the string to search
+     * @param macro the macro to find
+     * @return a list of macro groups found in the string
+     */
     static List<String> findMacroGroups(@NonNull String str, @NonNull String macro) {
         List<String> matches = new ArrayList<>();
         String pattern = ":" + macro + ":";
@@ -57,10 +88,14 @@ public final class MacroUtils {
 
         while (true) {
             startIndex = str.indexOf(pattern, startIndex);
-            if (startIndex == -1) break;
+            if (startIndex == -1) {
+                break;
+            }
 
             int endIndex = str.indexOf(pattern, startIndex + pattern.length());
-            if (endIndex == -1) break;
+            if (endIndex == -1) {
+                break;
+            }
 
             String match = str.substring(startIndex, endIndex + pattern.length());
             matches.add(match);
@@ -71,11 +106,25 @@ public final class MacroUtils {
         return matches;
     }
 
+    /**
+     * Extracts parameters from a macro group line.
+     *
+     * @param line  the macro group line
+     * @param macro the macro to extract parameters from
+     * @return a list of parameters extracted from the macro group line
+     */
     @NonNull
     static List<String> extractMacroGroupParameters(@NonNull String line, @NonNull String macro) {
         return Arrays.stream(line.substring(macro.length() + 2).split(",")).filter(el -> !el.isEmpty()).toList();
     }
 
+    /**
+     * Finds nested macro groups in the provided string.
+     *
+     * @param str   the string to search
+     * @param macro the macro to find
+     * @return a list of nested macro groups found in the string
+     */
     @NonNull
     static List<List<String>> findMacroGroupsNested(@NonNull String str, @NonNull String macro) {
         List<List<String>> matches = new ArrayList<>();
@@ -101,14 +150,34 @@ public final class MacroUtils {
         return matches;
     }
 
+    /**
+     * Checks if the line is the start of a macro group.
+     *
+     * @param line  the line to check
+     * @param macro the macro to check for
+     * @return true if the line is the start of a macro group, false otherwise
+     */
     private static boolean isGroupStart(@NonNull String line, @NonNull String macro) {
         return line.matches(macro + "[a-zA-Z0-9,]+");
     }
 
+    /**
+     * Checks if the line is the end of a macro group.
+     *
+     * @param line  the line to check
+     * @param macro the macro to check for
+     * @return true if the line is the end of a macro group, false otherwise
+     */
     private static boolean isGroupEnd(@NonNull String line, @NonNull String macro) {
         return line.matches(macro + "(?![a-zA-Z0-9,]+$)");
     }
 
+    /**
+     * Resolves the Asciidoctor language based on the file extension.
+     *
+     * @param extension the file extension
+     * @return the resolved Asciidoctor language
+     */
     @NonNull
     static String resolveAsciidoctorLanguage(@NonNull String extension) {
         return switch (extension.toLowerCase()) {

@@ -28,14 +28,28 @@ import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.util.List;
 
+/**
+ * Class that provides RSS feed generation functionality.
+ */
 @Singleton
 public class DefaultRssFeedGenerator implements RssFeedGenerator {
     private final GuidesConfiguration guidesConfiguration;
 
+    /**
+     * Constructs a new DefaultRssFeedGenerator.
+     *
+     * @param guidesConfiguration the configuration for guides
+     */
     public DefaultRssFeedGenerator(GuidesConfiguration guidesConfiguration) {
         this.guidesConfiguration = guidesConfiguration;
     }
 
+    /**
+     * Generates an RSS feed from the provided list of guide metadata.
+     *
+     * @param metadatas the list of guide metadata
+     * @return the generated RSS feed as a string
+     */
     @NonNull
     public String rssFeed(@NonNull List<Guide> metadatas) {
         RssChannel.Builder rssBuilder = rssBuilder();
