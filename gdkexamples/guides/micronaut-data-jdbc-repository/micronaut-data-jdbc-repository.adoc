@@ -22,6 +22,8 @@ Follow the steps below to create the application from scratch. However, you can 
 
 {% include download-zips.md module="database" provider="independent" %}
 
+download:[]
+
 {% include dev_env_note.md %}
 
 ____

@@ -52,7 +52,7 @@ public final class MacroUtils {
      * @param macro the macro to find
      * @return a list of lines that start with the specified macro
      */
-    static List<String> findMacroLines(@NonNull String str, @NonNull String macro) {
+    public static List<String> findMacroLines(@NonNull String str, @NonNull String macro) {
         return str.lines().filter(line -> line.startsWith(macro + ":")).toList();
     }
 
