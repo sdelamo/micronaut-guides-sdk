@@ -20,23 +20,23 @@
     <meta name="google-site-verification" content="-vRqwa9WYn6AaQGnl88xvrLw6ac4xoKVkZkhanmlRhU">
     <link rel="canonical" href="https://www.graal.cloud/gdk/gdk-modules/database/micronaut-data-jdbc-repository/">
 
+    <!-- TODO: move to stylesheet -->
+    <style>
+        ul.sectlevel0 > li > a:first-of-type {
+            color: #F68831 !important;
+            font-weight: 700;
+        }
+    </style>
+
     <!-- jQuery UI Tabs -->
     <link rel="stylesheet" href="//code.jquery.com/ui/1.14.0/themes/base/jquery-ui.css">
     <link rel="stylesheet" href="https://graal.cloud/gdk/resources/lib/jquery/jquery-ui.css">
     <script type="text/javascript" id="www-widgetapi-script" src="https://www.youtube.com/s/player/a8476471/www-widgetapi.vflset/www-widgetapi.js" async=""></script><script src="https://www.youtube.com/iframe_api"></script><script async="" src="https://tags.bkrtx.com/js/bk-coretag.js"></script><script src="https://graal.cloud/gdk/resources/lib/jquery/jquery-3.7.1.min.js"></script><script src="https://graal.cloud/gdk/resources/lib/bootstrap/js/bootstrap.min.js"></script><script src="https://graal.cloud/gdk/resources/lib/sticky-sidebar/resizeSensor.js"></script><script src="https://graal.cloud/gdk/resources/lib/sticky-sidebar/sticky-sidebar.min.js"></script><script src="https://graal.cloud/gdk/resources/lib/highlight/highlight.min.js"></script><script async="" defer="" src="https://buttons.github.io/buttons.js"></script><script async="async" type="text/javascript" src="//consent.trustarc.com/notice?domain=oracle.com&amp;c=teconsent&amp;js=bb&amp;noticeType=bb&amp;text=true&amp;cdn=1&amp;pcookie&amp;gtm=1" crossorigin="" id="truste_0.9548969741402604"></script><script src="https://www.oracle.com/assets/truste-oraclelib.js"></script><script src="https://code.jquery.com/ui/1.14.0/jquery-ui.js"></script></head>
 
-
-
-
-
-
-
 <!-- Add TRUSTe Consent Script and Analytics -->
 
 
 <!-- jQuery UI Tabs -->
-
-
 
 <body class="">
 <!-- Start SiteCatalyst code -->
@@ -46,11 +46,6 @@
 <div class="wrapper wrapper--nofooter">
 
     <header class="header header--content" role="banner">
-
-
-
-
-
         <nav class="menu">
             <div class="menu__row">
                 <div>
@@ -153,8 +148,14 @@
                                 </div>
 
                                 <div class="toc-floating">
-
-                                    <div class="toc-bullets">{toc}</div>
+                                    <div class="toc-bullets">
+                                        <li class="toc-bullets-main">
+                                            <a href="{section-link}" class="_icon-book">
+                                                {section}
+                                            </a>
+                                        </li>
+                                        {toc}
+                                    </div>
                                 </div>
 
                             </div>
@@ -163,8 +164,6 @@
 
                     <div class="col-sm-9 docsmod">
                         <div id="content-wrapper" class="docs-content docs-content--with-sidebar">{content}</div>
-
-
                         <div role="button" class="menu-btn menu-btn--sidebar js-show-sidebar" title="sweet hamburger">
                             <div class="hamburger">
                                 <div class="inner"></div>

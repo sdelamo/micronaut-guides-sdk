@@ -57,6 +57,7 @@ class DefaultGuidePageGenerator implements GuidePageGenerator {
 
     @Override
     public String render(String toc, String html) {
-        return guideHtml.replace("{toc}", toc).replace("{content}", html);
+        return guideHtml.replace("{toc}", toc)
+                .replace("{content}", html);
     }
 }

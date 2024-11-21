@@ -145,7 +145,11 @@ class DefaultWebsiteGenerator implements WebsiteGenerator {
                 String tocHtml = extractToc(optionHtml);
 
                 String guideOptionHtmlFileName = name + ".html";
+                optionHtml = optionHtml.replace(tocHtml + "\n", "");
                 optionHtml = guidePageGenerator.render(tocHtml, optionHtml);
+                optionHtml = optionHtml.replace("{title}", guide.title());
+                optionHtml = optionHtml.replace("{section}", guide.categories().get(0));
+                optionHtml = optionHtml.replace("{section-link}", "https://graal.cloud/gdk/docs/gdk-modules/" + guide.categories().get(0).toLowerCase() + "/");
                 saveToFile(optionHtml, outputDirectory, guideOptionHtmlFileName);
             }
 
@@ -163,9 +167,44 @@ class DefaultWebsiteGenerator implements WebsiteGenerator {
         saveToFile(json, outputDirectory, jsonFeedConfiguration.getFilename());
     }
 
-    private String extractToc(String optionHtml) {
-    //TODO: Implement this method
-        return "TODO";
+    private String extractToc(String html) {
+        String openDivPattern = "<div";
+        String closeDivPattern = "</div>";
+        String idAttribute = "id=\"toc\"";
+
+        // Find the opening <div> tag with id="toc"
+        int startIndex = html.indexOf(openDivPattern + " " + idAttribute);
+        if (startIndex == -1) {
+            startIndex = html.indexOf(openDivPattern + " id='toc'");
+            if (startIndex == -1) return null; // Div with id="toc" not found
+        }
+
+        int openingTagEnd = html.indexOf(">", startIndex);
+        if (openingTagEnd == -1) return null; // Malformed HTML
+
+        int nestedDivCount = 0;
+        int currentIndex = openingTagEnd + 1;
+
+        // Traverse the HTML string to match nested <div> tags
+        while (currentIndex < html.length()) {
+            int nextOpenDiv = html.indexOf(openDivPattern, currentIndex);
+            int nextCloseDiv = html.indexOf(closeDivPattern, currentIndex);
+
+            if (nextCloseDiv == -1) return null; // Malformed HTML (no closing tag)
+
+            if (nextOpenDiv != -1 && nextOpenDiv < nextCloseDiv) {
+                nestedDivCount++;
+                currentIndex = nextOpenDiv + openDivPattern.length();
+            } else {
+                if (nestedDivCount == 0) {
+                    return html.substring(startIndex, nextCloseDiv + closeDivPattern.length());
+                }
+                nestedDivCount--;
+                currentIndex = nextCloseDiv + closeDivPattern.length();
+            }
+        }
+
+        return null;
     }
 
     private void saveToFile(String content, File outputDirectory, String filename) throws IOException {

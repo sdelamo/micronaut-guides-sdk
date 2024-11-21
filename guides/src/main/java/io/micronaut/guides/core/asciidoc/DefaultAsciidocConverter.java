@@ -41,6 +41,7 @@ public class DefaultAsciidocConverter implements AsciidocConverter {
                 .sourceHighlighter(asciidocConfiguration.getSourceHighlighter())
                 .tableOfContents(asciidocConfiguration.getToc())
                 .attribute("toclevels", asciidocConfiguration.getToclevels())
+                .attribute("toc-title", "")
                 .sectionNumbers(asciidocConfiguration.getSectnums())
                 .attribute("idprefix", asciidocConfiguration.getIdprefix())
                 .attribute("idseparator", asciidocConfiguration.getIdseparator())
@@ -48,7 +49,6 @@ public class DefaultAsciidocConverter implements AsciidocConverter {
                 .noFooter(asciidocConfiguration.isNofooter());
 
         optionsBuilder = Options.builder()
-                .docType(asciidocConfiguration.getDocType())
                 .eruby(asciidocConfiguration.getRuby())
                 .safe(SafeMode.UNSAFE);
 
@@ -65,7 +65,7 @@ public class DefaultAsciidocConverter implements AsciidocConverter {
                           @NonNull @NotBlank String sourceDir,
                           @NonNull @NotBlank String guideSourceDir) {
         return asciidoctor.convert(asciidoc, optionsBuilder
-                        .baseDir(baseDir)
+                .baseDir(baseDir)
                 .toFile(false)
                 .attributes(attributesBuilder.attribute("sourcedir", sourceDir).build())
                 .attributes(attributesBuilder.attribute("guidesourcedir", guideSourceDir).build())
