@@ -115,19 +115,19 @@ You could use a https://micronaut-projects.github.io/micronaut-data/latest/guide
 
 === 1.4. Repository Interface
 
-{% include_relative includes/genre-repository.md parentDir=&quot;" dialect="MYSQL&quot; %}
+include::asciidoc/commons/genre-repository.adoc[]
 
 === 1.5. Controller
 
-{% include_relative includes/genre-controller.md parentDir=&quot;&quot; %}
+include::asciidoc/commons/genre-controller.adoc[]
 
 === 1.6. Service
 
-{% include_relative includes/genre-service.md parentDir=&quot;&quot; %}
+include::asciidoc/commons/genre-service.adoc[]
 
 === 1.7. Tests
 
-{% include_relative includes/genre-controller-test.md cloud=&quot;&quot; %}
+include::asciidoc/commons/genre-controller-test.adoc[]
 
 == 2. Test the Application
 
