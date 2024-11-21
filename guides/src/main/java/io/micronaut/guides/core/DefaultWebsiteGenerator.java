@@ -172,25 +172,23 @@ class DefaultWebsiteGenerator implements WebsiteGenerator {
         String closeDivPattern = "</div>";
         String idAttribute = "id=\"toc\"";
 
-        // Find the opening <div> tag with id="toc"
         int startIndex = html.indexOf(openDivPattern + " " + idAttribute);
         if (startIndex == -1) {
             startIndex = html.indexOf(openDivPattern + " id='toc'");
-            if (startIndex == -1) return null; // Div with id="toc" not found
+            if (startIndex == -1) return null;
         }
 
         int openingTagEnd = html.indexOf(">", startIndex);
-        if (openingTagEnd == -1) return null; // Malformed HTML
+        if (openingTagEnd == -1) return null;
 
         int nestedDivCount = 0;
         int currentIndex = openingTagEnd + 1;
 
-        // Traverse the HTML string to match nested <div> tags
         while (currentIndex < html.length()) {
             int nextOpenDiv = html.indexOf(openDivPattern, currentIndex);
             int nextCloseDiv = html.indexOf(closeDivPattern, currentIndex);
 
-            if (nextCloseDiv == -1) return null; // Malformed HTML (no closing tag)
+            if (nextCloseDiv == -1) return null;
 
             if (nextOpenDiv != -1 && nextOpenDiv < nextCloseDiv) {
                 nestedDivCount++;
