@@ -1,0 +1,5 @@
+____
+
+Note: If you use IntelliJ IDEA, link:/gdk/resources/img/annotationprocessorsintellij.png[enable annotation processing].
+
+____
