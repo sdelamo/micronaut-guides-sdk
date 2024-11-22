@@ -1,0 +1,6 @@
+Export the environment variables.
+
+[source,bash]
+----
+include::{guidesourcedir}/settings.sh[tag=env-vars]
+----

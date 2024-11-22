@@ -4,3 +4,5 @@ The GDK Launcher created the sample domain entity in the _{{ include.parentDir }
 ----
 include::{guidesourcedir}/src/main/java/com/example/domain/Genre.java[lines=16..-1]
 ----
+
+include::jpa-annotations-alternative.adoc[]

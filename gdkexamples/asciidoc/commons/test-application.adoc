@@ -1,0 +1,13 @@
+To run the tests, use the following command:
+<div id="tabs-doc3">
+<ul>
+<li class="tabs-gradle"><a href="#gradle">Gradle</a></li>
+<li class="tabs-maven"><a href="#maven">Maven</a></li>
+</ul>
+<div id="gradle">
+<pre><code class="language-bash">./gradlew test</code></pre>
+</div>
+<div id="maven">
+<pre><code class="language-bash">./mvnw test</code></pre>
+</div>
+</div>

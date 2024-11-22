@@ -1,0 +1,8 @@
+=== Configure Datasource
+
+The default datasource is defined in the _src/main/resources/application.properties_ file:
+
+[source,properties]
+----
+include::{guidesourcedir}/src/main/resources/application.properties[tag=datasources]
+----

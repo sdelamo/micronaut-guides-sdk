@@ -1,0 +1,27 @@
+=== Database Migration with Flyway
+
+The GDK Launcher included http://www.flywaydb.org[Flyway] for database migrations. It uses the https://micronaut-projects.github.io/micronaut-flyway/latest/guide/[Micronaut integration with Flyway] that automates schema changes, significantly simplifies schema management tasks, such as migrating, rolling back, and reproducing in multiple environments.
+The GDK Launcher enables Flyway in the _src/main/resources/application.properties_ file and configures it to perform migrations on the default datasources.
+
+[source,properties]
+----
+include::{guidesourcedir}/src/main/resources/application.properties[tag=flyway]
+----
+
+____
+
+Note: Flyway migrations are not compatible with the default automatic schema generation that is configured in _src/main/resources/application.properties_. If `schema-generate` is active, it will conflict with Flyway. So edit _src/main/resources/application.properties_ and either delete the `datasources.default.schema-generate=CREATE_DROP` line or change that line to `datasources.default.schema-generate=NONE` to ensure that only Flyway manages your schema.
+
+____
+
+Configuring multiple datasources is as simple as enabling Flyway for each one. You can also specify directories that will be used for migrating each datasource. For more information, see https://micronaut-projects.github.io/micronaut-flyway/latest/guide/[Micronaut integration with Flyway].
+
+Flyway migration is automatically triggered before your application starts. Flyway reads migration file(s) in the _src/main/resources/db/migration/_ directory. The migration file with the database schema, _src/main/resources/db/migration/V1__schema.sql_, was also created for you by the GDK Launcher.
+
+
+[source,properties]
+----
+include::{guidesourcedir}/src/main/resources/migration/V1__schema.sql[]
+----
+
+During application startup, Flyway runs the commands in the SQL file and creates the schema needed for the application.

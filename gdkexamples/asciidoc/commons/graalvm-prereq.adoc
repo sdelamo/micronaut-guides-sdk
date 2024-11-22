@@ -1,0 +1,7 @@
+The GDK supports compiling Java applications ahead-of-time into native executables using https://www.graalvm.org/[GraalVM Native Image].
+You can use the _https://graalvm.github.io/native-build-tools/latest/gradle-plugin.html[Gradle plugin for GraalVM Native Image building]_/_https://graalvm.github.io/native-build-tools/latest/maven-plugin.html[Maven plugin for GraalVM Native Image building]_.
+Packaged as a native executable, it significantly reduces application startup time and memory footprint.
+
+____
+*Prerequisites*: Make sure you have installed a GraalVM JDK. The easiest way to get started is with https://sdkman.io/jdks#graal[SDKMAN!]. For other installation options, visit the https://www.graalvm.org/downloads/[Downloads section].
+____

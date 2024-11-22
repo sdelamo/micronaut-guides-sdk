@@ -12,6 +12,10 @@
     "java"
   ],
   "publicationDate": "2024-11-19",
+  "zipIncludes": [
+    "create_resources.sh",
+    "settings.sh"
+  ],
   "apps": [
     {
       "name": "default",
