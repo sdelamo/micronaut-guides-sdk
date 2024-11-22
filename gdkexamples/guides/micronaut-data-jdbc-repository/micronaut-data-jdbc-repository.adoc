@@ -1,17 +1,12 @@
-—
-layout: gdk-module
-link_title: Create and Connect a Micronaut Application to a MySQL Database
-title: Create and Connect a Micronaut Application to a MySQL Database
-permalink: /gdk-modules/database/micronaut-data-jdbc-repository/
-
-== toc_group: gdk-modules-jdbc-database
-
 = Create and Connect a Micronaut Application to a MySQL Database
+
+= {doctitle}
 
 This guide describes how to create a database application using the Graal Development Kit for Micronaut (GDK). The application presents REST endpoints and stores data in a MySQL database using Micronaut<sup>&reg;</sup> Data.
 
 {% include_relative includes/mn-data-summary.md %}
 
+[discrete]
 === Prerequisites
 
 * JDK 17 or higher. See link:/gdk/get-started/setting-up-desktop/[Setting up Your Desktop].
@@ -36,7 +31,7 @@ ____
  <p>Windows platform: The GDK guides are compatible with Gradle only. Maven support is coming soon.</p>
 </blockquote>
 
-== 1. Create the Application
+== Create the Application
 
 Create an application using the GDK Launcher.
 
@@ -74,7 +69,7 @@ features: [app-name, data, data-jdbc, flyway, gdk-bom, gdk-database, gdk-license
 
 Let's examine the project more closely.
 
-=== 1.1. Configure Datasource
+=== Configure Datasource
 
 The default datasource is defined in the _src/main/resources/application.properties_ file:
 
@@ -85,7 +80,7 @@ include::{guidesourcedir}/src/main/resources/application.properties[tag=datasour
 
 If you deploy to, for example, Oracle MySQL Database, substitute the `driver-class-name` value with the Oracle Database Server (see link:micronaut-mysql-database-oci.md[Create and Connect a Micronaut Application to the Oracle Cloud Infrastructure MySQL HeatWave Service]).
 
-=== 1.2. Database Migration with Flyway
+=== Database Migration with Flyway
 
 The GDK Launcher included http://www.flywaydb.org[Flyway] for database migrations. It uses the https://micronaut-projects.github.io/micronaut-flyway/latest/guide/[Micronaut integration with Flyway] that automates schema changes, significantly simplifies schema management tasks, such as migrating, rolling back, and reproducing in multiple environments.
 The GDK Launcher enables Flyway in the _src/main/resources/application.properties_ file and configures it to perform migrations on the default datasources.
@@ -109,29 +104,29 @@ resource:migration/V1__schema.sql[]
 
 During application startup, Flyway runs the commands in the SQL file and creates the schema needed for the application.
 
-=== 1.3. Domain Entity
+=== Domain Entity
 
 include::asciidoc/commons/genre.adoc[]
 
 You could use a https://micronaut-projects.github.io/micronaut-data/latest/guide/#sqlAnnotations[subset of supported JPA annotations] instead by including the following `compileOnly` scoped dependency: `jakarta.persistence:jakarta.persistence-api`.
 
-=== 1.4. Repository Interface
+=== Repository Interface
 
 include::asciidoc/commons/genre-repository.adoc[]
 
-=== 1.5. Controller
+=== Controller
 
 include::asciidoc/commons/genre-controller.adoc[]
 
-=== 1.6. Service
+=== Service
 
 include::asciidoc/commons/genre-service.adoc[]
 
-=== 1.7. Tests
+=== Tests
 
 include::asciidoc/commons/genre-controller-test.adoc[]
 
-== 2. Test the Application
+== Test the Application
 
 To run the tests, use the following command:
 <div id="tabs-doc3">
@@ -151,7 +146,7 @@ When the application is started locally&mdash;either under test or by running th
 
 For more information, see the https://micronaut-projects.github.io/micronaut-test-resources/latest/guide/#modules-databases-jdbc[JDBC section of the Test Resources documentation].
 
-== 3. Generate a Native Executable Using GraalVM
+== Generate a Native Executable Using GraalVM
 
 {% include guides/graalvm_prereq.md %}
 
@@ -159,7 +154,7 @@ To generate a native executable, use the following command:
 
 Before running this native executable, you need to start and then connect to a MySQL database.
 
-== 4. Connect to a MySQL Database
+== Connect to a MySQL Database
 
 Start and connect to an existing database. Then define the database driver URL, username, and password via environment variables.
 
@@ -186,7 +181,7 @@ Define the database driver URL, username, and password via environment variables
 
 The Micronaut framework populates the properties `datasources.default.url`, `datasources.default.username` and `datasources.default.password` with those environment variables' values. Learn more about https://micronaut-projects.github.io/micronaut-sql/latest/guide/#jdbc-connection-pools[JDBC Connection Pools].
 
-== 5. Run the Application
+== Run the Application
 
 Run the application from the native executable which starts the application on port 8080:
 
