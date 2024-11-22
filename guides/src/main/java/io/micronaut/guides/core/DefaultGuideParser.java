@@ -21,8 +21,6 @@ import com.networknt.schema.ValidationMessage;
 import io.micronaut.core.annotation.NonNull;
 import io.micronaut.core.type.Argument;
 import io.micronaut.json.JsonMapper;
-import io.micronaut.starter.options.BuildTool;
-import io.micronaut.starter.options.Language;
 import jakarta.inject.Singleton;
 import jakarta.validation.constraints.NotNull;
 import org.slf4j.Logger;
@@ -42,7 +40,6 @@ import static io.micronaut.guides.core.GuideUtils.mergeMetadataList;
  */
 @Singleton
 public class DefaultGuideParser implements GuideParser {
-    public static final String SPOTLESS = "spotless";
     private static final Logger LOG = LoggerFactory.getLogger(DefaultGuideParser.class);
 
     private final JsonSchema jsonSchema;
@@ -111,66 +108,17 @@ public class DefaultGuideParser implements GuideParser {
             }
         }
 
-        Guide raw;
+        Guide guide;
         try {
-            raw = jsonMapper.readValue(content, Guide.class);
+            guide = jsonMapper.readValue(content, Guide.class);
         } catch (IOException e) {
             LOG.trace("Error parsing guide metadata {}. Skipping guide.", configFile, e);
             return Optional.empty();
         }
 
-        List<App> apps = new LinkedList<>();
+        guide.setSlug(guidesDir.getName());
+        guide.setAsciidoctor(publish ? guidesDir.getName() + ".adoc" : null);
 
-        for (App app : raw.apps()) {
-            apps.add(new App(
-                    app.name(),
-                    app.packageName(),
-                    app.applicationType(),
-                    app.framework(),
-                    app.features() != null ? app.features() : new ArrayList<>(),
-                    app.invisibleFeatures() != null ? app.invisibleFeatures() : new ArrayList<>(),
-                    app.kotlinFeatures() != null ? app.kotlinFeatures() : new ArrayList<>(),
-                    app.javaFeatures() != null ? app.javaFeatures() : new ArrayList<>(),
-                    app.groovyFeatures() != null ? app.groovyFeatures() : new ArrayList<>(),
-                    app.testFramework(),
-                    app.excludeTest(),
-                    app.excludeSource(),
-                    app.validateLicense() && hasSpotless(app.features(), app.invisibleFeatures(), app.kotlinFeatures(), app.javaFeatures(), app.groovyFeatures())
-            ));
-        }
-
-        return Optional.of(new Guide(
-                raw.title(),
-                raw.intro(),
-                raw.authors(),
-                raw.categories(),
-                publish ? raw.publicationDate() : null,
-                raw.minimumJavaVersion(),
-                raw.maximumJavaVersion(),
-                raw.cloud(),
-                raw.skipGradleTests(),
-                raw.skipMavenTests(),
-                publish ? guidesDir.getName() + ".adoc" : null,
-                raw.languages() != null ? raw.languages() : List.of(Language.JAVA, Language.GROOVY, Language.KOTLIN),
-                raw.tags() != null ? raw.tags() : Collections.emptyList(),
-                raw.buildTools() != null ? raw.buildTools() : List.of(BuildTool.GRADLE, BuildTool.MAVEN),
-                raw.testFramework(),
-                raw.zipIncludes() != null ? raw.zipIncludes() : new ArrayList<>(),
-                guidesDir.getName(),
-                publish,
-                raw.base(),
-                raw.env() != null ? raw.env() : new HashMap<>(),
-                apps
-        ));
-    }
-
-    @SafeVarargs
-    private boolean hasSpotless(List<String>... featureLists) {
-        for (List<String> features : featureLists) {
-            if (features != null && features.contains(SPOTLESS)) {
-                return true;
-            }
-        }
-        return false;
+        return Optional.of(guide);
     }
 }
