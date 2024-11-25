@@ -1,12 +1,12 @@
 /*
  * Copyright 2024 Oracle and/or its affiliates
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     https://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -32,6 +32,7 @@ import io.micronaut.scheduling.annotation.ExecuteOn;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
+
 import java.net.URI;
 import java.util.List;
 import java.util.Optional;
@@ -39,22 +40,22 @@ import java.util.Optional;
 import static io.micronaut.http.HttpHeaders.LOCATION;
 import static io.micronaut.http.HttpStatus.NO_CONTENT;
 
-@ExecuteOn(TaskExecutors.IO)
-@Controller("/genres")
+@ExecuteOn(TaskExecutors.IO) // <1>
+@Controller("/genres") // <2>
 class GenreController {
 
     private final GenreService genreService;
 
-    GenreController(GenreService genreService) {
+    GenreController(GenreService genreService) { // <3>
         this.genreService = genreService;
     }
 
-    @Get("/{id}")
+    @Get("/{id}") // <4>
     public Optional<Genre> show(Long id) {
         return genreService.findById(id);
     }
 
-    @Put("/{id}/{name}")
+    @Put("/{id}/{name}") // <5>
     public HttpResponse<?> update(long id, String name) {
         genreService.update(id, name);
         return HttpResponse
@@ -62,12 +63,12 @@ class GenreController {
                 .header(LOCATION, URI.create("/genres/" + id).getPath());
     }
 
-    @Get("/list")
+    @Get("/list") // <6>
     public List<Genre> list(@Valid Pageable pageable) {
         return genreService.list(pageable);
     }
 
-    @Post
+    @Post // <7>
     public HttpResponse<Genre> save(@Body("name") @NotBlank String name) {
         Genre genre = genreService.save(name);
 
@@ -76,7 +77,7 @@ class GenreController {
                 .headers(headers -> headers.location(URI.create("/genres/" + genre.getId())));
     }
 
-    @Delete("/{id}")
+    @Delete("/{id}") // <8>
     @Status(NO_CONTENT)
     public void delete(Long id) {
         genreService.delete(id);
