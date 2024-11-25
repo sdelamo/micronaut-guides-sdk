@@ -24,12 +24,15 @@ public class JsonFeedGeneratorTest {
     @Inject
     JsonFeedGenerator jsonFeedGenerator;
 
-    private List<Guide> guides;
+    @Inject
+    GuideMerger guideMerger;
+
+    private List<? extends Guide> guides;
 
     @BeforeEach
     public void setup() {
         File file = new File("src/test/resources/guides");
-        GuideParser guideParser = new DefaultGuideParser(jsonSchemaProvider, jsonMapper);
+        GuideParser guideParser = new DefaultGuideParser(jsonSchemaProvider, jsonMapper, guideMerger);
         this.guides = guideParser.parseGuidesMetadata(file, "metadata.json")
                 .stream().filter(Guide::publish).toList();
     }

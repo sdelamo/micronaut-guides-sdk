@@ -106,7 +106,7 @@ public class TestScriptGeneratorTest {
     void testGenerate() {
         String path = "src/test/resources/guides";
         File file = new File(path);
-        List<Guide> metadatas = guideParser.parseGuidesMetadata(file, "metadata.json");
+        List<? extends Guide> metadatas = guideParser.parseGuidesMetadata(file, "metadata.json");
 
         File expectedFile = new File(resourceLoader.getResource("classpath:expected_test_script.sh").orElseThrow().getFile());
         String expected = TestUtils.readFile(expectedFile);
@@ -120,7 +120,7 @@ public class TestScriptGeneratorTest {
     void testGenerateNative() {
         String path = "src/test/resources/guides";
         File file = new File(path);
-        List<Guide> metadatas = guideParser.parseGuidesMetadata(file, "metadata.json");
+        List<? extends Guide> metadatas = guideParser.parseGuidesMetadata(file, "metadata.json");
 
         File expectedFile = new File(resourceLoader.getResource("classpath:expected_test_script_native.sh").orElseThrow().getFile());
         String expected = TestUtils.readFile(expectedFile);
