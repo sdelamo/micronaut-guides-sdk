@@ -133,7 +133,7 @@ public class GuideProjectGeneratorTest {
         String path = "src/test/resources/guides";
         File file = new File(path);
 
-        List<Guide> metadatas = guideParser.parseGuidesMetadata(file, "metadata.json");
+        List<? extends Guide> metadatas = guideParser.parseGuidesMetadata(file, "metadata.json");
         Guide guide = metadatas.get(4);
 
         assertDoesNotThrow(() -> guideProjectGenerator.generate(outputDirectory, guide));

@@ -1,20 +1,36 @@
 package io.micronaut.guides.cli;
 
-import io.micronaut.context.annotation.Replaces;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyDescription;
+import io.micronaut.core.annotation.NonNull;
+import io.micronaut.core.annotation.Nullable;
+import io.micronaut.core.util.StringUtils;
 import io.micronaut.guides.core.App;
 import io.micronaut.guides.core.Cloud;
 import io.micronaut.guides.core.Guide;
+import io.micronaut.jsonschema.JsonSchema;
+import io.micronaut.serde.annotation.Serdeable;
 import io.micronaut.starter.api.TestFramework;
 import io.micronaut.starter.options.BuildTool;
 import io.micronaut.starter.options.Language;
+import jakarta.validation.constraints.NotEmpty;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
-@Replaces(Guide.class)
+@Serdeable
+@JsonSchema
 public class GdkGuide extends Guide {
+    @JsonPropertyDescription("Set it to true to not generate code samples for the guide")
+    @JsonProperty(defaultValue = StringUtils.FALSE)
+    @Nullable
+    private Boolean skipCodeSamples;
 
+    @JsonPropertyDescription("Applications created for the guide")
+    @NotEmpty
+    @NonNull
+    private List<GdkApp> apps;
 
     /**
      * Represents a guide metadata.
@@ -40,8 +56,29 @@ public class GdkGuide extends Guide {
      * @param base               Defaults to null; if set, indicates directory name of the base guide to copy before copying the current one
      * @param env                The guide's environment variables
      * @param apps               Applications created for the guide
+     * @param skipCodeSamples    Set it to true to not generate code samples for the guide
      */
-    public GdkGuide(String title, String intro, List<String> authors, List<String> categories, LocalDate publicationDate, Integer minimumJavaVersion, Integer maximumJavaVersion, Cloud cloud, Boolean skipGradleTests, Boolean skipMavenTests, String asciidoctor, List<Language> languages, List<String> tags, List<BuildTool> buildTools, TestFramework testFramework, List<String> zipIncludes, String slug, Boolean publish, String base, Map<String, String> env, List<App> apps) {
-        super(title, intro, authors, categories, publicationDate, minimumJavaVersion, maximumJavaVersion, cloud, skipGradleTests, skipMavenTests, asciidoctor, languages, tags, buildTools, testFramework, zipIncludes, slug, publish, base, env, apps);
+    public GdkGuide(String title, String intro, List<String> authors, List<String> categories, LocalDate publicationDate, Integer minimumJavaVersion, Integer maximumJavaVersion, Cloud cloud, Boolean skipGradleTests, Boolean skipMavenTests, String asciidoctor, List<Language> languages, List<String> tags, List<BuildTool> buildTools, TestFramework testFramework, List<String> zipIncludes, String slug, Boolean publish, String base, Map<String, String> env, List<GdkApp> apps, Boolean skipCodeSamples) {
+        super(title, intro, authors, categories, publicationDate, minimumJavaVersion, maximumJavaVersion, cloud, skipGradleTests, skipMavenTests, asciidoctor, languages, tags, buildTools, testFramework, zipIncludes, slug, publish, base, env, null);
+        this.skipCodeSamples = skipCodeSamples;
+        this.apps = apps;
+    }
+
+    public @Nullable Boolean skipCodeSamples() {
+        return skipCodeSamples;
+    }
+
+    public void setSkipCodeSamples(@Nullable Boolean skipCodeSamples) {
+        this.skipCodeSamples = skipCodeSamples;
+    }
+
+    @Override
+    public @NonNull List<GdkApp> apps() {
+        return apps;
+    }
+
+    @Override
+    public void setApps(@NotEmpty @NonNull List<? extends App> apps) {
+        this.apps = (List<GdkApp>) apps;
     }
 }

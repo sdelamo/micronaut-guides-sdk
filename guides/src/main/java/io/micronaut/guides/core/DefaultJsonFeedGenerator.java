@@ -57,7 +57,7 @@ public class DefaultJsonFeedGenerator implements JsonFeedGenerator {
      * @param metadatas the list of guide metadata
      * @return the generated JsonFeed
      */
-    public JsonFeed jsonFeed(List<Guide> metadatas) {
+    public JsonFeed jsonFeed(List<? extends Guide> metadatas) {
         JsonFeed.Builder jsonFeedBuilder = jsonFeedBuilder();
         for (Guide metadata : metadatas) {
             jsonFeedBuilder.item(jsonFeedItem(metadata));
@@ -74,7 +74,7 @@ public class DefaultJsonFeedGenerator implements JsonFeedGenerator {
      */
     @Override
     @NonNull
-    public String jsonFeedString(@NonNull List<Guide> metadatas) throws IOException {
+    public String jsonFeedString(@NonNull List<? extends Guide> metadatas) throws IOException {
         JsonFeed jsonFeed = jsonFeed(metadatas);
         return jsonMapper.writeValueAsString(jsonFeed);
     }
@@ -98,7 +98,7 @@ public class DefaultJsonFeedGenerator implements JsonFeedGenerator {
         for (String author : metadata.authors()) {
             jsonFeedItemBuilder.author(JsonFeedAuthor.builder().name(author).build());
         }
-        for (String t : GuideUtils.getTags(metadata)) {
+        for (String t : metadata.tags()) {
             jsonFeedItemBuilder.tag(t);
         }
         return jsonFeedItemBuilder.build();

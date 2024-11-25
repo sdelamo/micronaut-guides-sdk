@@ -121,7 +121,7 @@ public class DefaultGuideProjectGenerator implements GuideProjectGenerator {
      * @throws IOException if an I/O error occurs during project generation
      */
     public void generate(@NonNull File outputDirectory, @NonNull Guide guide, @NonNull GuidesOption guidesOption, @NonNull JdkVersion javaVersion, @NonNull App app) throws IOException {
-        List<String> appFeatures = new ArrayList<>(GuideUtils.getAppFeatures(app, guidesOption.getLanguage()));
+        List<String> appFeatures = new ArrayList<>(app.features(guidesOption.getLanguage()));
         if (!guidesConfiguration.getJdkVersionsSupportedByGraalvm().contains(javaVersion)) {
             appFeatures.remove("graalvm");
         }

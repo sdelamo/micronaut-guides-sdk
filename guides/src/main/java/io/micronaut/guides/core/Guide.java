@@ -31,7 +31,10 @@ import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDate;
 import java.util.*;
+import java.util.stream.Collectors;
 
+import static io.micronaut.guides.core.GuideUtils.FEATURES_PREFIXES;
+import static io.micronaut.guides.core.GuideUtils.addAllSafe;
 
 /**
  * Represents a guide metadata.
@@ -130,7 +133,7 @@ public class Guide {
     @JsonPropertyDescription("Applications created for the guide")
     @NotEmpty
     @NonNull
-    private List<App> apps;
+    private List<? extends App> apps;
 
     /**
      * Represents a guide metadata.
@@ -157,6 +160,7 @@ public class Guide {
      * @param env                The guide's environment variables
      * @param apps               Applications created for the guide
      */
+    @SuppressWarnings("checkstyle:ParameterNumber")
     public Guide(@NonNull @NotBlank String title,
                  @NonNull @NotBlank String intro,
                  @NotEmpty @NonNull List<String> authors,
@@ -177,7 +181,7 @@ public class Guide {
                  @Nullable Boolean publish,
                  @Nullable String base,
                  @Nullable Map<String, String> env,
-                 @NotEmpty @NonNull List<App> apps) {
+                 @NotEmpty @NonNull List<? extends App> apps) {
         this.title = title;
         this.intro = intro;
         this.authors = authors;
@@ -200,171 +204,428 @@ public class Guide {
         this.apps = apps;
     }
 
+    /**
+     * Gets the title of the guide.
+     *
+     * @return The title of the guide.
+     */
     public @NonNull @NotBlank String title() {
         return title;
     }
 
+    /**
+     * Sets the title of the guide.
+     *
+     * @param title The title to set.
+     */
     public void setTitle(@NonNull @NotBlank String title) {
         this.title = title;
     }
 
+    /**
+     * Gets the introduction of the guide.
+     *
+     * @return The introduction of the guide.
+     */
     public @NonNull @NotBlank String intro() {
         return intro;
     }
 
+    /**
+     * Sets the introduction of the guide.
+     *
+     * @param intro The introduction to set.
+     */
     public void setIntro(@NonNull @NotBlank String intro) {
         this.intro = intro;
     }
 
+    /**
+     * Gets the authors of the guide.
+     *
+     * @return The list of authors.
+     */
     public @NotEmpty @NonNull List<String> authors() {
         return authors;
     }
 
+    /**
+     * Sets the authors of the guide.
+     *
+     * @param authors The list of authors to set.
+     */
     public void setAuthors(@NotEmpty @NonNull List<String> authors) {
         this.authors = authors;
     }
 
+    /**
+     * Gets the categories of the guide.
+     *
+     * @return The list of categories.
+     */
     public @NotEmpty @NonNull List<String> categories() {
         return categories;
     }
 
+    /**
+     * Sets the categories of the guide.
+     *
+     * @param categories The list of categories to set.
+     */
     public void setCategories(@NotEmpty @NonNull List<String> categories) {
         this.categories = categories;
     }
 
+    /**
+     * Gets the publication date of the guide.
+     *
+     * @return The publication date.
+     */
     public @NonNull @NotNull LocalDate publicationDate() {
         return publicationDate;
     }
 
+    /**
+     * Sets the publication date of the guide.
+     *
+     * @param publicationDate The publication date to set.
+     */
     public void setPublicationDate(@NonNull @NotNull LocalDate publicationDate) {
         this.publicationDate = publicationDate;
     }
 
+    /**
+     * Gets the minimum Java version required for the guide.
+     *
+     * @return The minimum Java version, or null if not specified.
+     */
     public @Nullable Integer minimumJavaVersion() {
         return minimumJavaVersion;
     }
 
+    /**
+     * Sets the minimum Java version required for the guide.
+     *
+     * @param minimumJavaVersion The minimum Java version to set.
+     */
     public void setMinimumJavaVersion(@Nullable Integer minimumJavaVersion) {
         this.minimumJavaVersion = minimumJavaVersion;
     }
 
+    /**
+     * Gets the maximum Java version required for the guide.
+     *
+     * @return The maximum Java version, or null if not specified.
+     */
     public @Nullable Integer maximumJavaVersion() {
         return maximumJavaVersion;
     }
 
+    /**
+     * Sets the maximum Java version required for the guide.
+     *
+     * @param maximumJavaVersion The maximum Java version to set.
+     */
     public void setMaximumJavaVersion(@Nullable Integer maximumJavaVersion) {
         this.maximumJavaVersion = maximumJavaVersion;
     }
 
+    /**
+     * Gets the cloud service provider for the guide.
+     *
+     * @return The cloud service provider, or null if not specified.
+     */
     public @Nullable Cloud cloud() {
         return cloud;
     }
 
+    /**
+     * Sets the cloud service provider for the guide.
+     *
+     * @param cloud The cloud service provider to set.
+     */
     public void setCloud(@Nullable Cloud cloud) {
         this.cloud = cloud;
     }
 
+    /**
+     * Checks if Gradle tests should be skipped for the guide.
+     *
+     * @return True if Gradle tests should be skipped, false otherwise.
+     */
     public @Nullable Boolean skipGradleTests() {
         return skipGradleTests;
     }
 
+    /**
+     * Sets whether Gradle tests should be skipped for the guide.
+     *
+     * @param skipGradleTests True to skip Gradle tests, false otherwise.
+     */
     public void setSkipGradleTests(@Nullable Boolean skipGradleTests) {
         this.skipGradleTests = skipGradleTests;
     }
 
+    /**
+     * Checks if Maven tests should be skipped for the guide.
+     *
+     * @return True if Maven tests should be skipped, false otherwise.
+     */
     public @Nullable Boolean skipMavenTests() {
         return skipMavenTests;
     }
 
+    /**
+     * Sets whether Maven tests should be skipped for the guide.
+     *
+     * @param skipMavenTests True to skip Maven tests, false otherwise.
+     */
     public void setSkipMavenTests(@Nullable Boolean skipMavenTests) {
         this.skipMavenTests = skipMavenTests;
     }
 
+    /**
+     * Gets the Asciidoctor file for the guide.
+     *
+     * @return The Asciidoctor file, or null if not specified.
+     */
     public @Nullable String asciidoctor() {
         return asciidoctor;
     }
 
+    /**
+     * Sets the Asciidoctor file for the guide.
+     *
+     * @param asciidoctor The Asciidoctor file to set.
+     */
     public void setAsciidoctor(@Nullable String asciidoctor) {
         this.asciidoctor = asciidoctor;
     }
 
+    /**
+     * Gets the supported languages for the guide.
+     *
+     * @return The list of supported languages, or null if not specified.
+     */
     public @Nullable List<Language> languages() {
         return languages;
     }
 
+    /**
+     * Sets the supported languages for the guide.
+     *
+     * @param languages The list of supported languages to set.
+     */
     public void setLanguages(@Nullable List<Language> languages) {
         this.languages = languages;
     }
 
+    /**
+     * Gets the tags for the guide.
+     *
+     * @return The list of tags, or null if not specified.
+     */
     public @Nullable List<String> tags() {
-        return tags;
+        Set<String> tagsList = new HashSet<>();
+        if (tags != null) {
+            addAllSafe(tagsList, tags);
+        }
+        for (App app : apps()) {
+            List<String> allFeatures = new ArrayList<>();
+            addAllSafe(allFeatures, app.features());
+            addAllSafe(allFeatures, app.javaFeatures());
+            addAllSafe(allFeatures, app.kotlinFeatures());
+            addAllSafe(allFeatures, app.groovyFeatures());
+            for (String featureName : allFeatures) {
+                String tagToAdd = featureName;
+                for (String prefix : FEATURES_PREFIXES) {
+                    if (tagToAdd.startsWith(prefix)) {
+                        tagToAdd = tagToAdd.substring(prefix.length());
+                    }
+                }
+                tagsList.add(tagToAdd);
+            }
+        }
+        Set<String> categoriesAsTags = categories().stream().map(String::toLowerCase).map(s -> s.replace(" ", "-")).collect(Collectors.toSet());
+        tagsList.addAll(categoriesAsTags);
+        return new ArrayList<>(tagsList);
     }
 
+    /**
+     * Sets the tags for the guide.
+     *
+     * @param tags The list of tags to set.
+     */
     public void setTags(@Nullable List<String> tags) {
         this.tags = tags;
     }
 
+    /**
+     * Gets the build tools for the guide.
+     *
+     * @return The list of build tools, or null if not specified.
+     */
     public @Nullable List<BuildTool> buildTools() {
         return buildTools;
     }
 
+    /**
+     * Sets the build tools for the guide.
+     *
+     * @param buildTools The list of build tools to set.
+     */
     public void setBuildTools(@Nullable List<BuildTool> buildTools) {
         this.buildTools = buildTools;
     }
 
+    /**
+     * Gets the test framework for the guide.
+     *
+     * @return The test framework, or null if not specified.
+     */
     public @Nullable TestFramework testFramework() {
         return testFramework;
     }
 
+    /**
+     * Sets the test framework for the guide.
+     *
+     * @param testFramework The test framework to set.
+     */
     public void setTestFramework(@Nullable TestFramework testFramework) {
         this.testFramework = testFramework;
     }
 
+    /**
+     * Gets the additional files to include in the generated zip file for the guide.
+     *
+     * @return The list of additional files, or null if not specified.
+     */
     public @Nullable List<String> zipIncludes() {
         return zipIncludes;
     }
 
+    /**
+     * Sets the additional files to include in the generated zip file for the guide.
+     *
+     * @param zipIncludes The list of additional files to set.
+     */
     public void setZipIncludes(@Nullable List<String> zipIncludes) {
         this.zipIncludes = zipIncludes;
     }
 
+    /**
+     * Gets the slug for the guide.
+     *
+     * @return The slug, or null if not specified.
+     */
     public @Nullable String slug() {
         return slug;
     }
 
+    /**
+     * Sets the slug for the guide.
+     *
+     * @param slug The slug to set.
+     */
     public void setSlug(@Nullable String slug) {
         this.slug = slug;
     }
 
+    /**
+     * Checks if the guide should be published.
+     *
+     * @return True if the guide should be published, false otherwise.
+     */
     public @Nullable Boolean publish() {
         return publish;
     }
 
+    /**
+     * Sets whether the guide should be published.
+     *
+     * @param publish True to publish the guide, false otherwise.
+     */
     public void setPublish(@Nullable Boolean publish) {
         this.publish = publish;
     }
 
+    /**
+     * Gets the base guide slug name.
+     *
+     * @return The base guide directory name, or null if not specified.
+     */
     public @Nullable String base() {
         return base;
     }
 
+    /**
+     * Sets the base guide slug name.
+     *
+     * @param base The base guide directory name to set.
+     */
     public void setBase(@Nullable String base) {
         this.base = base;
     }
 
+    /**
+     * Gets the environment variables for the guide.
+     *
+     * @return The map of environment variables, or null if not specified.
+     */
     public @Nullable Map<String, String> env() {
         return env;
     }
 
+    /**
+     * Sets the environment variables for the guide.
+     *
+     * @param env The map of environment variables to set.
+     */
     public void setEnv(@Nullable Map<String, String> env) {
         this.env = env;
     }
 
-    public @NotEmpty @NonNull List<App> apps() {
+    /**
+     * Gets the applications created for the guide.
+     *
+     * @return The list of applications.
+     */
+    public @NotEmpty @NonNull List<? extends App> apps() {
         return apps;
     }
 
-    public void setApps(@NotEmpty @NonNull List<App> apps) {
+    /**
+     * Sets the applications created for the guide.
+     *
+     * @param apps The list of applications to set.
+     */
+    public void setApps(@NotEmpty @NonNull List<? extends App> apps) {
         this.apps = apps;
+    }
+
+    /**
+     * Determines if a guide should skip tests based on the build tool.
+     *
+     * @param buildTool The build tool to check against.
+     * @return True if the guide should skip tests, false otherwise.
+     */
+    public boolean shouldSkip(BuildTool buildTool) {
+        if (BuildTool.valuesGradle().contains(buildTool)) {
+            return skipGradleTests();
+        }
+        if (buildTool == BuildTool.MAVEN) {
+            return skipMavenTests();
+        }
+        return false;
+    }
+
+    /**
+     * Retrieves a set of frameworks used in a given guide.
+     *
+     * @return A set of frameworks associated with the guide.
+     */
+    public Set<String> getFrameworks() {
+        return apps().stream().map(App::framework).collect(Collectors.toSet());
     }
 }

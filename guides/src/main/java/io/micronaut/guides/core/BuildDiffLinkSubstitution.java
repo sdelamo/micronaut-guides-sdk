@@ -67,7 +67,7 @@ public class BuildDiffLinkSubstitution implements MacroSubstitution {
     private static Set<String> features(App app, AsciidocMacro asciidocMacro, GuidesOption option) {
         Set<String> features = new HashSet<>();
         if (app != null) {
-            features.addAll(GuideUtils.getAppVisibleFeatures(app, option.getLanguage()));
+            features.addAll(app.visibleFeatures(option.getLanguage()));
         }
         asciidocMacro.attributes().stream()
                 .filter(attribute -> attribute.key().equals(ATTRIBUTE_FEATURES))

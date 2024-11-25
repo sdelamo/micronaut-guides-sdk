@@ -45,6 +45,9 @@ class GuideTest {
     @Inject
     ResourceLoader resourceLoader;
 
+    @Inject
+    DefaultGuideMerger guideMerger;
+
     @Test
     void testGuideWithBase() {
         assertDoesNotThrow(() -> BeanIntrospection.getIntrospection(Guide.class));
@@ -57,16 +60,16 @@ class GuideTest {
         assertTrue(inputStreamOptional.isPresent());
         final InputStream inputStreamChild = inputStreamOptional.get();
         Guide child = assertDoesNotThrow(() -> jsonMapper.readValue(inputStreamChild, Guide.class));
-        Guide guide = GuideUtils.merge(base, child);
-        assertEquals(List.of("Graeme Rocher"), guide.authors());
-        assertEquals("Connect a Micronaut Data JDBC Application to Azure Database for MySQL", guide.title());
-        assertEquals("Learn how to connect a Micronaut Data JDBC application to a Microsoft Azure Database for MySQL", guide.intro());
-        assertEquals(List.of("Data JDBC"), guide.categories());
-        assertEquals(LocalDate.of(2022, 2, 17), guide.publicationDate());
-        List<String> tags = guide.tags();
+        guideMerger.merge(base, child);
+        assertEquals(List.of("Graeme Rocher"), child.authors());
+        assertEquals("Connect a Micronaut Data JDBC Application to Azure Database for MySQL", child.title());
+        assertEquals("Learn how to connect a Micronaut Data JDBC application to a Microsoft Azure Database for MySQL", child.intro());
+        assertEquals(List.of("Data JDBC"), child.categories());
+        assertEquals(LocalDate.of(2022, 2, 17), child.publicationDate());
+        List<String> tags = child.tags();
         Collections.sort(tags);
         assertEquals(List.of("Azure", "cloud", "data-jdbc", "database", "flyway", "jdbc", "micronaut-data", "mysql"), tags);
-        List<App> apps = guide.apps();
+        List<App> apps = (List<App>) child.apps();
         assertNotNull(apps);
         assertEquals(1, apps.size());
         assertTrue(apps.stream().anyMatch(app -> {
@@ -109,12 +112,12 @@ class GuideTest {
         assertEquals(List.of("Sergio del Amo"), guide.authors());
         assertEquals("1. Testing Serialization - Spring Boot vs Micronaut Framework - Building a Rest API", guide.title());
         assertEquals("This guide compares how to test serialization and deserialization with Micronaut Framework and Spring Boot.", guide.intro());
-        assertEquals(List.of("spring-boot"), guide.tags());
+        assertEquals(List.of("spring-boot-starter-web", "jackson-databind", "spring-boot", "assertj", "boot-to-micronaut-building-a-rest-api", "json-path"), guide.tags());
         assertEquals(List.of("Boot to Micronaut Building a REST API"), guide.categories());
         assertEquals(LocalDate.of(2024, 4, 24), guide.publicationDate());
         assertEquals(List.of(Language.JAVA), guide.languages());
         assertEquals(List.of(BuildTool.GRADLE), guide.buildTools());
-        List<App> apps = guide.apps();
+        List<App> apps = (List<App>) guide.apps();
         assertNotNull(apps);
         assertEquals(3, apps.size());
         assertTrue(apps.stream().anyMatch(app -> {

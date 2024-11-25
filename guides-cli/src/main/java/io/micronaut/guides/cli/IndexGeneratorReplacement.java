@@ -19,6 +19,7 @@ import java.util.Optional;
 @Replaces(IndexGenerator.class)
 public class IndexGeneratorReplacement extends DefaultIndexGenerator {
     private final String indexItem;
+
     public IndexGeneratorReplacement(ResourceLoader resourceLoader, GuidesTemplatesConfiguration guidesTemplatesConfiguration) {
         super(resourceLoader, guidesTemplatesConfiguration);
 
@@ -36,12 +37,12 @@ public class IndexGeneratorReplacement extends DefaultIndexGenerator {
     }
 
     @Override
-    protected String guidesContent(List<Guide> guides) {
-            StringBuilder sb = new StringBuilder();
-            for (Guide guide : guides) {
-                sb.append(guideContent(guide));
-            }
-            return sb.toString();
+    protected String guidesContent(List<? extends Guide> guides) {
+        StringBuilder sb = new StringBuilder();
+        for (Guide guide : guides) {
+            sb.append(guideContent(guide));
+        }
+        return sb.toString();
     }
 
     @Override
@@ -51,8 +52,8 @@ public class IndexGeneratorReplacement extends DefaultIndexGenerator {
         String categoryClass = "";
         String categoryTitle = "";
         for (String category : guide.categories()) {
-            categoryClass =  category.toLowerCase().replace(" ", "-");
-            categoryTitle =  category.toLowerCase();
+            categoryClass = category.toLowerCase().replace(" ", "-");
+            categoryTitle = category.toLowerCase();
         }
 
         StringBuilder sb = new StringBuilder();
