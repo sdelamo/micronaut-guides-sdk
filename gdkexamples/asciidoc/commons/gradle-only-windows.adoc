@@ -1,0 +1,5 @@
+____
+
+Windows platform: The GDK guides are compatible with Gradle only. Maven support is coming soon.
+
+____

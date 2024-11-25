@@ -31,19 +31,16 @@ import static io.micronaut.starter.api.TestFramework.SPOCK;
 public class PlaceholderMacroSubstitution implements MacroSubstitution {
 
     private final GuidesConfiguration guidesConfiguration;
-    private final VersionLoader versionLoader;
     private final CoordinatesProvider coordinatesProvider;
 
     /**
      * Constructs a new PlaceholderMacroSubstitution.
      *
      * @param guidesConfiguration the guides configuration
-     * @param versionLoader       the version loader
      * @param coordinatesProvider the coordinates provider
      */
-    public PlaceholderMacroSubstitution(GuidesConfiguration guidesConfiguration, VersionLoader versionLoader, CoordinatesProvider coordinatesProvider) {
+    public PlaceholderMacroSubstitution(GuidesConfiguration guidesConfiguration, CoordinatesProvider coordinatesProvider) {
         this.guidesConfiguration = guidesConfiguration;
-        this.versionLoader = versionLoader;
         this.coordinatesProvider = coordinatesProvider;
     }
 
@@ -62,7 +59,7 @@ public class PlaceholderMacroSubstitution implements MacroSubstitution {
         str = str.replace("@language@", StringUtils.capitalize(option.getLanguage().toString()));
         str = str.replace("@guideTitle@", guide.title());
         str = str.replace("@guideIntro@", guide.intro());
-        str = str.replace("@micronaut@", String.valueOf(versionLoader.getVersion()));
+        str = str.replace("@micronaut@", String.valueOf(guidesConfiguration.getVersion()));
         str = str.replace("@lang@", option.getLanguage().toString());
         str = str.replace("@build@", option.getBuildTool().toString());
         str = str.replace("@testFramework@", option.getTestFramework().toString());

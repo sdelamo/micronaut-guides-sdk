@@ -38,7 +38,7 @@ public class GuidesConfigurationProperties implements GuidesConfiguration {
     private static final String LAUNCHER_URL = HOMEPAGE_URL + "/launch";
     private static final int DEFAULT_MIN_JDK = 17;
     private static final String API_URL = "https://docs.micronaut.io/latest/api";
-    private static final String DEFAULT_VERSION = "classpath:version.txt";
+    private static final String DEFAULT_VERSION = "0.0.0";
     private static final String DEFAULT_ENV_JDK_VERSION = "JDK_VERSION";
     private static final JdkVersion DEFAULT_JAVA_VERSION = JDK_17;
     private static final List<JdkVersion> DEFAULT_JDK_VERSIONS_SUPPORTED_BY_GRAALVM = List.of(JDK_17, JDK_21);
@@ -46,6 +46,7 @@ public class GuidesConfigurationProperties implements GuidesConfiguration {
     private static final String ENV_GITHUB_WORKFLOW = "GITHUB_WORKFLOW";
     private static final String SYS_PROP_MICRONAUT_GUIDE = "micronaut.guide";
     private static final String DEFAULT_GUIDES_DIR = "guides";
+
     private String guidesDir = DEFAULT_GUIDES_DIR;
     private String title = "Micronaut Guides";
     private String homePageUrl = GUIDES_URL;
@@ -58,6 +59,7 @@ public class GuidesConfigurationProperties implements GuidesConfiguration {
     private String githubWorkflowJavaCi = GITHUB_WORKFLOW_JAVA_CI;
     private String envGithubWorkflow = ENV_GITHUB_WORKFLOW;
     private String sysPropMicronautGuide = SYS_PROP_MICRONAUT_GUIDE;
+    private String version = DEFAULT_VERSION;
 
     /**
      * Gets the JDK versions supported by GraalVM.
@@ -219,8 +221,12 @@ public class GuidesConfigurationProperties implements GuidesConfiguration {
      * @return the version path
      */
     @Override
-    public String getVersionPath() {
-        return DEFAULT_VERSION;
+    public String getVersion() {
+        return version;
+    }
+
+    public void setVersion(String version) {
+        this.version = version;
     }
 
     /**

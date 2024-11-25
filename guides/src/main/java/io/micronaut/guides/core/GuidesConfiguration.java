@@ -91,7 +91,7 @@ public interface GuidesConfiguration {
      *
      * @return the version path
      */
-    String getVersionPath();
+    String getVersion();
 
     /**
      * Returns the environment JDK version.

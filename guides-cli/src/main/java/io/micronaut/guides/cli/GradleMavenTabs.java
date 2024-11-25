@@ -14,8 +14,9 @@ import java.util.stream.Collectors;
 
 abstract class GradleMavenTabs {
     protected String gradleMavenTabsHtml;
+
     protected GradleMavenTabs(ResourceLoader resourceLoader, GuidesTemplatesConfiguration guidesTemplatesConfiguration) {
-        String path = "classpath:" + guidesTemplatesConfiguration.getFolder() + "/index-item.html";
+        String path = "classpath:" + guidesTemplatesConfiguration.getFolder() + "/gradleMavenTabs.html";
         Optional<InputStream> inputStreamOptional = resourceLoader.getResourceAsStream(path);
         if (inputStreamOptional.isEmpty()) {
             throw new ConfigurationException(path);

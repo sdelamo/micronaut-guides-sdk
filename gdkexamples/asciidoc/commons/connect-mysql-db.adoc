@@ -1,0 +1,18 @@
+Start and connect to an existing database. Then define the database driver URL, username, and password via environment variables.
+
+Use the following command to run a MySQL container:
+
+[source,bash]
+----
+include::{guidesourcedir}/create_resources.sh[tag=run-mysql-container]
+----
+
+____
+
+Note: If you are using macOS on Apple Silicon (M1, M1 Pro), Docker might fail to pull a container image for `mysql:8`. In that case, substitute with `mysql:oracle`.
+
+____
+
+Define the database driver URL, username, and password via environment variables:
+
+The Micronaut framework populates the properties `datasources.default.url`, `datasources.default.username` and `datasources.default.password` with those environment variables' values. Learn more about https://micronaut-projects.github.io/micronaut-sql/latest/guide/#jdbc-connection-pools[JDBC Connection Pools].
