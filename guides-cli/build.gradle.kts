@@ -18,7 +18,6 @@ dependencies {
     implementation(projects.guides)
     implementation("io.micronaut.picocli:micronaut-picocli")
     implementation("io.micronaut.serde:micronaut-serde-jackson")
-    implementation(mnJsonSchema.json.schema.validator)
     compileOnly(mnJsonSchema.micronaut.json.schema.annotations)
     runtimeOnly("ch.qos.logback:logback-classic")
 }
