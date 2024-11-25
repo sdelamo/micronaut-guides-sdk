@@ -51,7 +51,7 @@ public class DefaultRssFeedGenerator implements RssFeedGenerator {
      * @return the generated RSS feed as a string
      */
     @NonNull
-    public String rssFeed(@NonNull List<Guide> metadatas) {
+    public String rssFeed(@NonNull List<? extends Guide> metadatas) {
         RssChannel.Builder rssBuilder = rssBuilder();
         for (Guide metadata : metadatas) {
             rssBuilder.item(rssFeedElement(metadata));
@@ -80,7 +80,7 @@ public class DefaultRssFeedGenerator implements RssFeedGenerator {
         for (String author : metadata.authors()) {
             rssItemBuilder.author(author);
         }
-        rssItemBuilder.category(GuideUtils.getTags(metadata));
+        rssItemBuilder.category(metadata.tags());
         return rssItemBuilder.build();
     }
 }
