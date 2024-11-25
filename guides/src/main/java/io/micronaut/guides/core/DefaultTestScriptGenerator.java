@@ -208,7 +208,7 @@ class DefaultTestScriptGenerator implements TestScriptGenerator {
      * @return the generated script as a string
      */
     @Override
-    public String generateNativeTestScript(@NonNull @NotNull List<Guide> metadatas) {
+    public String generateNativeTestScript(@NonNull @NotNull List<? extends Guide> metadatas) {
         return generateScript(metadatas, false, true);
     }
 
@@ -219,7 +219,7 @@ class DefaultTestScriptGenerator implements TestScriptGenerator {
      * @return the generated script as a string
      */
     @Override
-    public String generateTestScript(@NonNull @NotNull List<Guide> metadatas) {
+    public String generateTestScript(@NonNull @NotNull List<? extends Guide> metadatas) {
         return generateScript(metadatas, false, false);
     }
 
@@ -244,7 +244,7 @@ class DefaultTestScriptGenerator implements TestScriptGenerator {
                         !System.getenv(guidesConfiguration.getEnvGithubWorkflow()).equals(guidesConfiguration.getGithubWorkflowJavaCi())) ||
                 (changedFiles.isEmpty() && System.getenv(guidesConfiguration.getEnvGithubWorkflow()) == null);
 
-        List<Guide> metadatas = guideParser.parseGuidesMetadata(guidesFolder, metadataConfigName);
+        List<? extends Guide> metadatas = guideParser.parseGuidesMetadata(guidesFolder, metadataConfigName);
         metadatas = metadatas.stream()
                 .filter(metadata -> !shouldSkip(metadata, slugsChanged, forceExecuteEveryTest, guidesConfiguration))
                 .collect(Collectors.toList());
@@ -259,7 +259,7 @@ class DefaultTestScriptGenerator implements TestScriptGenerator {
      * @param nativeTest    whether to run native tests
      * @return the generated script as a string
      */
-    public String generateScript(List<Guide> metadatas, boolean stopIfFailure, boolean nativeTest) {
+    public String generateScript(List<? extends Guide> metadatas, boolean stopIfFailure, boolean nativeTest) {
         StringBuilder bashScript = new StringBuilder("""
                 #!/usr/bin/env bash
                 set -e
@@ -283,14 +283,14 @@ class DefaultTestScriptGenerator implements TestScriptGenerator {
                 String folder = MacroUtils.getSourceDir(metadata.slug(), guidesOption);
                 BuildTool buildTool = folder.contains(MAVEN.toString()) ? MAVEN : GRADLE;
                 if (metadata.apps().stream().anyMatch(app -> app.name().equals(guidesConfiguration.getDefaultAppName()))) {
-                    if (GuideUtils.shouldSkip(metadata, buildTool)) {
+                    if (metadata.shouldSkip(buildTool)) {
                         continue;
                     }
-                    Optional<App> appOptional = metadata.apps().stream().filter(app -> app.name().equals(guidesConfiguration.getDefaultAppName())).findFirst();
+                    Optional<? extends App> appOptional = metadata.apps().stream().filter(app -> app.name().equals(guidesConfiguration.getDefaultAppName())).findFirst();
                     if (appOptional.isPresent()) {
                         App defaultApp = appOptional.get();
                         if (!nativeTest || supportsNativeTest(defaultApp, guidesOption)) {
-                            List<String> features = GuideUtils.getAppFeatures(defaultApp, guidesOption.getLanguage());
+                            List<String> features = defaultApp.features(guidesOption.getLanguage());
                             if (!folder.contains("-maven-groovy")) {
                                 bashScript.append(scriptForFolder(folder, folder, stopIfFailure, buildTool, features.contains("kapt") && Runtime.getRuntime().version().feature() > 17 && buildTool == GRADLE, nativeTest, defaultApp.validateLicense()));
                             }
@@ -299,11 +299,11 @@ class DefaultTestScriptGenerator implements TestScriptGenerator {
                 } else {
                     bashScript.append("cd " + folder + "\n");
                     for (App app : metadata.apps()) {
-                        if (GuideUtils.shouldSkip(metadata, buildTool)) {
+                        if (metadata.shouldSkip(buildTool)) {
                             continue;
                         }
                         if (!nativeTest || supportsNativeTest(app, guidesOption)) {
-                            List<String> features = GuideUtils.getAppFeatures(app, guidesOption.getLanguage());
+                            List<String> features = app.features(guidesOption.getLanguage());
                             if (!folder.contains("-maven-groovy")) {
                                 bashScript.append(scriptForFolder(app.name(), folder + "/" + app.name(), stopIfFailure, buildTool, features.contains("kapt") && Runtime.getRuntime().version().feature() > 17 && buildTool == GRADLE, nativeTest, app.validateLicense()));
                             }

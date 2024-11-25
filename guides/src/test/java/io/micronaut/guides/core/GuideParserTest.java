@@ -25,7 +25,7 @@ public class GuideParserTest {
         String path = "src/test/resources/guides";
         File file = new File(path);
 
-        List<Guide> metadatas = guideParser.parseGuidesMetadata(file, "metadata.json");
+        List<? extends Guide> metadatas = guideParser.parseGuidesMetadata(file, "metadata.json");
 
         assertEquals(5, metadatas.size());
 
@@ -44,7 +44,7 @@ public class GuideParserTest {
         List<String> tags = guide.tags();
         Collections.sort(tags);
         assertEquals(List.of("Azure", "cloud", "data-jdbc", "database", "flyway", "jdbc", "micronaut-data", "mysql"), tags);
-        List<App> apps = guide.apps();
+        List<App> apps = (List<App>) guide.apps();
         assertNotNull(apps);
         assertEquals(1, apps.size());
         assertTrue(apps.stream().anyMatch(app -> app.name().equals("default") &&
@@ -65,12 +65,12 @@ public class GuideParserTest {
         assertEquals(List.of("Sergio del Amo"), guide.authors());
         assertEquals("1. Testing Serialization - Spring Boot vs Micronaut Framework - Building a Rest API", guide.title());
         assertEquals("This guide compares how to test serialization and deserialization with Micronaut Framework and Spring Boot.", guide.intro());
-        assertEquals(List.of("spring-boot"), guide.tags());
+        assertEquals(List.of("spring-boot-starter-web", "jackson-databind", "spring-boot", "assertj", "boot-to-micronaut-building-a-rest-api", "json-path"), guide.tags());
         assertEquals(List.of("Boot to Micronaut Building a REST API"), guide.categories());
         assertEquals(LocalDate.of(2024, 4, 24), guide.publicationDate());
         assertEquals(List.of(Language.JAVA), guide.languages());
         assertEquals(List.of(BuildTool.GRADLE), guide.buildTools());
-        apps = guide.apps();
+        apps = (List<App>) guide.apps();
         assertNotNull(apps);
         assertEquals(3, apps.size());
         assertTrue(apps.stream().anyMatch(app -> app.name().equals("springboot") &&

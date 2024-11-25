@@ -46,6 +46,8 @@ Create an application using the GDK Launcher.
 
 Alternatively, use the link:/gdk/get-started/using-gdk-cli/[GDK CLI] as follows:
 
+create-app:default[]
+
 If you enable sample code generation, the GDK Launcher creates the main controller, repository interface, entity, service classes, and tests for you.
 In the _micronaut-cli.yml_ file you can find all features packaged with the application:
 
