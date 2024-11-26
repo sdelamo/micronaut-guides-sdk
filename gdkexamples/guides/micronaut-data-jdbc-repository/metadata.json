@@ -19,7 +19,12 @@
   "apps": [
     {
       "name": "default",
-      "features": []
+      "features": [
+        "graalvm"
+      ],
+      "services": [
+        "database"
+      ]
     }
   ]
 }

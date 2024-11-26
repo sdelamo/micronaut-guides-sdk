@@ -226,8 +226,9 @@ public class GuidesConfigurationProperties implements GuidesConfiguration {
     }
 
     /**
+     * Sets the version path.
      *
-     * @param version version
+     * @param version the version path to set
      */
     public void setVersion(String version) {
         this.version = version;

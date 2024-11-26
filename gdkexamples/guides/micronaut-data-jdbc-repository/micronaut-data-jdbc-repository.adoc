@@ -46,13 +46,12 @@ Create an application using the GDK Launcher.
 
 Alternatively, use the link:/gdk/get-started/using-gdk-cli/[GDK CLI] as follows:
 
+create-app:default[]
+
 If you enable sample code generation, the GDK Launcher creates the main controller, repository interface, entity, service classes, and tests for you.
 In the _micronaut-cli.yml_ file you can find all features packaged with the application:
 
-[source,yml]
-----
-features: [app-name, data, data-jdbc, flyway, gdk-bom, gdk-database, gdk-license, gdk-platform-independent, graalvm, http-client-test, java, java-application, jdbc-hikari, junit, logback, maven, maven-enforcer-plugin, micronaut-aot, mysql, netty-server, properties, readme, serialization-jackson, shade, test-resources, validation]
-----
+features-listing:default[]
 
 Let's examine the project more closely.
 
