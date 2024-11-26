@@ -40,7 +40,7 @@ public class CreateAppMacro extends GradleMavenTabs implements MacroSubstitution
                     .append(guidesConfiguration.getPackageName())
                     .append(".")
                     .append(app.name())
-                    .append((" \\\n"))
+                    .append(" \\\n")
                     .append((" --services="))
                     .append(String.join(",", app.services()))
                     .append((" \\\n"))
