@@ -5,8 +5,6 @@ import io.micronaut.core.annotation.Nullable;
 import io.micronaut.guides.core.App;
 import io.micronaut.jsonschema.JsonSchema;
 import io.micronaut.serde.annotation.Serdeable;
-import io.micronaut.starter.api.TestFramework;
-import io.micronaut.starter.application.ApplicationType;
 
 import java.util.ArrayList;
 import java.util.List;

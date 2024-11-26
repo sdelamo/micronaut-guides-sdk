@@ -12,7 +12,7 @@ import java.util.Optional;
 import static io.micronaut.guides.core.MacroUtils.findMacroLines;
 
 @Singleton
-public class EnvironmentVarsMacro implements MacroSubstitution {
+public class EnvironmentVarsMacro extends LineReplacementMacroSubstitution {
     private final static String MACRO = "environment-vars";
     private String html;
 
@@ -21,27 +21,23 @@ public class EnvironmentVarsMacro implements MacroSubstitution {
     }
 
     @Override
-    public String substitute(String str, Guide guide, GuidesOption option) {
-        for (String line : findMacroLines(str, MACRO)) {
-            Optional<AsciidocMacro> asciidocMacroOptional = AsciidocMacro.of(MACRO, line);
-            if (asciidocMacroOptional.isEmpty()) {
-                continue;
-            }
+    protected String getMacro() {
+        return MACRO;
+    }
 
-            AsciidocMacro asciidocMacro = asciidocMacroOptional.get();
-            StringBuilder bashBuilder = new StringBuilder();
-            StringBuilder windowsBuilder = new StringBuilder();
-            StringBuilder powershellBuilder = new StringBuilder();
+    @Override
+    protected String replacement(AsciidocMacro asciidocMacro, Guide guide, GuidesOption option) {
+        StringBuilder bashBuilder = new StringBuilder();
+        StringBuilder windowsBuilder = new StringBuilder();
+        StringBuilder powershellBuilder = new StringBuilder();
 
-            for (Attribute attribute : asciidocMacro.attributes()) {
-                String name = attribute.key();
-                String value = attribute.values().get(0);
-                bashBuilder.append("<span class=\"hljs-built_in\">export</span> ").append(name).append("=").append(value).append("\n");
-                windowsBuilder.append("<span class=\"hljs-built_in\">set</span> ").append(name).append("=").append(value).append("\n");
-                powershellBuilder.append("<span class=\"hljs-variable\">$ENV</span> ").append(name).append(" = <span class=\"hljs-string\">\"").append(value).append("\"</span>\n");
-            }
-            str = str.replace(line, AsciidocUtils.passthroughBlock(html.replace("{bash}", bashBuilder.toString()).replace("{windows}", windowsBuilder.toString()).replace("{powershell}", powershellBuilder.toString())));
+        for (Attribute attribute : asciidocMacro.attributes()) {
+            String name = attribute.key();
+            String value = attribute.values().get(0);
+            bashBuilder.append("<span class=\"hljs-built_in\">export</span> ").append(name).append("=").append(value).append("\n");
+            windowsBuilder.append("<span class=\"hljs-built_in\">set</span> ").append(name).append("=").append(value).append("\n");
+            powershellBuilder.append("<span class=\"hljs-variable\">$ENV</span> ").append(name).append(" = <span class=\"hljs-string\">\"").append(value).append("\"</span>\n");
         }
-        return str;
+        return AsciidocUtils.passthroughBlock(html.replace("{bash}", bashBuilder.toString()).replace("{windows}", windowsBuilder.toString()).replace("{powershell}", powershellBuilder.toString()));
     }
 }
