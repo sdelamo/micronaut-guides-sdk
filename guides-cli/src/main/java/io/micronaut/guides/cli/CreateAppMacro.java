@@ -2,7 +2,9 @@ package io.micronaut.guides.cli;
 
 import io.micronaut.core.io.ResourceLoader;
 import io.micronaut.guides.core.*;
+import io.micronaut.guides.core.asciidoc.AsciidocConfiguration;
 import io.micronaut.guides.core.asciidoc.AsciidocMacro;
+import io.micronaut.guides.core.asciidoc.AsciidocUtils;
 import jakarta.inject.Singleton;
 
 import java.util.Optional;
@@ -56,10 +58,11 @@ public class CreateAppMacro extends GradleMavenTabs implements MacroSubstitution
                     .append("</code>")
                     .toString();
 
-
             String gradle = template.replace("{buildTool}", "gradle");
             String maven = template.replace("{buildTool}", "maven");
-            str = str.replace(line, "++++\n" + gradleMavenTabsHtml.replace("{gradle}", gradle).replace("{maven}", maven) + "\n++++\n");
+
+            str = str.replace(line, AsciidocUtils.passthroughBlock(gradleMavenTabsHtml.replace("{gradle}", gradle)
+                    .replace("{maven}", maven)));
         }
         return str;
     }

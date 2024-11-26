@@ -2,6 +2,8 @@ package io.micronaut.guides.cli;
 
 import io.micronaut.core.io.ResourceLoader;
 import io.micronaut.guides.core.*;
+import io.micronaut.guides.core.asciidoc.AsciidocConfiguration;
+import io.micronaut.guides.core.asciidoc.AsciidocUtils;
 import io.micronaut.http.uri.UriBuilder;
 import jakarta.inject.Singleton;
 
@@ -38,7 +40,8 @@ class DownloadMacro extends GradleMavenTabs implements MacroSubstitution {
                     .toString();
             String mavenTitle = "Maven " + downloadTitle + " Example";
             String maven = "<a href=\"" + relativePathToMavenDownload + " \"> " + mavenTitle + " <img class=\"download-img-guides\" src=\"https://graal.cloud/gdk/resources/img/gdk_modules/download-archive.png\" alt=\"Download completed example\"></a>";
-            str = str.replace(line, "++++\n" + gradleMavenTabsHtml.replace("{gradle}", gradle).replace("{maven}", maven) + "\n++++\n");
+            str = str.replace(line, AsciidocUtils.passthroughBlock(gradleMavenTabsHtml.replace("{gradle}", gradle)
+                            .replace("{maven}", maven)));
         }
         return str;
     }
