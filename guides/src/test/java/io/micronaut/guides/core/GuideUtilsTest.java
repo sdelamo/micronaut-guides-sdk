@@ -31,7 +31,7 @@ class GuideUtilsTest {
         InputStream inputStream = inputStreamOptional.get();
         Guide guide = assertDoesNotThrow(() -> jsonMapper.readValue(inputStream, Guide.class));
         List<String> expectedList = List.of("assertj", "boot-to-micronaut-building-a-rest-api", "jackson-databind", "json-path", "spring-boot", "spring-boot-starter-web");
-        List<String> actualList = guide.tags();
+        List<String> actualList = guide.getTags();
         Collections.sort(actualList);
         assertEquals(expectedList, actualList);
     }
@@ -42,7 +42,7 @@ class GuideUtilsTest {
         assertTrue(inputStreamOptional.isPresent());
         InputStream inputStream = inputStreamOptional.get();
         Guide guide = assertDoesNotThrow(() -> jsonMapper.readValue(inputStream, Guide.class));
-        App app = assertDoesNotThrow(() -> guide.apps().stream().filter(el -> el.getName().equals("secondApp")).findFirst().get());
+        App app = assertDoesNotThrow(() -> guide.getApps().stream().filter(el -> el.getName().equals("secondApp")).findFirst().get());
 
         assertEquals(List.of("invisible"), app.invisibleFeatures());
 
@@ -73,7 +73,7 @@ class GuideUtilsTest {
         assertTrue(inputStreamOptional.isPresent());
         InputStream inputStream = inputStreamOptional.get();
         Guide guide = assertDoesNotThrow(() -> jsonMapper.readValue(inputStream, Guide.class));
-        App app = assertDoesNotThrow(() -> guide.apps().stream().filter(el -> el.getName().equals("app")).findFirst().get());
+        App app = assertDoesNotThrow(() -> guide.getApps().stream().filter(el -> el.getName().equals("app")).findFirst().get());
 
         assertEquals(List.of("invisible"), app.invisibleFeatures());
 
@@ -104,7 +104,7 @@ class GuideUtilsTest {
         assertTrue(inputStreamOptional.isPresent());
         InputStream inputStream = inputStreamOptional.get();
         Guide guide = assertDoesNotThrow(() -> jsonMapper.readValue(inputStream, Guide.class));
-        App app = assertDoesNotThrow(() -> guide.apps().stream().filter(el -> el.getName().equals("thirdApp")).findFirst().get());
+        App app = assertDoesNotThrow(() -> guide.getApps().stream().filter(el -> el.getName().equals("thirdApp")).findFirst().get());
 
         assertTrue(app.invisibleFeatures().isEmpty());
 

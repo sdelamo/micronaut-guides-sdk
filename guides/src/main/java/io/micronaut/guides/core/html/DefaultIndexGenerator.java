@@ -88,8 +88,8 @@ public class DefaultIndexGenerator implements IndexGenerator {
      */
     protected String guideContent(@NonNull Guide guide) {
         StringBuilder sb = new StringBuilder();
-        String href = guide.slug() + ".html";
-        String title = guide.title();
+        String href = guide.getSlug() + ".html";
+        String title = guide.getTitle();
         sb.append("<li>");
         sb.append("<a href=\"");
         sb.append(href);

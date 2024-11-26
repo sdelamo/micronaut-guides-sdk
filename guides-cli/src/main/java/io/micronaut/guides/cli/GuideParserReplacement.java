@@ -82,7 +82,7 @@ public class GuideParserReplacement implements GuideParser {
         }
 
         guide.setSlug(guidesDir.getName());
-        guide.setAsciidoctor(guide.publish() ? guidesDir.getName() + ".adoc" : null);
+        guide.setAsciidoctor(guide.isPublish() ? guidesDir.getName() + ".adoc" : null);
 
         return Optional.of(guide);
     }

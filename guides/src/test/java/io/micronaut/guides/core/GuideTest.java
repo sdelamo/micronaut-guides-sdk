@@ -61,15 +61,15 @@ class GuideTest {
         final InputStream inputStreamChild = inputStreamOptional.get();
         Guide child = assertDoesNotThrow(() -> jsonMapper.readValue(inputStreamChild, Guide.class));
         guideMerger.merge(base, child);
-        assertEquals(List.of("Graeme Rocher"), child.authors());
-        assertEquals("Connect a Micronaut Data JDBC Application to Azure Database for MySQL", child.title());
-        assertEquals("Learn how to connect a Micronaut Data JDBC application to a Microsoft Azure Database for MySQL", child.intro());
-        assertEquals(List.of("Data JDBC"), child.categories());
-        assertEquals(LocalDate.of(2022, 2, 17), child.publicationDate());
-        List<String> tags = child.tags();
+        assertEquals(List.of("Graeme Rocher"), child.getAuthors());
+        assertEquals("Connect a Micronaut Data JDBC Application to Azure Database for MySQL", child.getTitle());
+        assertEquals("Learn how to connect a Micronaut Data JDBC application to a Microsoft Azure Database for MySQL", child.getIntro());
+        assertEquals(List.of("Data JDBC"), child.getCategories());
+        assertEquals(LocalDate.of(2022, 2, 17), child.getPublicationDate());
+        List<String> tags = child.getTags();
         Collections.sort(tags);
         assertEquals(List.of("Azure", "cloud", "data-jdbc", "database", "flyway", "jdbc", "micronaut-data", "mysql"), tags);
-        List<App> apps = (List<App>) child.apps();
+        List<App> apps = (List<App>) child.getApps();
         assertNotNull(apps);
         assertEquals(1, apps.size());
         assertTrue(apps.stream().anyMatch(app -> {
@@ -100,8 +100,14 @@ class GuideTest {
         App app = new App();
         app.setName("springboot");
         apps.add(app);
-        Set<ConstraintViolation<Guide>> violations = validator.validate(
-                new Guide(title, intro, authors, categories, publicationDate, null, null, null, false, false, null, null, null, null, null, null, null, true, null, null, apps));
+        Guide guide = new Guide();
+        guide.setTitle(title);
+        guide.setIntro(intro);
+        guide.setAuthors(authors);
+        guide.setCategories(categories);
+        guide.setPublicationDate(publicationDate);
+        guide.setApps(apps);
+        Set<ConstraintViolation<Guide>> violations = validator.validate(guide);
         assertTrue(violations.isEmpty());
     }
 
@@ -111,15 +117,15 @@ class GuideTest {
         assertTrue(inputStreamOptional.isPresent());
         InputStream inputStream = inputStreamOptional.get();
         Guide guide = assertDoesNotThrow(() -> jsonMapper.readValue(inputStream, Guide.class));
-        assertEquals(List.of("Sergio del Amo"), guide.authors());
-        assertEquals("1. Testing Serialization - Spring Boot vs Micronaut Framework - Building a Rest API", guide.title());
-        assertEquals("This guide compares how to test serialization and deserialization with Micronaut Framework and Spring Boot.", guide.intro());
-        assertEquals(List.of("spring-boot-starter-web", "jackson-databind", "spring-boot", "assertj", "boot-to-micronaut-building-a-rest-api", "json-path"), guide.tags());
-        assertEquals(List.of("Boot to Micronaut Building a REST API"), guide.categories());
-        assertEquals(LocalDate.of(2024, 4, 24), guide.publicationDate());
-        assertEquals(List.of(Language.JAVA), guide.languages());
-        assertEquals(List.of(BuildTool.GRADLE), guide.buildTools());
-        List<App> apps = (List<App>) guide.apps();
+        assertEquals(List.of("Sergio del Amo"), guide.getAuthors());
+        assertEquals("1. Testing Serialization - Spring Boot vs Micronaut Framework - Building a Rest API", guide.getTitle());
+        assertEquals("This guide compares how to test serialization and deserialization with Micronaut Framework and Spring Boot.", guide.getIntro());
+        assertEquals(List.of("spring-boot-starter-web", "jackson-databind", "spring-boot", "assertj", "boot-to-micronaut-building-a-rest-api", "json-path"), guide.getTags());
+        assertEquals(List.of("Boot to Micronaut Building a REST API"), guide.getCategories());
+        assertEquals(LocalDate.of(2024, 4, 24), guide.getPublicationDate());
+        assertEquals(List.of(Language.JAVA), guide.getLanguages());
+        assertEquals(List.of(BuildTool.GRADLE), guide.getBuildTools());
+        List<App> apps = (List<App>) guide.getApps();
         assertNotNull(apps);
         assertEquals(3, apps.size());
         assertTrue(apps.stream().anyMatch(app -> {
@@ -167,18 +173,18 @@ class GuideTest {
                     app.getExcludeSource() == null &&
                     !app.isValidateLicense();
         }));
-        assertFalse(guide.skipGradleTests());
-        assertFalse(guide.skipMavenTests());
-        assertNull(guide.minimumJavaVersion());
-        assertNull(guide.maximumJavaVersion());
-        assertNull(guide.cloud());
-        assertNull(guide.asciidoctor());
-        assertTrue(guide.publish());
-        assertNull(guide.asciidoctor());
-        assertNull(guide.slug());
-        assertTrue(guide.zipIncludes().isEmpty());
-        assertNull(guide.base());
-        assertTrue(guide.env().isEmpty());
+        assertFalse(guide.isSkipGradleTests());
+        assertFalse(guide.isSkipMavenTests());
+        assertNull(guide.getMinimumJavaVersion());
+        assertNull(guide.getMaximumJavaVersion());
+        assertNull(guide.getCloud());
+        assertNull(guide.getAsciidoctor());
+        assertTrue(guide.isPublish());
+        assertNull(guide.getAsciidoctor());
+        assertNull(guide.getSlug());
+        assertTrue(guide.getZipIncludes().isEmpty());
+        assertNull(guide.getBase());
+        assertTrue(guide.getEnv().isEmpty());
     }
 
     @Test
@@ -205,9 +211,8 @@ class GuideTest {
 
     @Test
     void defaultValuesAreSetCorrectly() {
-        Guide guide = new Guide(null, null, null, null, null, null, null, null, false, false, null, null, null, null, null, null, null, true, null, null, null);
-
-        assertEquals(guide.publish(), true);
+        Guide guide = new Guide();
+        assertEquals(guide.isPublish(), true);
     }
 
     @Test

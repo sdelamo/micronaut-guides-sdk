@@ -96,7 +96,7 @@ public class DefaultGuideParser implements GuideParser {
         Guide guide;
         try {
             guide = jsonMapper.readValue(content, Guide.class);
-            if (guide.publish()) {
+            if (guide.isPublish()) {
                 Set<ValidationMessage> assertions = jsonSchema.validate(content, InputFormat.JSON);
 
                 if (!assertions.isEmpty()) {
@@ -110,7 +110,7 @@ public class DefaultGuideParser implements GuideParser {
         }
 
         guide.setSlug(guidesDir.getName());
-        guide.setAsciidoctor(guide.publish() ? guidesDir.getName() + ".adoc" : null);
+        guide.setAsciidoctor(guide.isPublish() ? guidesDir.getName() + ".adoc" : null);
 
         return Optional.of(guide);
     }

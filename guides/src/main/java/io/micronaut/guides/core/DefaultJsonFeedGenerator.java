@@ -89,16 +89,16 @@ public class DefaultJsonFeedGenerator implements JsonFeedGenerator {
 
     private JsonFeedItem jsonFeedItem(Guide metadata) {
         JsonFeedItem.Builder jsonFeedItemBuilder = JsonFeedItem.builder()
-                .id(metadata.slug())
-                .title(metadata.title())
-                .contentText(metadata.intro())
+                .id(metadata.getSlug())
+                .title(metadata.getTitle())
+                .contentText(metadata.getIntro())
                 .language(RssLanguage.LANG_ENGLISH)
-                .datePublished(ZonedDateTime.of(metadata.publicationDate(), LocalTime.of(0, 0), ZoneOffset.UTC))
-                .url(guidesConfiguration.getHomePageUrl() + metadata.slug());
-        for (String author : metadata.authors()) {
+                .datePublished(ZonedDateTime.of(metadata.getPublicationDate(), LocalTime.of(0, 0), ZoneOffset.UTC))
+                .url(guidesConfiguration.getHomePageUrl() + metadata.getSlug());
+        for (String author : metadata.getAuthors()) {
             jsonFeedItemBuilder.author(JsonFeedAuthor.builder().name(author).build());
         }
-        for (String t : metadata.tags()) {
+        for (String t : metadata.getTags()) {
             jsonFeedItemBuilder.tag(t);
         }
         return jsonFeedItemBuilder.build();

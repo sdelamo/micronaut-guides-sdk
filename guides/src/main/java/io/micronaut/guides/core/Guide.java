@@ -95,15 +95,15 @@ public class Guide {
 
     @JsonPropertyDescription("The guide supported languages")
     @Nullable
-    private List<Language> languages;
+    private List<Language> languages = List.of(Language.JAVA, Language.GROOVY, Language.KOTLIN);
 
     @JsonPropertyDescription("List of tags added to the guide. Features are added automatically as tags. No need to repeat them here")
     @Nullable
-    private List<String> tags;
+    private List<String> tags = new ArrayList<>();
 
     @JsonPropertyDescription("By default the code in the guide is generated for Gradle and Maven. If a guide is specific only for a build tool, define it here")
     @Nullable
-    private List<BuildTool> buildTools;
+    private List<BuildTool> buildTools = List.of(BuildTool.GRADLE, BuildTool.MAVEN);
 
     @JsonPropertyDescription("The guide's test framework. By default Java and Kotlin applications are tested with JUnit5 and Groovy applications with Spock")
     @Nullable
@@ -111,7 +111,7 @@ public class Guide {
 
     @JsonPropertyDescription("List of additional files with a relative path to include in the generated zip file for the guide")
     @Nullable
-    private List<String> zipIncludes;
+    private List<String> zipIncludes = new ArrayList<>();
 
     @JsonPropertyDescription("The guide's slug. If not specified, the guides folder is used")
     @Nullable
@@ -128,7 +128,7 @@ public class Guide {
 
     @JsonPropertyDescription("The guide's environment variables")
     @Nullable
-    private Map<String, String> env;
+    private Map<String, String> env = new HashMap<>();
 
     @JsonPropertyDescription("Applications created for the guide")
     @NotEmpty
@@ -136,80 +136,11 @@ public class Guide {
     private List<? extends App> apps;
 
     /**
-     * Represents a guide metadata.
-     *
-     * @param title              The guide's title
-     * @param intro              The guide introduction
-     * @param authors            The guide's authors
-     * @param categories         The guide's categories
-     * @param publicationDate    The guide publication date. It should follow the format YYYY-MM-DD
-     * @param minimumJavaVersion If the guide needs a minimum Java version, define it here
-     * @param maximumJavaVersion If the guide needs a maximum Java version, define it here
-     * @param cloud              The acronym for the cloud service provider of the guide. For example, OCI for Oracle Cloud Infrastructure
-     * @param skipGradleTests    Set it to true to skip running the tests for the Gradle applications for the guide
-     * @param skipMavenTests     Set it to true to skip running the tests for the Maven applications for the guide
-     * @param asciidoctor        The guide asciidoc file. If not specified, the guide slug followed by the .adoc suffix is used
-     * @param languages          The guide supported languages
-     * @param tags               List of tags added to the guide. features are added automatically as tags. No need to repeat them here
-     * @param buildTools         By default the code in the guide is generated for Gradle and Maven. If a guide is specific only for a build tool, define it here
-     * @param testFramework      The guide's test framework. By default Java and Kotlin applications are tested with JUnit5 and Groovy applications with Spock
-     * @param zipIncludes        List of additional files with a relative path to include in the generated zip file for the guide
-     * @param slug               The guide's slug. If not specified, the guides folder is used
-     * @param publish            Whether the guide should be published, it defaults to true. You can set it to false for draft or base guides
-     * @param base               Defaults to null; if set, indicates directory name of the base guide to copy before copying the current one
-     * @param env                The guide's environment variables
-     * @param apps               Applications created for the guide
-     */
-    @SuppressWarnings("checkstyle:ParameterNumber")
-    public Guide(@NonNull @NotBlank String title,
-                 @NonNull @NotBlank String intro,
-                 @NotEmpty @NonNull List<String> authors,
-                 @NotEmpty @NonNull List<String> categories,
-                 @NonNull @NotNull LocalDate publicationDate,
-                 @Nullable Integer minimumJavaVersion,
-                 @Nullable Integer maximumJavaVersion,
-                 @Nullable Cloud cloud,
-                 @Nullable Boolean skipGradleTests,
-                 @Nullable Boolean skipMavenTests,
-                 @Nullable String asciidoctor,
-                 @Nullable List<Language> languages,
-                 @Nullable List<String> tags,
-                 @Nullable List<BuildTool> buildTools,
-                 @Nullable TestFramework testFramework,
-                 @Nullable List<String> zipIncludes,
-                 @Nullable String slug,
-                 @Nullable Boolean publish,
-                 @Nullable String base,
-                 @Nullable Map<String, String> env,
-                 @NotEmpty @NonNull List<? extends App> apps) {
-        this.title = title;
-        this.intro = intro;
-        this.authors = authors;
-        this.categories = categories;
-        this.publicationDate = publish != null && publish ? publicationDate : null;
-        this.minimumJavaVersion = minimumJavaVersion;
-        this.maximumJavaVersion = maximumJavaVersion;
-        this.cloud = cloud;
-        this.skipGradleTests = skipGradleTests;
-        this.skipMavenTests = skipMavenTests;
-        this.asciidoctor = asciidoctor;
-        this.languages = languages != null ? languages : List.of(Language.JAVA, Language.GROOVY, Language.KOTLIN);
-        this.tags = tags != null ? tags : Collections.emptyList();
-        this.buildTools = buildTools != null ? buildTools : List.of(BuildTool.GRADLE, BuildTool.MAVEN);
-        this.zipIncludes = zipIncludes != null ? zipIncludes : new ArrayList<>();
-        this.slug = slug;
-        this.publish = publish;
-        this.base = base;
-        this.env = env != null ? env : new HashMap<>();
-        this.apps = apps;
-    }
-
-    /**
      * Gets the title of the guide.
      *
      * @return The title of the guide.
      */
-    public @NonNull @NotBlank String title() {
+    public @NonNull @NotBlank String getTitle() {
         return title;
     }
 
@@ -227,7 +158,7 @@ public class Guide {
      *
      * @return The introduction of the guide.
      */
-    public @NonNull @NotBlank String intro() {
+    public @NonNull @NotBlank String getIntro() {
         return intro;
     }
 
@@ -245,7 +176,7 @@ public class Guide {
      *
      * @return The list of authors.
      */
-    public @NotEmpty @NonNull List<String> authors() {
+    public @NotEmpty @NonNull List<String> getAuthors() {
         return authors;
     }
 
@@ -263,7 +194,7 @@ public class Guide {
      *
      * @return The list of categories.
      */
-    public @NotEmpty @NonNull List<String> categories() {
+    public @NotEmpty @NonNull List<String> getCategories() {
         return categories;
     }
 
@@ -281,7 +212,7 @@ public class Guide {
      *
      * @return The publication date.
      */
-    public @NonNull @NotNull LocalDate publicationDate() {
+    public @NonNull @NotNull LocalDate getPublicationDate() {
         return publicationDate;
     }
 
@@ -299,7 +230,7 @@ public class Guide {
      *
      * @return The minimum Java version, or null if not specified.
      */
-    public @Nullable Integer minimumJavaVersion() {
+    public @Nullable Integer getMinimumJavaVersion() {
         return minimumJavaVersion;
     }
 
@@ -317,7 +248,7 @@ public class Guide {
      *
      * @return The maximum Java version, or null if not specified.
      */
-    public @Nullable Integer maximumJavaVersion() {
+    public @Nullable Integer getMaximumJavaVersion() {
         return maximumJavaVersion;
     }
 
@@ -335,7 +266,7 @@ public class Guide {
      *
      * @return The cloud service provider, or null if not specified.
      */
-    public @Nullable Cloud cloud() {
+    public @Nullable Cloud getCloud() {
         return cloud;
     }
 
@@ -353,8 +284,8 @@ public class Guide {
      *
      * @return True if Gradle tests should be skipped, false otherwise.
      */
-    public @Nullable Boolean skipGradleTests() {
-        return skipGradleTests;
+    public @Nullable Boolean isSkipGradleTests() {
+        return skipGradleTests != null ? skipGradleTests : Boolean.FALSE;
     }
 
     /**
@@ -371,8 +302,8 @@ public class Guide {
      *
      * @return True if Maven tests should be skipped, false otherwise.
      */
-    public @Nullable Boolean skipMavenTests() {
-        return skipMavenTests;
+    public @Nullable Boolean isSkipMavenTests() {
+        return skipMavenTests != null ? skipMavenTests : Boolean.FALSE;
     }
 
     /**
@@ -389,7 +320,7 @@ public class Guide {
      *
      * @return The Asciidoctor file, or null if not specified.
      */
-    public @Nullable String asciidoctor() {
+    public @Nullable String getAsciidoctor() {
         return asciidoctor;
     }
 
@@ -407,7 +338,7 @@ public class Guide {
      *
      * @return The list of supported languages, or null if not specified.
      */
-    public @Nullable List<Language> languages() {
+    public @Nullable List<Language> getLanguages() {
         return languages;
     }
 
@@ -425,12 +356,12 @@ public class Guide {
      *
      * @return The list of tags, or null if not specified.
      */
-    public @Nullable List<String> tags() {
+    public @Nullable List<String> getTags() {
         Set<String> tagsList = new HashSet<>();
         if (tags != null) {
             addAllSafe(tagsList, tags);
         }
-        for (App app : apps()) {
+        for (App app : getApps()) {
             List<String> allFeatures = new ArrayList<>();
             addAllSafe(allFeatures, app.getFeatures());
             addAllSafe(allFeatures, app.getJavaFeatures());
@@ -446,7 +377,7 @@ public class Guide {
                 tagsList.add(tagToAdd);
             }
         }
-        Set<String> categoriesAsTags = categories().stream().map(String::toLowerCase).map(s -> s.replace(" ", "-")).collect(Collectors.toSet());
+        Set<String> categoriesAsTags = getCategories().stream().map(String::toLowerCase).map(s -> s.replace(" ", "-")).collect(Collectors.toSet());
         tagsList.addAll(categoriesAsTags);
         return new ArrayList<>(tagsList);
     }
@@ -465,7 +396,7 @@ public class Guide {
      *
      * @return The list of build tools, or null if not specified.
      */
-    public @Nullable List<BuildTool> buildTools() {
+    public @Nullable List<BuildTool> getBuildTools() {
         return buildTools;
     }
 
@@ -483,7 +414,7 @@ public class Guide {
      *
      * @return The test framework, or null if not specified.
      */
-    public @Nullable TestFramework testFramework() {
+    public @Nullable TestFramework getTestFramework() {
         return testFramework;
     }
 
@@ -501,7 +432,7 @@ public class Guide {
      *
      * @return The list of additional files, or null if not specified.
      */
-    public @Nullable List<String> zipIncludes() {
+    public @Nullable List<String> getZipIncludes() {
         return zipIncludes;
     }
 
@@ -519,7 +450,7 @@ public class Guide {
      *
      * @return The slug, or null if not specified.
      */
-    public @Nullable String slug() {
+    public @Nullable String getSlug() {
         return slug;
     }
 
@@ -537,8 +468,9 @@ public class Guide {
      *
      * @return True if the guide should be published, false otherwise.
      */
-    public @Nullable Boolean publish() {
-        return publish;
+    public @Nullable Boolean isPublish() {
+        return publish != null ? publish : Boolean.TRUE;
+
     }
 
     /**
@@ -555,7 +487,7 @@ public class Guide {
      *
      * @return The base guide directory name, or null if not specified.
      */
-    public @Nullable String base() {
+    public @Nullable String getBase() {
         return base;
     }
 
@@ -573,7 +505,7 @@ public class Guide {
      *
      * @return The map of environment variables, or null if not specified.
      */
-    public @Nullable Map<String, String> env() {
+    public @Nullable Map<String, String> getEnv() {
         return env;
     }
 
@@ -591,7 +523,7 @@ public class Guide {
      *
      * @return The list of applications.
      */
-    public @NotEmpty @NonNull List<? extends App> apps() {
+    public @NotEmpty @NonNull List<? extends App> getApps() {
         return apps;
     }
 
@@ -612,10 +544,10 @@ public class Guide {
      */
     public boolean shouldSkip(BuildTool buildTool) {
         if (BuildTool.valuesGradle().contains(buildTool)) {
-            return skipGradleTests();
+            return isSkipGradleTests();
         }
         if (buildTool == BuildTool.MAVEN) {
-            return skipMavenTests();
+            return isSkipMavenTests();
         }
         return false;
     }
@@ -626,6 +558,6 @@ public class Guide {
      * @return A set of frameworks associated with the guide.
      */
     public Set<String> getFrameworks() {
-        return apps().stream().map(App::getFramework).collect(Collectors.toSet());
+        return getApps().stream().map(App::getFramework).collect(Collectors.toSet());
     }
 }

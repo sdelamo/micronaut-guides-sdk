@@ -47,7 +47,7 @@ class CreateAppMacro extends GradleMavenTabs {
     }
 
     private static GdkApp gdkApp(Guide guide, String target) {
-        return (GdkApp) guide.apps().
+        return (GdkApp) guide.getApps().
                 stream()
                 .filter(a -> a.getName().equals(target))
                 .filter(GdkApp.class::isInstance)

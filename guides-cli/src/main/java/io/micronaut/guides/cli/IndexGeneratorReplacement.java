@@ -48,25 +48,25 @@ public class IndexGeneratorReplacement extends DefaultIndexGenerator {
     @Override
     protected String guideContent(Guide guide) {
 
-        String cloud = guide.cloud() != null ? guide.cloud().toString().toLowerCase() : "independent";
+        String cloud = guide.getCloud() != null ? guide.getCloud().toString().toLowerCase() : "independent";
         String categoryClass = "";
         String categoryTitle = "";
-        for (String category : guide.categories()) {
+        for (String category : guide.getCategories()) {
             categoryClass = category.toLowerCase().replace(" ", "-");
             categoryTitle = category.toLowerCase();
         }
 
         StringBuilder sb = new StringBuilder();
-        for (Language lang : guide.languages()) {
-            for (BuildTool buildTool : guide.buildTools()) {
+        for (Language lang : guide.getLanguages()) {
+            for (BuildTool buildTool : guide.getBuildTools()) {
                 String build = buildTool.toString().toLowerCase();
-                String href = guide.slug() + "-" + build + "-" + lang + ".html";
+                String href = guide.getSlug() + "-" + build + "-" + lang + ".html";
                 sb.append(indexItem.replace("{cloud}", cloud)
                         .replace("{categoryClass}", categoryClass)
                         .replace("{categoryTitle}", categoryTitle)
                         .replace("{build}", build)
-                        .replace("{title}", guide.title())
-                        .replace("{intro}", guide.intro())
+                        .replace("{title}", guide.getTitle())
+                        .replace("{intro}", guide.getIntro())
                         .replace("{href}", href));
             }
         }

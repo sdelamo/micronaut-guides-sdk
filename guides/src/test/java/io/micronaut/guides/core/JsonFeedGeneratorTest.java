@@ -34,7 +34,7 @@ public class JsonFeedGeneratorTest {
         File file = new File("src/test/resources/guides");
         GuideParser guideParser = new DefaultGuideParser(jsonSchemaProvider, jsonMapper, guideMerger);
         this.guides = guideParser.parseGuidesMetadata(file, "metadata.json")
-                .stream().filter(Guide::publish).toList();
+                .stream().filter(Guide::isPublish).toList();
     }
 
     @Test

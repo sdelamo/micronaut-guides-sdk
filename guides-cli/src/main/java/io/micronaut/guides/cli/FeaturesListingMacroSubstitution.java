@@ -42,8 +42,8 @@ public class FeaturesListingMacroSubstitution implements MacroSubstitution {
                 continue;
             }
             String target = asciidocMacroOptional.get().target();
-            GdkApp app = (GdkApp) guide.apps().
-                    stream()
+            GdkApp app = (GdkApp) guide.getApps()
+                    .stream()
                     .filter(a -> a.getName().equals(target))
                     .findFirst()
                     .orElseThrow(() -> new IllegalArgumentException("App not found: " + target));

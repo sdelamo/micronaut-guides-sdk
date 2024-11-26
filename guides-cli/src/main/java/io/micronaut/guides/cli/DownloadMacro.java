@@ -29,10 +29,10 @@ class DownloadMacro extends GradleMavenTabs {
 
     @Override
     protected String gradle(AsciidocMacro asciidocMacro, Guide guide, GuidesOption option) {
-        String downloadTitle = capitalizeWords(guide.slug().replace("-", " "));
+        String downloadTitle = capitalizeWords(guide.getSlug().replace("-", " "));
         String relativePathToGradleDownload = UriBuilder.of(BASE_DOWNLOAD_URL)
                 .path(guidesConfiguration.getVersion())
-                .path(guidesConfiguration.getVersion() + "_" + guide.slug() + "_gradle_java_example.zip")
+                .path(guidesConfiguration.getVersion() + "_" + guide.getSlug() + "_gradle_java_example.zip")
                 .toString();
         String gradleTitle = "Gradle " + downloadTitle + " Example";
         return HtmlUtils.link(relativePathToGradleDownload, gradleTitle + " " + HtmlUtils.img("https://graal.cloud/gdk/resources/img/gdk_modules/download-archive.png", "Download completed example", "download-img-guides"));
@@ -40,10 +40,10 @@ class DownloadMacro extends GradleMavenTabs {
 
     @Override
     protected String maven(AsciidocMacro asciidocMacro, Guide guide, GuidesOption option) {
-        String downloadTitle = capitalizeWords(guide.slug().replace("-", " "));
+        String downloadTitle = capitalizeWords(guide.getSlug().replace("-", " "));
         String relativePathToMavenDownload = UriBuilder.of(BASE_DOWNLOAD_URL)
                 .path(guidesConfiguration.getVersion())
-                .path(guidesConfiguration.getVersion() + "_" + guide.slug() + "_gradle_java_example.zip")
+                .path(guidesConfiguration.getVersion() + "_" + guide.getSlug() + "_gradle_java_example.zip")
                 .toString();
         String mavenTitle = "Maven " + downloadTitle + " Example";
         return "<a href=\"" + relativePathToMavenDownload + " \"> " + mavenTitle + " <img class=\"download-img-guides\" src=\"https://graal.cloud/gdk/resources/img/gdk_modules/download-archive.png\" alt=\"Download completed example\"></a>";

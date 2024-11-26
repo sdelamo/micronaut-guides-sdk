@@ -38,7 +38,7 @@ public class DefaultGuideMerger implements GuideMerger {
     public <T extends Guide> void mergeGuides(List<T> metadatas) {
         Map<String, T> metadatasByDirectory = new TreeMap<>();
         for (T metadata : metadatas) {
-            metadatasByDirectory.put(metadata.slug(), metadata);
+            metadatasByDirectory.put(metadata.getSlug(), metadata);
         }
 
         mergeMetadataMap(metadatasByDirectory);
@@ -52,8 +52,8 @@ public class DefaultGuideMerger implements GuideMerger {
 
         for (String dir : dirs) {
             T metadata = metadatasByDirectory.get(dir);
-            if (metadata.base() != null) {
-                T base = metadatasByDirectory.get(metadata.base());
+            if (metadata.getBase() != null) {
+                T base = metadatasByDirectory.get(metadata.getBase());
                 merge(base, metadata);
             }
         }

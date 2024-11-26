@@ -161,7 +161,7 @@ class DefaultTestScriptGenerator implements TestScriptGenerator {
             return false;
         }
 
-        return !guidesChanged.contains(metadata.slug());
+        return !guidesChanged.contains(metadata.getSlug());
     }
 
     /**
@@ -275,18 +275,18 @@ class DefaultTestScriptGenerator implements TestScriptGenerator {
                   done
                 }""");
 
-        metadatas.sort(Comparator.comparing(Guide::slug));
+        metadatas.sort(Comparator.comparing(Guide::getSlug));
         for (Guide metadata : metadatas) {
             List<GuidesOption> guidesOptionList = GuideGenerationUtils.guidesOptions(metadata, LOG);
             bashScript.append("\n");
             for (GuidesOption guidesOption : guidesOptionList) {
-                String folder = MacroUtils.getSourceDir(metadata.slug(), guidesOption);
+                String folder = MacroUtils.getSourceDir(metadata.getSlug(), guidesOption);
                 BuildTool buildTool = folder.contains(MAVEN.toString()) ? MAVEN : GRADLE;
-                if (metadata.apps().stream().anyMatch(app -> app.getName().equals(guidesConfiguration.getDefaultAppName()))) {
+                if (metadata.getApps().stream().anyMatch(app -> app.getName().equals(guidesConfiguration.getDefaultAppName()))) {
                     if (metadata.shouldSkip(buildTool)) {
                         continue;
                     }
-                    Optional<? extends App> appOptional = metadata.apps().stream().filter(app -> app.getName().equals(guidesConfiguration.getDefaultAppName())).findFirst();
+                    Optional<? extends App> appOptional = metadata.getApps().stream().filter(app -> app.getName().equals(guidesConfiguration.getDefaultAppName())).findFirst();
                     if (appOptional.isPresent()) {
                         App defaultApp = appOptional.get();
                         if (!nativeTest || supportsNativeTest(defaultApp, guidesOption)) {
@@ -298,7 +298,7 @@ class DefaultTestScriptGenerator implements TestScriptGenerator {
                     }
                 } else {
                     bashScript.append("cd " + folder + "\n");
-                    for (App app : metadata.apps()) {
+                    for (App app : metadata.getApps()) {
                         if (metadata.shouldSkip(buildTool)) {
                             continue;
                         }

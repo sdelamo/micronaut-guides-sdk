@@ -84,7 +84,7 @@ public class DefaultGuideProjectGenerator implements GuideProjectGenerator {
         JdkVersion javaVersion = GuideGenerationUtils.resolveJdkVersion(guidesConfiguration, guide);
         if (GuideGenerationUtils.skipBecauseOfJavaVersion(guide, guidesConfiguration)) {
             if (LOG.isTraceEnabled()) {
-                LOG.trace("not generating project for {}, JDK {} > {}", guide.slug(), javaVersion.majorVersion(), guide.maximumJavaVersion());
+                LOG.trace("not generating project for {}, JDK {} > {}", guide.getSlug(), javaVersion.majorVersion(), guide.getMaximumJavaVersion());
             }
             return;
         }
@@ -105,7 +105,7 @@ public class DefaultGuideProjectGenerator implements GuideProjectGenerator {
      * @throws IOException if an I/O error occurs during project generation
      */
     public void generate(@NonNull File outputDirectory, @NonNull Guide guide, @NonNull GuidesOption guidesOption, @NonNull JdkVersion javaVersion) throws IOException {
-        for (App app : guide.apps()) {
+        for (App app : guide.getApps()) {
             generate(outputDirectory, guide, guidesOption, javaVersion, app);
         }
     }
@@ -127,7 +127,7 @@ public class DefaultGuideProjectGenerator implements GuideProjectGenerator {
         }
 
         // typical guides use 'default' as name, multi-project guides have different modules
-        String folder = MacroUtils.getSourceDir(guide.slug(), guidesOption);
+        String folder = MacroUtils.getSourceDir(guide.getSlug(), guidesOption);
 
         String appName = app.getName().equals(guidesConfiguration.getDefaultAppName()) ? EMPTY_STRING : app.getName();
 

@@ -69,14 +69,14 @@ public class CliMacroSubstitution extends PlaceholderWithTargetMacroSubstitution
      */
     @Override
     protected String getSubstitution(Guide guide, GuidesOption option, String appName) {
-        App app = guide.apps().stream()
+        App app = guide.getApps().stream()
                 .filter(a -> a.getName().equals(appName))
                 .findFirst()
                 .orElse(null);
         if (app != null) {
             return cliCommandForApp(app);
         } else {
-            throw new ConfigurationException("No CLI command found for app: " + app + " -- should be one of " + guide.apps().stream().map(el -> "@" + el + ":cli-command@").collect(Collectors.joining(", ")));
+            throw new ConfigurationException("No CLI command found for app: " + app + " -- should be one of " + guide.getApps().stream().map(el -> "@" + el + ":cli-command@").collect(Collectors.joining(", ")));
         }
     }
 }
