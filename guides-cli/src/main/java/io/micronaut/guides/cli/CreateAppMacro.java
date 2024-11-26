@@ -49,7 +49,7 @@ public class CreateAppMacro extends GradleMavenTabs implements MacroSubstitution
                     .append((" \\\n"))
                     .append(" --lang=")
                     .append(option.getLanguage().name().toLowerCase())
-                    .append((" \\\n"))
+                    .append(" \\\n")
                     .append(" --build={buildTool}\n")
                     .append("</code>")
                     .toString();
