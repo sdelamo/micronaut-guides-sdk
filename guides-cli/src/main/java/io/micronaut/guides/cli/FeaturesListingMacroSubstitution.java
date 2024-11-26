@@ -2,6 +2,7 @@ package io.micronaut.guides.cli;
 
 import io.micronaut.guides.core.*;
 import io.micronaut.guides.core.asciidoc.AsciidocMacro;
+import io.micronaut.guides.core.asciidoc.SourceBlock;
 import io.micronaut.starter.application.Project;
 import io.micronaut.starter.application.generator.GeneratorContext;
 import io.micronaut.starter.application.generator.ProjectGenerator;
@@ -21,6 +22,7 @@ import static io.micronaut.starter.options.JdkVersion.JDK_8;
 public class FeaturesListingMacroSubstitution implements MacroSubstitution {
 
     public static final String MACRO = "features-listing";
+    private static final String LANGUAGE_BASH = "bash";
 
     private final ProjectGenerator projectGenerator;
     private final GuidesConfiguration guidesConfiguration;
@@ -57,11 +59,13 @@ public class FeaturesListingMacroSubstitution implements MacroSubstitution {
                     app.features() != null ? app.features() : Collections.emptyList(),
                     ConsoleOutput.NOOP
             );
-            str = str.replace(line, """
-                    [source,bash]
-                    ----
-                    features: """ +
-                    generatorContext.getFeatures().toString() + "\n----\n");
+
+            String asciidoc = SourceBlock.builder()
+                    .language(LANGUAGE_BASH)
+                    .content("features: " + generatorContext.getFeatures().toString())
+                    .build()
+                    .toString();
+            str = str.replace(line, asciidoc);
         }
         return str;
     }
