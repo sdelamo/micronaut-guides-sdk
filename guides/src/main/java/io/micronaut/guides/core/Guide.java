@@ -95,15 +95,15 @@ public class Guide {
 
     @JsonPropertyDescription("The guide supported languages")
     @Nullable
-    private List<Language> languages = List.of(Language.JAVA, Language.GROOVY, Language.KOTLIN);
+    private List<Language> languages;
 
     @JsonPropertyDescription("List of tags added to the guide. Features are added automatically as tags. No need to repeat them here")
     @Nullable
-    private List<String> tags = new ArrayList<>();
+    private List<String> tags;
 
     @JsonPropertyDescription("By default the code in the guide is generated for Gradle and Maven. If a guide is specific only for a build tool, define it here")
     @Nullable
-    private List<BuildTool> buildTools = List.of(BuildTool.GRADLE, BuildTool.MAVEN);
+    private List<BuildTool> buildTools;
 
     @JsonPropertyDescription("The guide's test framework. By default Java and Kotlin applications are tested with JUnit5 and Groovy applications with Spock")
     @Nullable
@@ -111,7 +111,7 @@ public class Guide {
 
     @JsonPropertyDescription("List of additional files with a relative path to include in the generated zip file for the guide")
     @Nullable
-    private List<String> zipIncludes = new ArrayList<>();
+    private List<String> zipIncludes;
 
     @JsonPropertyDescription("The guide's slug. If not specified, the guides folder is used")
     @Nullable
@@ -128,12 +128,81 @@ public class Guide {
 
     @JsonPropertyDescription("The guide's environment variables")
     @Nullable
-    private Map<String, String> env = new HashMap<>();
+    private Map<String, String> env;
 
     @JsonPropertyDescription("Applications created for the guide")
     @NotEmpty
     @NonNull
     private List<? extends App> apps;
+
+    /**
+     * Represents a guide metadata.
+     *
+     * @param title              The guide's title
+     * @param intro              The guide introduction
+     * @param authors            The guide's authors
+     * @param categories         The guide's categories
+     * @param publicationDate    The guide publication date. It should follow the format YYYY-MM-DD
+     * @param minimumJavaVersion If the guide needs a minimum Java version, define it here
+     * @param maximumJavaVersion If the guide needs a maximum Java version, define it here
+     * @param cloud              The acronym for the cloud service provider of the guide. For example, OCI for Oracle Cloud Infrastructure
+     * @param skipGradleTests    Set it to true to skip running the tests for the Gradle applications for the guide
+     * @param skipMavenTests     Set it to true to skip running the tests for the Maven applications for the guide
+     * @param asciidoctor        The guide asciidoc file. If not specified, the guide slug followed by the .adoc suffix is used
+     * @param languages          The guide supported languages
+     * @param tags               List of tags added to the guide. features are added automatically as tags. No need to repeat them here
+     * @param buildTools         By default the code in the guide is generated for Gradle and Maven. If a guide is specific only for a build tool, define it here
+     * @param testFramework      The guide's test framework. By default Java and Kotlin applications are tested with JUnit5 and Groovy applications with Spock
+     * @param zipIncludes        List of additional files with a relative path to include in the generated zip file for the guide
+     * @param slug               The guide's slug. If not specified, the guides folder is used
+     * @param publish            Whether the guide should be published, it defaults to true. You can set it to false for draft or base guides
+     * @param base               Defaults to null; if set, indicates directory name of the base guide to copy before copying the current one
+     * @param env                The guide's environment variables
+     * @param apps               Applications created for the guide
+     */
+    @SuppressWarnings("checkstyle:ParameterNumber")
+    public Guide(@NonNull @NotBlank String title,
+                 @NonNull @NotBlank String intro,
+                 @NotEmpty @NonNull List<String> authors,
+                 @NotEmpty @NonNull List<String> categories,
+                 @NonNull @NotNull LocalDate publicationDate,
+                 @Nullable Integer minimumJavaVersion,
+                 @Nullable Integer maximumJavaVersion,
+                 @Nullable Cloud cloud,
+                 @Nullable Boolean skipGradleTests,
+                 @Nullable Boolean skipMavenTests,
+                 @Nullable String asciidoctor,
+                 @Nullable List<Language> languages,
+                 @Nullable List<String> tags,
+                 @Nullable List<BuildTool> buildTools,
+                 @Nullable TestFramework testFramework,
+                 @Nullable List<String> zipIncludes,
+                 @Nullable String slug,
+                 @Nullable Boolean publish,
+                 @Nullable String base,
+                 @Nullable Map<String, String> env,
+                 @NotEmpty @NonNull List<? extends App> apps) {
+        this.title = title;
+        this.intro = intro;
+        this.authors = authors;
+        this.categories = categories;
+        this.publicationDate = publish != null && publish ? publicationDate : null;
+        this.minimumJavaVersion = minimumJavaVersion;
+        this.maximumJavaVersion = maximumJavaVersion;
+        this.cloud = cloud;
+        this.skipGradleTests = skipGradleTests;
+        this.skipMavenTests = skipMavenTests;
+        this.asciidoctor = asciidoctor;
+        this.languages = languages != null ? languages : List.of(Language.JAVA, Language.GROOVY, Language.KOTLIN);
+        this.tags = tags != null ? tags : Collections.emptyList();
+        this.buildTools = buildTools != null ? buildTools : List.of(BuildTool.GRADLE, BuildTool.MAVEN);
+        this.zipIncludes = zipIncludes != null ? zipIncludes : new ArrayList<>();
+        this.slug = slug;
+        this.publish = publish;
+        this.base = base;
+        this.env = env != null ? env : new HashMap<>();
+        this.apps = apps;
+    }
 
     /**
      * Gets the title of the guide.
