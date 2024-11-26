@@ -16,7 +16,9 @@ public class CreateAppMacro extends GradleMavenTabs implements MacroSubstitution
 
     private final GuidesConfiguration guidesConfiguration;
 
-    protected CreateAppMacro(ResourceLoader resourceLoader, GuidesTemplatesConfiguration guidesTemplatesConfiguration, GuidesConfiguration guidesConfiguration) {
+    protected CreateAppMacro(ResourceLoader resourceLoader,
+                             GuidesTemplatesConfiguration guidesTemplatesConfiguration,
+                             GuidesConfiguration guidesConfiguration) {
         super(resourceLoader, guidesTemplatesConfiguration);
         this.guidesConfiguration = guidesConfiguration;
     }
