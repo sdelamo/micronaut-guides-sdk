@@ -3,6 +3,7 @@ package io.micronaut.guides.cli;
 import io.micronaut.core.io.ResourceLoader;
 import io.micronaut.guides.core.*;
 import io.micronaut.guides.core.asciidoc.AsciidocMacro;
+import io.micronaut.guides.core.asciidoc.AsciidocUtils;
 import io.micronaut.guides.core.asciidoc.Attribute;
 import jakarta.inject.Singleton;
 
@@ -39,7 +40,7 @@ public class EnvironmentVarsMacro implements MacroSubstitution {
                 windowsBuilder.append("<span class=\"hljs-built_in\">set</span> ").append(name).append("=").append(value).append("\n");
                 powershellBuilder.append("<span class=\"hljs-variable\">$ENV</span> ").append(name).append(" = <span class=\"hljs-string\">\"").append(value).append("\"</span>\n");
             }
-            str = str.replace(line, "++++\n" + html.replace("{bash}", bashBuilder.toString()).replace("{windows}", windowsBuilder.toString()).replace("{powershell}", powershellBuilder.toString()) + "\n++++\n");
+            str = str.replace(line, AsciidocUtils.passthroughBlock(html.replace("{bash}", bashBuilder.toString()).replace("{windows}", windowsBuilder.toString()).replace("{powershell}", powershellBuilder.toString())));
         }
         return str;
     }
