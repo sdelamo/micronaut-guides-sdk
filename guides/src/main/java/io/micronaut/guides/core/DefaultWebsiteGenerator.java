@@ -175,11 +175,15 @@ class DefaultWebsiteGenerator implements WebsiteGenerator {
         int startIndex = html.indexOf(openDivPattern + " " + idAttribute);
         if (startIndex == -1) {
             startIndex = html.indexOf(openDivPattern + " id='toc'");
-            if (startIndex == -1) return null;
+            if (startIndex == -1) {
+                return null;
+            }
         }
 
         int openingTagEnd = html.indexOf(">", startIndex);
-        if (openingTagEnd == -1) return null;
+        if (openingTagEnd == -1) {
+            return null;
+        }
 
         int nestedDivCount = 0;
         int currentIndex = openingTagEnd + 1;
@@ -188,7 +192,9 @@ class DefaultWebsiteGenerator implements WebsiteGenerator {
             int nextOpenDiv = html.indexOf(openDivPattern, currentIndex);
             int nextCloseDiv = html.indexOf(closeDivPattern, currentIndex);
 
-            if (nextCloseDiv == -1) return null;
+            if (nextCloseDiv == -1) {
+                return null;
+            }
 
             if (nextOpenDiv != -1 && nextOpenDiv < nextCloseDiv) {
                 nestedDivCount++;

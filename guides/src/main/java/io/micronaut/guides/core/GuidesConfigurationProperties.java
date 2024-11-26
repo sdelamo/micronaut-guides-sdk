@@ -225,6 +225,10 @@ public class GuidesConfigurationProperties implements GuidesConfiguration {
         return version;
     }
 
+    /**
+     *
+     * @param version version
+     */
     public void setVersion(String version) {
         this.version = version;
     }

@@ -1,10 +1,7 @@
 package io.micronaut.guides.cli;
 
 import io.micronaut.core.io.ResourceLoader;
-import io.micronaut.guides.core.Guide;
-import io.micronaut.guides.core.GuidesOption;
-import io.micronaut.guides.core.GuidesTemplatesConfiguration;
-import io.micronaut.guides.core.MacroSubstitution;
+import io.micronaut.guides.core.*;
 import io.micronaut.guides.core.asciidoc.AsciidocMacro;
 import io.micronaut.guides.core.asciidoc.Attribute;
 import jakarta.inject.Singleton;
@@ -14,11 +11,12 @@ import java.util.Optional;
 import static io.micronaut.guides.core.MacroUtils.findMacroLines;
 
 @Singleton
-public class EnvironmentVarsMacro extends ConsoleTabs implements MacroSubstitution {
+public class EnvironmentVarsMacro implements MacroSubstitution {
     private final static String MACRO = "environment-vars";
+    private String html;
 
     EnvironmentVarsMacro(ResourceLoader resourceLoader, GuidesTemplatesConfiguration guidesTemplatesConfiguration) {
-        super(resourceLoader, guidesTemplatesConfiguration);
+        this.html = TemplateLoaderUtils.getClasspathTemplate(resourceLoader, guidesTemplatesConfiguration, "consoleTabs.html");
     }
 
     @Override
@@ -41,8 +39,7 @@ public class EnvironmentVarsMacro extends ConsoleTabs implements MacroSubstituti
                 windowsBuilder.append("<span class=\"hljs-built_in\">set</span> ").append(name).append("=").append(value).append("\n");
                 powershellBuilder.append("<span class=\"hljs-variable\">$ENV</span> ").append(name).append(" = <span class=\"hljs-string\">\"").append(value).append("\"</span>\n");
             }
-
-            str = str.replace(line, "++++\n" + consoleTabsHtml.replace("{bash}", bashBuilder.toString()).replace("{windows}", windowsBuilder.toString()).replace("{powershell}", powershellBuilder.toString()) + "\n++++\n");
+            str = str.replace(line, "++++\n" + html.replace("{bash}", bashBuilder.toString()).replace("{windows}", windowsBuilder.toString()).replace("{powershell}", powershellBuilder.toString()) + "\n++++\n");
         }
         return str;
     }
