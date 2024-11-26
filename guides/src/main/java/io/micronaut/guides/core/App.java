@@ -63,23 +63,23 @@ public class App {
 
     @JsonPropertyDescription("The Micronaut Starter features' name that the app requires")
     @Nullable
-    private List<String> features;
+    private List<String> features = new ArrayList<>();
 
     @JsonPropertyDescription("The app's invisible features")
     @Nullable
-    private List<String> invisibleFeatures;
+    private List<String> invisibleFeatures = new ArrayList<>();
 
     @JsonPropertyDescription("The app's Kotlin features")
     @Nullable
-    private List<String> kotlinFeatures;
+    private List<String> kotlinFeatures = new ArrayList<>();
 
     @JsonPropertyDescription("The app's Java features")
     @Nullable
-    private List<String> javaFeatures;
+    private List<String> javaFeatures = new ArrayList<>();
 
     @JsonPropertyDescription("The app's Groovy features")
     @Nullable
-    private List<String> groovyFeatures;
+    private List<String> groovyFeatures = new ArrayList<>();
 
     @JsonPropertyDescription("The app's test framework")
     @Nullable
@@ -99,57 +99,11 @@ public class App {
     private Boolean validateLicense;
 
     /**
-     * Represents the app metadata.
-     *
-     * @param name              The app's name. For single application guides, the application needs to be named default
-     * @param packageName       The app's package name. If you don't specify, the package name example.micronaut is used
-     * @param applicationType   The app type.  If you don't specify, default is used
-     * @param framework         The app's framework. Default is Micronaut but Spring Boot is also supported
-     * @param features          The Micronaut Starter features' name that the app requires
-     * @param invisibleFeatures The app's invisible features
-     * @param kotlinFeatures    The app's Kotlin features
-     * @param javaFeatures      The app's Java features
-     * @param groovyFeatures    The app's Groovy features
-     * @param testFramework     The app's test framework
-     * @param excludeTest       The tests that should not be run
-     * @param excludeSource     The source files that should not be included
-     * @param validateLicense   To enable Spotless code check
-     */
-    @SuppressWarnings("checkstyle:ParameterNumber")
-    public App(@NonNull @NotBlank String name,
-               @Nullable String packageName,
-               @Nullable ApplicationType applicationType,
-               @Nullable String framework,
-               @Nullable List<String> features,
-               @Nullable List<String> invisibleFeatures,
-               @Nullable List<String> kotlinFeatures,
-               @Nullable List<String> javaFeatures,
-               @Nullable List<String> groovyFeatures,
-               @Nullable TestFramework testFramework,
-               @Nullable List<String> excludeTest,
-               @Nullable List<String> excludeSource,
-               @Nullable Boolean validateLicense) {
-        this.name = name;
-        this.packageName = packageName;
-        this.applicationType = applicationType;
-        this.framework = framework;
-        this.features = features != null ? features : new ArrayList<>();
-        this.invisibleFeatures = invisibleFeatures != null ? invisibleFeatures : new ArrayList<>();
-        this.kotlinFeatures = kotlinFeatures != null ? kotlinFeatures : new ArrayList<>();
-        this.javaFeatures = javaFeatures != null ? javaFeatures : new ArrayList<>();
-        this.groovyFeatures = groovyFeatures != null ? groovyFeatures : new ArrayList<>();
-        this.testFramework = testFramework;
-        this.excludeTest = excludeTest;
-        this.excludeSource = excludeSource;
-        this.validateLicense = validateLicense != null ? validateLicense && hasSpotless(this.features, this.invisibleFeatures, this.kotlinFeatures, this.javaFeatures, this.groovyFeatures) : null;
-    }
-
-    /**
      * Gets the name of the app.
      *
      * @return The name of the app.
      */
-    public @NonNull @NotBlank String name() {
+    public @NonNull @NotBlank String getName() {
         return name;
     }
 
@@ -167,7 +121,7 @@ public class App {
      *
      * @return The package name of the app, or null if not specified.
      */
-    public @Nullable String packageName() {
+    public @Nullable String getPackageName() {
         return packageName;
     }
 
@@ -185,7 +139,7 @@ public class App {
      *
      * @return The application type of the app, or null if not specified.
      */
-    public @Nullable ApplicationType applicationType() {
+    public @Nullable ApplicationType getApplicationType() {
         return applicationType;
     }
 
@@ -203,7 +157,7 @@ public class App {
      *
      * @return The framework of the app, or null if not specified.
      */
-    public @Nullable String framework() {
+    public @Nullable String getFramework() {
         return framework;
     }
 
@@ -221,7 +175,7 @@ public class App {
      *
      * @return The list of features, or null if not specified.
      */
-    public @Nullable List<String> features() {
+    public @Nullable List<String> getFeatures() {
         return features;
     }
 
@@ -248,7 +202,7 @@ public class App {
      *
      * @return The list of Kotlin features, or null if not specified.
      */
-    public @Nullable List<String> kotlinFeatures() {
+    public @Nullable List<String> getKotlinFeatures() {
         return kotlinFeatures;
     }
 
@@ -266,7 +220,7 @@ public class App {
      *
      * @return The list of Java features, or null if not specified.
      */
-    public @Nullable List<String> javaFeatures() {
+    public @Nullable List<String> getJavaFeatures() {
         return javaFeatures;
     }
 
@@ -284,7 +238,7 @@ public class App {
      *
      * @return The list of Groovy features, or null if not specified.
      */
-    public @Nullable List<String> groovyFeatures() {
+    public @Nullable List<String> getGroovyFeatures() {
         return groovyFeatures;
     }
 
@@ -302,7 +256,7 @@ public class App {
      *
      * @return The test framework, or null if not specified.
      */
-    public @Nullable TestFramework testFramework() {
+    public @Nullable TestFramework getTestFramework() {
         return testFramework;
     }
 
@@ -320,7 +274,7 @@ public class App {
      *
      * @return The list of tests to exclude, or null if not specified.
      */
-    public @Nullable List<String> excludeTest() {
+    public @Nullable List<String> getExcludeTest() {
         return excludeTest;
     }
 
@@ -338,7 +292,7 @@ public class App {
      *
      * @return The list of source files to exclude, or null if not specified.
      */
-    public @Nullable List<String> excludeSource() {
+    public @Nullable List<String> getExcludeSource() {
         return excludeSource;
     }
 
@@ -356,8 +310,8 @@ public class App {
      *
      * @return True if license validation is enabled, false otherwise.
      */
-    public @Nullable Boolean validateLicense() {
-        return validateLicense;
+    public @Nullable Boolean isValidateLicense() {
+        return validateLicense != null ? validateLicense && hasSpotless(this.features, this.invisibleFeatures, this.kotlinFeatures, this.javaFeatures, this.groovyFeatures) : Boolean.FALSE;
     }
 
     /**
@@ -393,13 +347,13 @@ public class App {
      */
     public List<String> features(Language language) {
         if (language == Language.JAVA) {
-            return mergeLists(features, invisibleFeatures(), javaFeatures());
+            return mergeLists(features, invisibleFeatures(), getJavaFeatures());
         }
         if (language == Language.KOTLIN) {
-            return mergeLists(features, invisibleFeatures(), kotlinFeatures());
+            return mergeLists(features, invisibleFeatures(), getKotlinFeatures());
         }
         if (language == Language.GROOVY) {
-            return mergeLists(features, invisibleFeatures(), groovyFeatures());
+            return mergeLists(features, invisibleFeatures(), getGroovyFeatures());
         }
         return mergeLists(features, invisibleFeatures());
     }
@@ -410,7 +364,7 @@ public class App {
      * @return A list of invisible features associated with the app.
      */
     public List<String> invisibleFeatures() {
-        if (validateLicense()) {
+        if (isValidateLicense()) {
             List<String> result = new ArrayList<>();
             addAllSafe(result, invisibleFeatures);
             return result;
@@ -426,13 +380,13 @@ public class App {
      */
     public List<String> visibleFeatures(Language language) {
         if (language == Language.JAVA) {
-            return mergeLists(features, javaFeatures());
+            return mergeLists(features, getJavaFeatures());
         }
         if (language == Language.KOTLIN) {
-            return mergeLists(features, kotlinFeatures());
+            return mergeLists(features, getKotlinFeatures());
         }
         if (language == Language.GROOVY) {
-            return mergeLists(features, groovyFeatures());
+            return mergeLists(features, getGroovyFeatures());
         }
         return features;
     }

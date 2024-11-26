@@ -432,10 +432,10 @@ public class Guide {
         }
         for (App app : apps()) {
             List<String> allFeatures = new ArrayList<>();
-            addAllSafe(allFeatures, app.features());
-            addAllSafe(allFeatures, app.javaFeatures());
-            addAllSafe(allFeatures, app.kotlinFeatures());
-            addAllSafe(allFeatures, app.groovyFeatures());
+            addAllSafe(allFeatures, app.getFeatures());
+            addAllSafe(allFeatures, app.getJavaFeatures());
+            addAllSafe(allFeatures, app.getKotlinFeatures());
+            addAllSafe(allFeatures, app.getGroovyFeatures());
             for (String featureName : allFeatures) {
                 String tagToAdd = featureName;
                 for (String prefix : FEATURES_PREFIXES) {
@@ -626,6 +626,6 @@ public class Guide {
      * @return A set of frameworks associated with the guide.
      */
     public Set<String> getFrameworks() {
-        return apps().stream().map(App::framework).collect(Collectors.toSet());
+        return apps().stream().map(App::getFramework).collect(Collectors.toSet());
     }
 }

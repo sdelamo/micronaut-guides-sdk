@@ -187,7 +187,7 @@ class DefaultTestScriptGenerator implements TestScriptGenerator {
      */
     @Override
     public boolean isMicronautFramework(App app) {
-        return app.framework() == null || app.framework().equals("Micronaut");
+        return app.getFramework() == null || app.getFramework().equals("Micronaut");
     }
 
     /**
@@ -282,17 +282,17 @@ class DefaultTestScriptGenerator implements TestScriptGenerator {
             for (GuidesOption guidesOption : guidesOptionList) {
                 String folder = MacroUtils.getSourceDir(metadata.slug(), guidesOption);
                 BuildTool buildTool = folder.contains(MAVEN.toString()) ? MAVEN : GRADLE;
-                if (metadata.apps().stream().anyMatch(app -> app.name().equals(guidesConfiguration.getDefaultAppName()))) {
+                if (metadata.apps().stream().anyMatch(app -> app.getName().equals(guidesConfiguration.getDefaultAppName()))) {
                     if (metadata.shouldSkip(buildTool)) {
                         continue;
                     }
-                    Optional<? extends App> appOptional = metadata.apps().stream().filter(app -> app.name().equals(guidesConfiguration.getDefaultAppName())).findFirst();
+                    Optional<? extends App> appOptional = metadata.apps().stream().filter(app -> app.getName().equals(guidesConfiguration.getDefaultAppName())).findFirst();
                     if (appOptional.isPresent()) {
                         App defaultApp = appOptional.get();
                         if (!nativeTest || supportsNativeTest(defaultApp, guidesOption)) {
                             List<String> features = defaultApp.features(guidesOption.getLanguage());
                             if (!folder.contains("-maven-groovy")) {
-                                bashScript.append(scriptForFolder(folder, folder, stopIfFailure, buildTool, features.contains("kapt") && Runtime.getRuntime().version().feature() > 17 && buildTool == GRADLE, nativeTest, defaultApp.validateLicense()));
+                                bashScript.append(scriptForFolder(folder, folder, stopIfFailure, buildTool, features.contains("kapt") && Runtime.getRuntime().version().feature() > 17 && buildTool == GRADLE, nativeTest, defaultApp.isValidateLicense()));
                             }
                         }
                     }
@@ -305,7 +305,7 @@ class DefaultTestScriptGenerator implements TestScriptGenerator {
                         if (!nativeTest || supportsNativeTest(app, guidesOption)) {
                             List<String> features = app.features(guidesOption.getLanguage());
                             if (!folder.contains("-maven-groovy")) {
-                                bashScript.append(scriptForFolder(app.name(), folder + "/" + app.name(), stopIfFailure, buildTool, features.contains("kapt") && Runtime.getRuntime().version().feature() > 17 && buildTool == GRADLE, nativeTest, app.validateLicense()));
+                                bashScript.append(scriptForFolder(app.getName(), folder + "/" + app.getName(), stopIfFailure, buildTool, features.contains("kapt") && Runtime.getRuntime().version().feature() > 17 && buildTool == GRADLE, nativeTest, app.isValidateLicense()));
                             }
                         }
                     }

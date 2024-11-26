@@ -49,8 +49,12 @@ class AppTest {
         List<String> emptyList = new ArrayList<>();
         boolean validateLicense = true;
 
-        Set<ConstraintViolation<App>> violations = validator.validate(
-                new App(name, packageName, applicationType, framework, emptyList, emptyList, emptyList, emptyList, emptyList, TestFramework.JUNIT, emptyList, emptyList, validateLicense));
+        App app = new App();
+        app.setName(name);
+        app.setPackageName(packageName);
+        app.setApplicationType(applicationType);
+        app.setFramework(framework);
+        Set<ConstraintViolation<App>> violations = validator.validate(app);
         assertTrue(violations.isEmpty());
     }
 

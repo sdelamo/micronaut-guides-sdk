@@ -22,22 +22,12 @@ public class FeaturesWordsMacroSubstitutionTest {
 
     @Test
     void testSubstitute(){
-        App app = new App(
-                "cli",
-                "example.micronaut",
-                ApplicationType.CLI,
-                "Micronaut",
-                List.of("yaml","mqtt"),
-                List.of(),
-                List.of(),
-                List.of(),
-                List.of(),
-                null,
-                null,
-                null,
-                true
-        );
-
+        App app = new App();
+        app.setName("cli");
+        app.setPackageName("example.micronaut");
+        app.setApplicationType(ApplicationType.CLI);
+        app.setFramework("Micronaut");
+        app.setFeatures(List.of("yaml","mqtt"));
         Guide guide = new Guide(
                 "1. Testing Serialization - Spring Boot vs Micronaut Framework - Building a Rest API",
                 "This guide compares how to test serialization and deserialization with Micronaut Framework and Spring Boot.",

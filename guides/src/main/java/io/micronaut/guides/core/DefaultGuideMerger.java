@@ -93,10 +93,10 @@ public class DefaultGuideMerger implements GuideMerger {
 
     private <T extends App> List<T> mergeApps(List<T> base, List<T> guide) {
         Map<String, T> baseApps = base.stream()
-                .collect(Collectors.toMap(App::name, app -> app));
+                .collect(Collectors.toMap(App::getName, app -> app));
 
         Map<String, T> guideApps = guide.stream()
-                .collect(Collectors.toMap(App::name, app -> app));
+                .collect(Collectors.toMap(App::getName, app -> app));
 
         Set<String> baseOnly = new HashSet<>(baseApps.keySet());
         baseOnly.removeAll(guideApps.keySet());

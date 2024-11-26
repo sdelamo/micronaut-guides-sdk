@@ -44,19 +44,19 @@ public class FeaturesListingMacroSubstitution implements MacroSubstitution {
             String target = asciidocMacroOptional.get().target();
             GdkApp app = (GdkApp) guide.apps().
                     stream()
-                    .filter(a -> a.name().equals(target))
+                    .filter(a -> a.getName().equals(target))
                     .findFirst()
                     .orElseThrow(() -> new IllegalArgumentException("App not found: " + target));
             GeneratorContext generatorContext = projectGenerator.createGeneratorContext(
-                    app.applicationType(),
+                    app.getApplicationType(),
                     project,
                     new Options(
                             option.getLanguage(),
                             option.getTestFramework().toTestFramework(),
                             option.getBuildTool(),
-                            javaVersion != null ? javaVersion : JDK_8).withFramework(app.framework()),
+                            javaVersion != null ? javaVersion : JDK_8).withFramework(app.getFramework()),
                     null,
-                    app.features() != null ? app.features() : Collections.emptyList(),
+                    app.getFeatures() != null ? app.getFeatures() : Collections.emptyList(),
                     ConsoleOutput.NOOP
             );
 

@@ -58,7 +58,7 @@ public interface MacroSubstitution extends Ordered {
      */
     default App app(Guide guide, String appName) {
         return guide.apps().stream()
-                .filter(a -> a.name().equals(appName))
+                .filter(a -> a.getName().equals(appName))
                 .findFirst()
                 .orElseThrow(() -> new RuntimeException("app not found for app name" + appName));
     }

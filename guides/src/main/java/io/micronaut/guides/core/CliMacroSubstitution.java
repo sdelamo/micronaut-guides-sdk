@@ -38,13 +38,13 @@ public class CliMacroSubstitution extends PlaceholderWithTargetMacroSubstitution
      * @return the CLI command
      */
     private static String cliCommandForApp(App app) {
-        return switch (app.applicationType()) {
+        return switch (app.getApplicationType()) {
             case CLI -> CLI_CLI;
             case FUNCTION -> CLI_FUNCTION;
             case GRPC -> CLI_GRPC;
             case MESSAGING -> CLI_MESSAGING;
             case DEFAULT -> CLI_DEFAULT;
-            default -> throw new IllegalArgumentException("Unknown application type: " + app.applicationType());
+            default -> throw new IllegalArgumentException("Unknown application type: " + app.getApplicationType());
         };
     }
 
@@ -70,7 +70,7 @@ public class CliMacroSubstitution extends PlaceholderWithTargetMacroSubstitution
     @Override
     protected String getSubstitution(Guide guide, GuidesOption option, String appName) {
         App app = guide.apps().stream()
-                .filter(a -> a.name().equals(appName))
+                .filter(a -> a.getName().equals(appName))
                 .findFirst()
                 .orElse(null);
         if (app != null) {

@@ -129,23 +129,23 @@ public class DefaultGuideProjectGenerator implements GuideProjectGenerator {
         // typical guides use 'default' as name, multi-project guides have different modules
         String folder = MacroUtils.getSourceDir(guide.slug(), guidesOption);
 
-        String appName = app.name().equals(guidesConfiguration.getDefaultAppName()) ? EMPTY_STRING : app.name();
+        String appName = app.getName().equals(guidesConfiguration.getDefaultAppName()) ? EMPTY_STRING : app.getName();
 
         Path destinationPath = Paths.get(outputDirectory.getAbsolutePath(), folder, appName);
         File destination = destinationPath.toFile();
         destination.mkdir();
 
-        String packageAndName = guidesConfiguration.getPackageName() + '.' + app.name();
-        GeneratorContext generatorContext = createProjectGeneratorContext(app.applicationType(),
+        String packageAndName = guidesConfiguration.getPackageName() + '.' + app.getName();
+        GeneratorContext generatorContext = createProjectGeneratorContext(app.getApplicationType(),
                 packageAndName,
-                app.framework(),
+                app.getFramework(),
                 appFeatures,
                 guidesOption.getBuildTool(),
-                app.testFramework() != null ? app.testFramework() : guidesOption.getTestFramework(),
+                app.getTestFramework() != null ? app.getTestFramework() : guidesOption.getTestFramework(),
                 guidesOption.getLanguage(),
                 javaVersion);
         try {
-            projectGenerator.generate(app.applicationType(),
+            projectGenerator.generate(app.getApplicationType(),
                     generatorContext.getProject(),
                     new FileSystemOutputHandler(destination, ConsoleOutput.NOOP),
                     generatorContext);

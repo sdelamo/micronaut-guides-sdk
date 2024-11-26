@@ -33,21 +33,12 @@ public class GuideProjectGeneratorTest {
     void testGenerate() throws IOException {
         File outputDirectory = Files.createTempDirectory("micronaut-guides").toFile();
 
-        App app = new App(
-                "cli",
-                "example.micronaut",
-                ApplicationType.CLI,
-                "Micronaut",
-                List.of("yaml", "mqtt"),
-                List.of(),
-                List.of(),
-                List.of(),
-                List.of(),
-                null,
-                null,
-                null,
-                true
-        );
+        App app = new App();
+        app.setName("cli");
+        app.setPackageName("example.micronaut");
+        app.setApplicationType(ApplicationType.CLI);
+        app.setFramework("Micronaut");
+        app.setFeatures(List.of("yaml", "mqtt"));
         Guide guide = new Guide(
                 "1. Testing Serialization - Spring Boot vs Micronaut Framework - Building a Rest API",
                 "This guide compares how to test serialization and deserialization with Micronaut Framework and Spring Boot.",
@@ -139,7 +130,7 @@ public class GuideProjectGeneratorTest {
         assertDoesNotThrow(() -> guideProjectGenerator.generate(outputDirectory, guide));
 
         for (App app : guide.apps()) {
-            File dest = Paths.get(outputDirectory.getAbsolutePath(), MacroUtils.getSourceDir(guide.slug(), new GuidesOption(BuildTool.GRADLE, Language.JAVA, TestFramework.JUNIT)), app.name()).toFile();
+            File dest = Paths.get(outputDirectory.getAbsolutePath(), MacroUtils.getSourceDir(guide.slug(), new GuidesOption(BuildTool.GRADLE, Language.JAVA, TestFramework.JUNIT)), app.getName()).toFile();
             assertTrue(new File(dest, "build.gradle").exists());
             assertTrue(new File(dest, "gradlew.bat").exists());
             assertTrue(new File(dest, "gradlew").exists());
@@ -149,7 +140,7 @@ public class GuideProjectGeneratorTest {
             File buildGradleFile = new File(dest, "build.gradle");
             String result = readFile(buildGradleFile);
 
-            for (String feature : app.features()) {
+            for (String feature : app.getFeatures()) {
                 //assertTrue(result.contains(feature));
             }
         }

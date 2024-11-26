@@ -150,7 +150,7 @@ class DefaultFilesTransferUtility implements FilesTransferUtility {
         List<GuidesOption> guidesOptionList = GuideGenerationUtils.guidesOptions(guide, LOG);
         for (GuidesOption guidesOption : guidesOptionList) {
             for (App app : guide.apps()) {
-                String appName = app.name().equals(guidesConfiguration.getDefaultAppName()) ? EMPTY_STRING : app.name();
+                String appName = app.getName().equals(guidesConfiguration.getDefaultAppName()) ? EMPTY_STRING : app.getName();
                 String folder = MacroUtils.getSourceDir(guide.slug(), guidesOption);
                 Path destinationPath = Paths.get(outputDirectory.getAbsolutePath(), folder, appName);
                 File destination = destinationPath.toFile();
@@ -162,8 +162,8 @@ class DefaultFilesTransferUtility implements FilesTransferUtility {
 
                 copyGuideSourceFiles(inputDirectory, destinationPath, appName, guidesOption.getLanguage().toString(), false);
 
-                if (app.excludeSource() != null) {
-                    for (String mainSource : app.excludeSource()) {
+                if (app.getExcludeSource() != null) {
+                    for (String mainSource : app.getExcludeSource()) {
                         File f = fileToDelete(destination, GuideGenerationUtils.mainPath(appName, mainSource, guidesOption, guidesConfiguration));
                         if (f.exists()) {
                             f.delete();
@@ -175,8 +175,8 @@ class DefaultFilesTransferUtility implements FilesTransferUtility {
                     }
                 }
 
-                if (app.excludeTest() != null) {
-                    for (String testSource : app.excludeTest()) {
+                if (app.getExcludeTest() != null) {
+                    for (String testSource : app.getExcludeTest()) {
                         File f = fileToDelete(destination, GuideGenerationUtils.testPath(appName, testSource, guidesOption, guidesConfiguration));
                         if (f.exists()) {
                             f.delete();

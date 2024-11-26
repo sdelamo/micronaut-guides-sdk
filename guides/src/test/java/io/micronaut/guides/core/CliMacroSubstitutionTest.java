@@ -30,21 +30,11 @@ public class CliMacroSubstitutionTest {
 
     @Test
     void testSubstitute(){
-        App app = new App(
-                "default",
-                "example.micronaut",
-                ApplicationType.DEFAULT,
-                "Micronaut",
-                List.of(),
-                List.of(),
-                List.of(),
-                List.of(),
-                List.of(),
-                null,
-                null,
-                null,
-                true
-        );
+        App app = new App();
+        app.setName("default");
+        app.setPackageName("example.micronaut");
+        app.setApplicationType(ApplicationType.DEFAULT);
+        app.setFramework("Micronaut");
 
         Guide guide = new Guide(
                 "1. Testing Serialization - Spring Boot vs Micronaut Framework - Building a Rest API",
@@ -84,23 +74,12 @@ public class CliMacroSubstitutionTest {
     }
 
     @Test
-    void testSubstituteWithTarget(){
-        App app = new App(
-                "cli",
-                "example.micronaut",
-                ApplicationType.CLI,
-                "Micronaut",
-                List.of(),
-                List.of(),
-                List.of(),
-                List.of(),
-                List.of(),
-                null,
-                null,
-                null,
-                true
-        );
-
+    void testSubstituteWithTarget() {
+        App app = new App();
+        app.setName("cli");
+        app.setPackageName("example.micronaut");
+        app.setApplicationType(ApplicationType.CLI);
+        app.setFramework("Micronaut");
         Guide guide = new Guide(
                 "1. Testing Serialization - Spring Boot vs Micronaut Framework - Building a Rest API",
                 "This guide compares how to test serialization and deserialization with Micronaut Framework and Spring Boot.",

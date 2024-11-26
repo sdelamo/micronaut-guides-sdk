@@ -49,16 +49,16 @@ class CreateAppMacro extends GradleMavenTabs {
     private static GdkApp gdkApp(Guide guide, String target) {
         return (GdkApp) guide.apps().
                 stream()
-                .filter(a -> a.name().equals(target))
+                .filter(a -> a.getName().equals(target))
                 .filter(GdkApp.class::isInstance)
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("App not found: " + target));
     }
 
     private String command(GdkApp app, GuidesOption option, BuildTool buildTool) {
-        return command(guidesConfiguration.getPackageName() + "." + app.name(),
-                new Argument(ARGUMENT_SERVICES, String.join(",", app.services())),
-                new Argument(ARGUMENT_FEATURES, String.join(",", app.features())),
+        return command(guidesConfiguration.getPackageName() + "." + app.getName(),
+                new Argument(ARGUMENT_SERVICES, String.join(",", app.getServices())),
+                new Argument(ARGUMENT_FEATURES, String.join(",", app.getFeatures())),
                 new Argument(ARGUMENT_LANG, option.getLanguage().name().toLowerCase()),
                 new Argument(ARGUMENT_BUILD, buildTool.toString()));
     }
