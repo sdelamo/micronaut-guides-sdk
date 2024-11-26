@@ -2,23 +2,23 @@ package io.micronaut.guides.cli;
 
 import io.micronaut.core.io.ResourceLoader;
 import io.micronaut.guides.core.*;
-import io.micronaut.guides.core.asciidoc.AsciidocConfiguration;
 import io.micronaut.guides.core.asciidoc.AsciidocMacro;
-import io.micronaut.guides.core.asciidoc.AsciidocUtils;
+import io.micronaut.starter.options.BuildTool;
 import jakarta.inject.Singleton;
 
-import java.util.Optional;
-
-import static io.micronaut.guides.core.MacroUtils.findMacroLines;
-
 @Singleton
-public class CreateAppMacro extends GradleMavenTabs implements MacroSubstitution {
-
-    public static final String MACRO = "create-app";
-
+class CreateAppMacro extends GradleMavenTabs {
+    private static final String MACRO = "create-app";
+    private static final String SPACE = " ";
+    private static final String EQUAL = "=";
+    private static final String ARGUMENT_DELIMITER = "--";
+    private static final String ARGUMENT_SERVICES = "services";
+    private static final String ARGUMENT_FEATURES = "features";
+    private static final String ARGUMENT_LANG = "lang";
+    private static final String ARGUMENT_BUILD = "build";
     private final GuidesConfiguration guidesConfiguration;
 
-    protected CreateAppMacro(ResourceLoader resourceLoader,
+    CreateAppMacro(ResourceLoader resourceLoader,
                              GuidesTemplatesConfiguration guidesTemplatesConfiguration,
                              GuidesConfiguration guidesConfiguration) {
         super(resourceLoader, guidesTemplatesConfiguration);
@@ -26,44 +26,69 @@ public class CreateAppMacro extends GradleMavenTabs implements MacroSubstitution
     }
 
     @Override
-    public String substitute(String str, Guide guide, GuidesOption option) {
-        for (String line : findMacroLines(str, MACRO)) {
-            Optional<AsciidocMacro> asciidocMacroOptional = AsciidocMacro.of(MACRO, line);
-            if (asciidocMacroOptional.isEmpty()) {
-                continue;
+    public String getMacro() {
+        return MACRO;
+    }
+
+    @Override
+    protected String gradle(AsciidocMacro asciidocMacro, Guide guide, GuidesOption option) {
+        return command(asciidocMacro, guide, option, BuildTool.GRADLE);
+    }
+
+    @Override
+    protected String maven(AsciidocMacro asciidocMacro, Guide guide, GuidesOption option) {
+        return command(asciidocMacro, guide, option, BuildTool.MAVEN);
+    }
+
+    private String command(AsciidocMacro asciidocMacro, Guide guide, GuidesOption option, BuildTool buildTool) {
+        String target = asciidocMacro.target();
+        GdkApp app = gdkApp(guide, target);
+        return command(app, option, buildTool);
+    }
+
+    private static GdkApp gdkApp(Guide guide, String target) {
+        return (GdkApp) guide.apps().
+                stream()
+                .filter(a -> a.name().equals(target))
+                .filter(GdkApp.class::isInstance)
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("App not found: " + target));
+    }
+
+    private String command(GdkApp app, GuidesOption option, BuildTool buildTool) {
+        return command(guidesConfiguration.getPackageName() + "." + app.name(),
+                new Argument(ARGUMENT_SERVICES, String.join(",", app.services())),
+                new Argument(ARGUMENT_FEATURES, String.join(",", app.features())),
+                new Argument(ARGUMENT_LANG, option.getLanguage().name().toLowerCase()),
+                new Argument(ARGUMENT_BUILD, buildTool.toString()));
+    }
+
+    private static String command(Object... parameters) {
+        StringBuilder sb = new StringBuilder()
+                .append("<code class=\"language-bash hljs\" data-highlighted=\"yes\"  style=\"white-space: pre-line;\">")
+                .append("gdk create-app ");
+        for (Object p : parameters) {
+            if (p instanceof Argument arg) {
+                sb.append(argument(arg));
+            } else {
+                sb.append(SPACE);
+                sb.append(p);
             }
-            String target = asciidocMacroOptional.get().target();
-            GdkApp app = (GdkApp) guide.apps().
-                    stream()
-                    .filter(a -> a.name().equals(target))
-                    .findFirst()
-                    .orElseThrow(() -> new IllegalArgumentException("App not found: " + target));
-            String template = new StringBuilder()
-                    .append("<code class=\"language-bash hljs\" data-highlighted=\"yes\"  style=\"white-space: pre-line;\">")
-                    .append("gdk create-app ")
-                    .append(guidesConfiguration.getPackageName())
-                    .append(".")
-                    .append(app.name())
-                    .append(" \\\n")
-                    .append(" --services=")
-                    .append(String.join(",", app.services()))
-                    .append(" \\\n")
-                    .append(" --features=")
-                    .append(String.join(",", app.features()))
-                    .append((" \\\n"))
-                    .append(" --lang=")
-                    .append(option.getLanguage().name().toLowerCase())
-                    .append(" \\\n")
-                    .append(" --build={buildTool}\n")
-                    .append("</code>")
-                    .toString();
-
-            String gradle = template.replace("{buildTool}", "gradle");
-            String maven = template.replace("{buildTool}", "maven");
-
-            str = str.replace(line, AsciidocUtils.passthroughBlock(gradleMavenTabsHtml.replace("{gradle}", gradle)
-                    .replace("{maven}", maven)));
+            sb.append(" \\\n");
         }
-        return str;
+        sb.append("</code>");
+        return sb.toString();
+    }
+
+    private static String argument(Argument arg) {
+        return SPACE +
+                ARGUMENT_DELIMITER +
+                arg.key() +
+                EQUAL +
+                arg.value();
+    }
+
+    private record Argument(String key, String value) {
+
     }
 }
