@@ -1,24 +1,10 @@
-/*
- * Copyright 2017-2024 original authors
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * https://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-package io.micronaut.guides.core;
+package io.micronaut.guides.cli;
 
-import com.networknt.schema.InputFormat;
-import com.networknt.schema.JsonSchema;
-import com.networknt.schema.ValidationMessage;
+import io.micronaut.context.annotation.Replaces;
 import io.micronaut.core.annotation.NonNull;
+import io.micronaut.guides.core.Guide;
+import io.micronaut.guides.core.GuideMerger;
+import io.micronaut.guides.core.GuideParser;
 import io.micronaut.json.JsonMapper;
 import jakarta.inject.Singleton;
 import jakarta.validation.constraints.NotNull;
@@ -32,28 +18,21 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
-/**
- * Class that provides methods to parse guide metadata.
- */
 @Singleton
-public class DefaultGuideParser implements GuideParser {
-    private static final Logger LOG = LoggerFactory.getLogger(DefaultGuideParser.class);
+@Replaces(GuideParser.class)
+public class GuideParserReplacement implements GuideParser {
+    private static final Logger LOG = LoggerFactory.getLogger(io.micronaut.guides.core.DefaultGuideParser.class);
 
-    private final JsonSchema jsonSchema;
     private final JsonMapper jsonMapper;
     private final GuideMerger guideMerger;
 
     /**
      * Constructs a new DefaultGuideParser.
      *
-     * @param jsonSchemaProvider the JSON schema provider
-     * @param jsonMapper         the JSON mapper
-     * @param guideMerger        the guide merger
+     * @param jsonMapper the JSON mapper
      */
-    public DefaultGuideParser(JsonSchemaProvider jsonSchemaProvider, JsonMapper jsonMapper, GuideMerger guideMerger) {
-        this.jsonSchema = jsonSchemaProvider.getSchema();
+    public GuideParserReplacement(JsonMapper jsonMapper, GuideMerger guideMerger) {
         this.jsonMapper = jsonMapper;
         this.guideMerger = guideMerger;
     }
@@ -61,14 +40,14 @@ public class DefaultGuideParser implements GuideParser {
     @Override
     @NonNull
     public List<? extends Guide> parseGuidesMetadata(@NonNull @NotNull File guidesDir, @NonNull @NotNull String metadataConfigName) {
-        List<Guide> metadatas = new ArrayList<>();
+        List<GdkGuide> metadatas = new ArrayList<>();
 
         File[] dirs = guidesDir.listFiles(File::isDirectory);
         if (dirs == null) {
             return metadatas;
         }
         for (File dir : dirs) {
-            parseGuideMetadata(dir, metadataConfigName).ifPresent(metadatas::add);
+            parseGuideMetadata(dir, metadataConfigName).ifPresent(guide -> metadatas.add((GdkGuide) guide));
         }
 
         guideMerger.mergeGuides(metadatas);
@@ -93,17 +72,10 @@ public class DefaultGuideParser implements GuideParser {
             return Optional.empty();
         }
 
-        Guide guide;
-        try {
-            guide = jsonMapper.readValue(content, Guide.class);
-            if (guide.isPublish()) {
-                Set<ValidationMessage> assertions = jsonSchema.validate(content, InputFormat.JSON);
 
-                if (!assertions.isEmpty()) {
-                    LOG.trace("Guide metadata {} does not validate the JSON Schema. Skipping guide.", configFile);
-                    return Optional.empty();
-                }
-            }
+        GdkGuide guide;
+        try {
+            guide = jsonMapper.readValue(content, GdkGuide.class);
         } catch (IOException e) {
             LOG.trace("Error parsing guide metadata {}. Skipping guide.", configFile, e);
             return Optional.empty();
