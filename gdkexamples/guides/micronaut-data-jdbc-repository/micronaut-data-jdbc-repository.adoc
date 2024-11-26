@@ -99,11 +99,6 @@ gradle-maven-command:[gradle=./gradlew nativeCompile,maven=./mvnw package -Dpack
 
 Before running this native executable, you need to start and then connect to a MySQL database.
 
-== Set the environment variables
-
-include::asciidoc/commons/set-env-vars.adoc[]
-
-
 == Connect to a MySQL Database
 
 include::asciidoc/commons/connect-mysql-db.adoc[]
