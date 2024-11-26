@@ -108,6 +108,9 @@ include::asciidoc/commons/set-env-vars.adoc[]
 
 include::asciidoc/commons/connect-mysql-db.adoc[]
 
+environment-vars:[DATASOURCES_DEFAULT_URL=jdbc:mysql://localhost:3306/db,DATASOURCES_DEFAULT_USERNAME=sherlock,DATASOURCES_DEFAULT_PASSWORD=elementary]
+
+The Micronaut framework populates the properties `datasources.default.url`, `datasources.default.username` and `datasources.default.password` with those environment variables' values. Learn more about https://micronaut-projects.github.io/micronaut-sql/latest/guide/#jdbc-connection-pools[JDBC Connection Pools].
 
 == Run the Application
 
